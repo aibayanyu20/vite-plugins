@@ -2,18 +2,20 @@
   "name": "vite-plugins",
   "version": "1.0.0",
   "description": "",
+  "keywords": [],
+  "license": "MIT",
+  "author": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest",
+    "test:u": "vitest -u"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@mistjs/eslint-config-vue": "^0.0.3",
     "@mistjs/tsconfig-vue": "^0.0.3",
     "@types/node": "^18.11.18",
     "eslint": "^8.31.0",
+    "tsup": "^6.5.0",
     "typescript": "^4.9.4",
     "vite": "^4.0.4",
     "vitest": "^0.26.3",

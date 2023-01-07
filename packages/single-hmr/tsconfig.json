@@ -1,0 +1,3 @@
+{
+    "extends": "@mistjs/tsconfig-vue"
+}
