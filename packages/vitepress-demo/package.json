@@ -1,0 +1,27 @@
+{
+  "name": "vite-plugin-vitepress-demo",
+  "version": "1.0.0",
+  "description": "this is vite plugin for vitepress demo",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": ""
+  },
+  "peerDependencies": {
+    "vite": "^2.0.0 || ^3.0.0 || ^4.0.0"
+  },
+  "keywords": [
+    "vite",
+    "vite-plugin"
+  ],
+  "author": "aibayanyu20",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^4.0.4",
+    "vitepress": "1.0.0-alpha.45"
+  }
+}
