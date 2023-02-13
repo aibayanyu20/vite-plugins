@@ -25,7 +25,11 @@ export class Parser {
     return this.vitepress?.site.base || this.config.base || '/'
   }
 
+  get logger() {
+    return this.vitepress.logger
+  }
+
   public async setupParser() {
-    this.md = await createMarkdownRenderer(this.srcDir, this.markdownOptions, this.base)
+    this.md = await createMarkdownRenderer(this.srcDir, this.markdownOptions, this.base, this.logger)
   }
 }

@@ -25,6 +25,6 @@
   "devDependencies": {
     "slash": "^5.0.0",
     "vite": "^4.0.4",
-    "vitepress": "1.0.0-alpha.45"
+    "vitepress": "1.0.0-alpha.46"
   }
 }
