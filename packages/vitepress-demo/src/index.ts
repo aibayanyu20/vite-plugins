@@ -6,7 +6,6 @@ import { Parser } from './parser'
 const VitepressDemo = (opt?: UserOptions): Plugin => {
   let vitepress: SiteConfig
   let config: ResolvedConfig
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let parser: Parser
   const options: UserOptions = opt ?? {}
   return {
@@ -21,10 +20,11 @@ const VitepressDemo = (opt?: UserOptions): Plugin => {
         },
       }
     },
-    configResolved(_config) {
+    async configResolved(_config) {
       vitepress = (_config as any).vitepress
       config = _config
       parser = new Parser(config, options, vitepress)
+      await parser.setupParser()
     },
   }
 }
