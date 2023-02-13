@@ -10,6 +10,13 @@
     "test": "vitest",
     "test:u": "vitest -u"
   },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "@algolia/client-search"
+      ]
+    }
+  },
   "devDependencies": {
     "@mistjs/eslint-config-vue": "^0.0.3",
     "@mistjs/tsconfig-vue": "^0.0.3",
