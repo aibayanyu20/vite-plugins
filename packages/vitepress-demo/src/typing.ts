@@ -1,3 +1,4 @@
 export interface UserOptions {
-  basePath?: string
+  glob?: string | string[]
+  ignoreGlob?: string | string[]
 }

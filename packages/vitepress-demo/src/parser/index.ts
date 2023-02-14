@@ -17,6 +17,15 @@ export class Parser {
     return slash(this.vitepress?.srcDir || this.config.root || process.cwd())
   }
 
+  /**
+   * 获取规则部分的逻辑
+   */
+  get glob() {
+    if (this.options.glob)
+      return this.options.glob
+    return slash(this.config.root || process.cwd())
+  }
+
   get markdownOptions() {
     return this.vitepress.markdown
   }
