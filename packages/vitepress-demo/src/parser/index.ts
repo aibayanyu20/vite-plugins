@@ -3,9 +3,11 @@ import type { MarkdownRenderer, SiteConfig } from 'vitepress'
 import { createMarkdownRenderer } from 'vitepress'
 import slash from 'slash'
 import type { UserOptions } from '../typing'
+import { WatcherFile } from './watcher'
 
 export class Parser {
   public md: MarkdownRenderer | undefined
+  public watcher: WatcherFile | undefined
   constructor(
     public readonly config: ResolvedConfig,
     public readonly options: UserOptions,
@@ -20,12 +22,6 @@ export class Parser {
   /**
    * 获取规则部分的逻辑
    */
-  get glob() {
-    if (this.options.glob)
-      return this.options.glob
-    return slash(this.config.root || process.cwd())
-  }
-
   get markdownOptions() {
     return this.vitepress.markdown
   }
@@ -40,5 +36,8 @@ export class Parser {
 
   public async setupParser() {
     this.md = await createMarkdownRenderer(this.srcDir, this.markdownOptions, this.base, this.logger)
+    this.watcher = new WatcherFile(this)
+    console.log('Sdasa')
+    this.watcher?.setupWatcher()
   }
 }
