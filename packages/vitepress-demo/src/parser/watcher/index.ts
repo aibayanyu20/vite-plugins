@@ -33,8 +33,8 @@ export class WatcherFile {
     ]
     if (this.parser.options.ignoreGlob) {
       if (typeof this.parser.options.ignoreGlob === 'string')
-        return [this.parser.options.ignoreGlob, ...defaultIgnore]
-      return [...this.parser.options.ignoreGlob, ...defaultIgnore]
+        return [...new Set([this.parser.options.ignoreGlob, ...defaultIgnore])]
+      return [...new Set([...this.parser.options.ignoreGlob, ...defaultIgnore])]
     }
     return defaultIgnore
   }
@@ -50,6 +50,7 @@ export class WatcherFile {
       cwd: this.globPath,
       ignored: this.ignoreGlob,
     })
+    console.log(this.globPath)
     this.handleFileAdd()
     this.handleFileUnlink()
     this.handleFileChange()
@@ -70,6 +71,7 @@ export class WatcherFile {
 
   private handleFileAdd() {
     this.watcher?.on('add', async (file) => {
+      console.log('add', file)
       // 添加文件处理逻辑
       file = slash(file)
       const { code, id } = await this.readFile(file)
@@ -80,6 +82,7 @@ export class WatcherFile {
 
   private handleFileChange() {
     this.watcher?.on('change', async (file) => {
+      console.log('change', file)
       // 修改文件处理逻辑
       file = slash(file)
       const { code, id } = await this.readFile(file)

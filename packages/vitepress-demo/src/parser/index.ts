@@ -37,7 +37,6 @@ export class Parser {
   public async setupParser() {
     this.md = await createMarkdownRenderer(this.srcDir, this.markdownOptions, this.base, this.logger)
     this.watcher = new WatcherFile(this)
-    console.log('Sdasa')
-    this.watcher?.setupWatcher()
+    await this.watcher?.setupWatcher()
   }
 }
