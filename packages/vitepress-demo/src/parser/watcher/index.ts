@@ -50,7 +50,6 @@ export class WatcherFile {
       cwd: this.globPath,
       ignored: this.ignoreGlob,
     })
-    console.log(this.globPath)
     this.handleFileAdd()
     this.handleFileUnlink()
     this.handleFileChange()
@@ -82,7 +81,6 @@ export class WatcherFile {
 
   private handleFileChange() {
     this.watcher?.on('change', async (file) => {
-      console.log('change', file)
       // 修改文件处理逻辑
       file = slash(file)
       const { code, id } = await this.readFile(file)

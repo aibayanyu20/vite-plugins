@@ -21,6 +21,6 @@ describe('parser', async () => {
   const parser = new Parser(config, options, vitepress)
   await parser.setupParser()
   it('should is demo', () => {
-
+    expect(true).toBe(true)
   })
 })
