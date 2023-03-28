@@ -14,6 +14,10 @@ const VitepressDemo = (opt?: UserOptions): Plugin => {
       config = _config
       parser = new Parser(config, options, vitepress)
       await parser.setupParser()
+      await parser.setupParserDemo()
+    },
+    async transform(code, id) {
+      return parser.demoParser?.transformDemoToMd(code, id)
     },
   }
 }

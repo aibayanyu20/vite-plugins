@@ -1,4 +1,5 @@
 # 测试vitepress-demo
 
 
-<demo></demo>
+<demo src="./demo/index.vue"></demo>
+

@@ -3,11 +3,13 @@ import type { MarkdownRenderer, SiteConfig } from 'vitepress'
 import { createMarkdownRenderer } from 'vitepress'
 import slash from 'slash'
 import type { UserOptions } from '../typing'
+import { DemoParser } from './demo'
 import { WatcherFile } from './watcher'
 
 export class Parser {
   public md: MarkdownRenderer | undefined
   public watcher: WatcherFile | undefined
+  public demoParser: DemoParser | undefined
   constructor(
     public readonly config: ResolvedConfig,
     public readonly options: UserOptions,
@@ -38,5 +40,10 @@ export class Parser {
     this.md = await createMarkdownRenderer(this.srcDir, this.markdownOptions, this.base, this.logger)
     this.watcher = new WatcherFile(this)
     await this.watcher?.setupWatcher()
+  }
+
+  public async setupParserDemo() {
+    // 解析demo
+    this.demoParser = new DemoParser(this)
   }
 }

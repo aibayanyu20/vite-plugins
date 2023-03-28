@@ -41,7 +41,7 @@ export class WatcherFile {
 
   get globPath() {
     if (this.parser.options.globPath)
-      return this.parser.options.globPath
+      return slash(this.parser.options.globPath)
     return this.parser.srcDir
   }
 
@@ -74,7 +74,7 @@ export class WatcherFile {
       // 添加文件处理逻辑
       file = slash(file)
       const { code, id } = await this.readFile(file)
-      const vueBlock = new VueBlock(code, id)
+      const vueBlock = new VueBlock(code, id, this.parser)
       this.cacheFile.set(id, vueBlock)
     })
   }
@@ -84,7 +84,7 @@ export class WatcherFile {
       // 修改文件处理逻辑
       file = slash(file)
       const { code, id } = await this.readFile(file)
-      const vueBlock = new VueBlock(code, id)
+      const vueBlock = new VueBlock(code, id, this.parser)
       this.cacheFile.set(id, vueBlock)
     })
   }

@@ -21,17 +21,20 @@
   "license": "MIT",
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",
-    "@types/node": "^18.11.18",
-    "vite": "^4.0.4",
-    "vitepress": "1.0.0-alpha.46"
+    "@types/node": "^18.15.10",
+    "vite": "^4.2.1",
+    "vitepress": "1.0.0-alpha.63"
   },
   "peerDependencies": {
     "vite": "^2.0.0 || ^3.0.0 || ^4.0.0",
-    "vitepress": "^1.0.0-alpha.46"
+    "vitepress": "^1.0.0-alpha.63"
   },
   "dependencies": {
     "chokidar": "^3.5.3",
-    "fs-extra": "^11.1.0",
+    "dom-serializer": "^2.0.0",
+    "fs-extra": "^11.1.1",
+    "htmlparser2": "^8.0.2",
+    "magic-string": "^0.30.0",
     "slash": "^5.0.0"
   }
 }
