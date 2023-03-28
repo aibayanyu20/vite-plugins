@@ -1,4 +1,4 @@
-import type { ResolvedConfig } from 'vite'
+import type { ResolvedConfig, ViteDevServer } from 'vite'
 import type { MarkdownRenderer, SiteConfig } from 'vitepress'
 import { createMarkdownRenderer } from 'vitepress'
 import slash from 'slash'
@@ -10,6 +10,7 @@ export class Parser {
   public md: MarkdownRenderer | undefined
   public watcher: WatcherFile | undefined
   public demoParser: DemoParser | undefined
+  public server: ViteDevServer | undefined
   constructor(
     public readonly config: ResolvedConfig,
     public readonly options: UserOptions,
@@ -38,12 +39,22 @@ export class Parser {
 
   public async setupParser() {
     this.md = await createMarkdownRenderer(this.srcDir, this.markdownOptions, this.base, this.logger)
-    this.watcher = new WatcherFile(this)
-    await this.watcher?.setupWatcher()
+    if (!this.watcher) {
+      this.watcher = new WatcherFile(this)
+      await this.watcher?.setupWatcher()
+    }
   }
 
   public async setupParserDemo() {
     // 解析demo
     this.demoParser = new DemoParser(this)
+  }
+
+  public async setupServer(server: ViteDevServer) {
+    this.server = server
+  }
+
+  public loadDemoData() {
+    return this.watcher?.cacheFile.toString()
   }
 }

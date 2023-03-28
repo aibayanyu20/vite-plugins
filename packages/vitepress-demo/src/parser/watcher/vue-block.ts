@@ -10,6 +10,8 @@ export class VueBlock {
   private readonly sfc: SFCParseResult
   private readonly magicString: MagicString
   private formatData: Record<string, FormatDataItem> = {}
+
+  private sourceData: string | undefined
   constructor(public readonly code: string, public readonly id: string, public readonly parser: Parser) {
     this.sfc = parse(code)
     this.magicString = new MagicString(code)
@@ -48,7 +50,27 @@ export class VueBlock {
     return this.toString()
   }
 
+  public updateSourceData() {
+    this.sourceData = undefined
+  }
+
+  public getSourceData() {
+    if (!this.sourceData) {
+      const data = `\`\`\`vue\n${this.toString()}\n\`\`\``
+      this.sourceData = this.parser.md?.render(data)
+    }
+    return this.sourceData
+  }
+
   public getFormatData() {
     return this.formatData
+  }
+
+  public getDataInfo() {
+    return {
+      ...this.getFormatData(),
+      code: this.toString(),
+      source: this.getSourceData(),
+    }
   }
 }

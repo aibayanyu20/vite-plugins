@@ -15,6 +15,10 @@ export class DemoParser {
     // TODO
   }
 
+  public getDemoCache(id: string) {
+    return this.demoToMdCache.get(id)
+  }
+
   private checkIsMd(id: string) {
     return id.endsWith('.md')
   }
@@ -95,6 +99,10 @@ export class DemoParser {
   }
 
   public async transformDemoToMd(code: string, id: string) {
+    if (this.parser.watcher?.cacheFile.has(id)) {
+      const cache = this.parser.watcher.cacheFile.get(id)
+      return cache?.toString()
+    }
     if (!this.checkIsMd(id))
       return
     const str = new MagicString(code)

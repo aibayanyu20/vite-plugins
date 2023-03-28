@@ -12,6 +12,10 @@ export class WatcherFile {
   constructor(public readonly parser: Parser) {
   }
 
+  public async cancel() {
+    return this.watcher?.close()
+  }
+
   get glob() {
     if (this.parser.options.glob)
       return this.parser.options.glob
@@ -70,12 +74,17 @@ export class WatcherFile {
 
   private handleFileAdd() {
     this.watcher?.on('add', async (file) => {
-      console.log('add', file)
       // 添加文件处理逻辑
       file = slash(file)
       const { code, id } = await this.readFile(file)
       const vueBlock = new VueBlock(code, id, this.parser)
       this.cacheFile.set(id, vueBlock)
+      this.parser?.server?.ws.send('vitepress:demo', {
+        type: 'add',
+        data: vueBlock.getDataInfo(),
+        key: file,
+        comp: `() => import(\`/@vitepress-demo/${file}\`)`,
+      })
     })
   }
 
@@ -86,6 +95,12 @@ export class WatcherFile {
       const { code, id } = await this.readFile(file)
       const vueBlock = new VueBlock(code, id, this.parser)
       this.cacheFile.set(id, vueBlock)
+      vueBlock.updateSourceData()
+      this.parser?.server?.ws.send('vitepress:demo', {
+        type: 'update',
+        data: vueBlock.getDataInfo(),
+        key: file,
+      })
     })
   }
 
@@ -95,6 +110,10 @@ export class WatcherFile {
       file = slash(file)
       const id = this.getId(file)
       this.cacheFile.delete(id)
+      this.parser?.server?.ws.send('vitepress:demo', {
+        type: 'del',
+        key: file,
+      })
     })
   }
 }

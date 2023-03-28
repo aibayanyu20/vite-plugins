@@ -1,3 +1,6 @@
+import { normalize } from 'path'
+import slash from 'slash'
+import { deserializeFunctions, serializeFunctions } from '../tools/fn-serialize'
 import type { VueBlock } from './vue-block'
 import type { WatcherFile } from './index'
 
@@ -16,5 +19,25 @@ export class CacheFile {
 
   public delete(path: string) {
     this.cacheFile.delete(path)
+  }
+
+  public has(path: string) {
+    return this.cacheFile.has(path)
+  }
+
+  public toString() {
+    const obj: Record<string, any> = {}
+    this.cacheFile.forEach((value, key) => {
+      // 获取短链接的key
+      const shortKey = slash(key.replace(slash(normalize(`${this.watcherFile.globPath}/`)), ''))
+      const path = `/@vitepress-demo/${shortKey}`
+      obj[shortKey] = {
+        data: value.getDataInfo(),
+        comp: `_vp-fn_() => import(\`${path}\`)`,
+      }
+    })
+    const data = serializeFunctions(obj)
+    return `${deserializeFunctions.toString()}
+export default deserializeFunctions(JSON.parse(${JSON.stringify(JSON.stringify(data))}))`
   }
 }
