@@ -55,6 +55,7 @@ export class Parser {
   }
 
   public loadDemoData() {
+    console.log('SAdsads')
     return this.watcher?.cacheFile.toString()
   }
 }

@@ -2,21 +2,53 @@ import type { SFCParseResult } from 'vue/compiler-sfc'
 import { parse } from 'vue/compiler-sfc'
 import MagicString from 'magic-string'
 import type { Parser } from '../index'
+
 export interface FormatDataItem {
   title: string
   content: string
 }
 export class VueBlock {
   private readonly sfc: SFCParseResult
-  private readonly magicString: MagicString
+  private magicString: MagicString
   private formatData: Record<string, FormatDataItem> = {}
 
+  private readonly ext: string | undefined
+
   private sourceData: string | undefined
-  constructor(public readonly code: string, public readonly id: string, public readonly parser: Parser) {
+
+  private checkIsVue() {
+    return this.ext === 'vue'
+  }
+
+  private checkIsTsx() {
+    return this.ext === 'tsx' || this.ext === 'jsx'
+  }
+
+  constructor(public code: string, public readonly id: string, public readonly parser: Parser, private readonly raw?: boolean) {
     this.sfc = parse(code)
     this.magicString = new MagicString(code)
-    // 解析codeBlock
-    this.parserCustomBlock()
+    this.ext = id.split('.').pop()
+    if (raw === undefined || raw === null)
+      this.raw = !(this.checkIsTsx() || this.checkIsVue())
+
+    if (!this.raw && this.checkIsVue()) {
+      // 解析codeBlock
+      this.parserCustomBlock()
+    }
+    else {
+      this.parserRaw()
+    }
+  }
+
+  get isRaw() {
+    return this.raw
+  }
+
+  private parserRaw() {
+    this.formatData.default = {
+      title: '',
+      content: '',
+    }
   }
 
   private parserCustomBlock() {
@@ -43,6 +75,9 @@ export class VueBlock {
   }
 
   public toString() {
+    if (this.raw)
+      return this.code
+
     return this.magicString.toString().trim()
   }
 
@@ -56,10 +91,24 @@ export class VueBlock {
 
   public getSourceData() {
     if (!this.sourceData) {
-      const data = `\`\`\`vue\n${this.toString()}\n\`\`\``
+      const data = `\`\`\`${this.ext ?? 'vue'}\n${this.toString()}\n\`\`\``
       this.sourceData = this.parser.md?.render(data)
     }
     return this.sourceData
+  }
+
+  public updateCode(code: string) {
+    this.code = code
+    this.magicString = new MagicString(code)
+    this.formatData = {}
+    this.sourceData = undefined
+    if (!this.raw && this.checkIsVue()) {
+      // 解析codeBlock
+      this.parserCustomBlock()
+    }
+    else {
+      this.parserRaw()
+    }
   }
 
   public getFormatData() {

@@ -83,7 +83,7 @@ export class WatcherFile {
         type: 'add',
         data: vueBlock.getDataInfo(),
         key: file,
-        comp: `() => import(\`/@vitepress-demo/${file}\`)`,
+        comp: vueBlock.isRaw ? undefined : `() => import(\`/@vitepress-demo/${file}\`)`,
       })
     })
   }
@@ -92,6 +92,7 @@ export class WatcherFile {
     this.watcher?.on('change', async (file) => {
       // 修改文件处理逻辑
       file = slash(file)
+      console.log('change', file)
       const { code, id } = await this.readFile(file)
       const vueBlock = new VueBlock(code, id, this.parser)
       this.cacheFile.set(id, vueBlock)

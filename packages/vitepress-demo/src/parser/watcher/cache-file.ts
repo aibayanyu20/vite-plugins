@@ -31,10 +31,12 @@ export class CacheFile {
       // 获取短链接的key
       const shortKey = slash(key.replace(slash(normalize(`${this.watcherFile.globPath}/`)), ''))
       const path = `/@vitepress-demo/${shortKey}`
+      const comp = `_vp-fn_() => import(\`${path}\`)`
       obj[shortKey] = {
         data: value.getDataInfo(),
-        comp: `_vp-fn_() => import(\`${path}\`)`,
       }
+      if (!value.isRaw)
+        obj[shortKey].comp = comp
     })
     const data = serializeFunctions(obj)
     return `${deserializeFunctions.toString()}

@@ -1,6 +1,7 @@
 import { computed, defineAsyncComponent, reactive, readonly, shallowRef, watch } from 'vue'
 import demoData from '@demosData'
 
+console.log(demoData)
 // @ts-expect-error this is siteDemoData
 export const siteDemosRef: Record<string, any> = import.meta.env.DEV ? reactive(demoData) : readonly(demoData)
 
@@ -14,12 +15,12 @@ if (import.meta.hot) {
     }
   }
 
-  const addSiteDemo = (data: any, key: string, comp: string) => {
+  const addSiteDemo = (data: any, key: string, comp?: string) => {
     if (data) {
       siteDemosRef[key] = {
         data,
         // eslint-disable-next-line no-new-func
-        comp: new Function(`return ${comp}`)(),
+        comp: comp ? new Function(`return ${comp}`)() : undefined,
       }
     }
   }
