@@ -18,10 +18,10 @@
     }
   },
   "devDependencies": {
-    "@mistjs/eslint-config-vue": "^0.0.3",
-    "@mistjs/tsconfig-vue": "^0.0.3",
-    "@types/node": "^18.15.10",
-    "eslint": "^8.36.0",
+    "@mistjs/eslint-config-vue": "^0.0.5",
+    "@mistjs/tsconfig-vue": "^0.0.4",
+    "@types/node": "^18.15.11",
+    "eslint": "^8.37.0",
     "tsup": "^6.7.0",
     "typescript": "^5.0.2",
     "vite": "^4.2.1",

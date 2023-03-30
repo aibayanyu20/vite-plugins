@@ -12,6 +12,9 @@
     "build": "vitepress build playground",
     "preview": "vitepress preview playground"
   },
+  "peerDependencies": {
+    "vitepress": "^1.0.0-alpha.63"
+  },
   "dependencies": {
     "chokidar": "^3.5.3",
     "dom-serializer": "^2.0.0",
@@ -20,11 +23,8 @@
     "magic-string": "^0.30.0",
     "vue": "^3.2.47"
   },
-  "peerDependencies": {
-    "vitepress": "^1.0.0-alpha.63"
-  },
   "devDependencies": {
-    "@mistjs/tsconfig-vue": "^0.0.3",
+    "@mistjs/tsconfig-vue": "^0.0.4",
     "@types/fs-extra": "^11.0.1",
     "@types/markdown-it": "^12.2.3",
     "@types/node": "^18.15.11",

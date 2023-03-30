@@ -1,12 +1,12 @@
-<docs lang="zh">
+<docs lang="zh-CN">
 ---
-title: 测试
+title: 测试11
 ---
 
-这是测试内容
+这是测试内容1112321111
 </docs>
 
-<docs lang="en">
+<docs lang="en-US">
 ---
 title: Test
 ---
@@ -19,7 +19,6 @@ This is test content
 
 <template>
   <div>
-    111112211111
-    11111
+    index1112331221
   </div>
 </template>

@@ -19,7 +19,6 @@ This is test content
 
 <template>
   <div>
-    111112211111
-    11111
+    data
   </div>
 </template>

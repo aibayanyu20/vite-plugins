@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, shallowRef } from 'vue'
+import { computed, onMounted, shallowRef } from 'vue'
 import { useData } from 'vitepress'
 import { useSiteDemos } from '../hooks/site-demo'
 import { useClipboard } from '../hooks/clip-board'
@@ -13,6 +13,14 @@ const { isDark } = useData()
 const titleId = computed(() => {
   const ids = props.src.split('.')[0].split('/')
   return `${ids.join('-')}`
+})
+
+const hash = shallowRef()
+onMounted(() => {
+  hash.value = location.hash.slice(1)
+  window.addEventListener('hashchange', () => {
+    hash.value = location.hash.slice(1)
+  })
 })
 
 const { copied, copy } = useClipboard()
@@ -30,6 +38,7 @@ const classes = computed(() => {
   return {
     'expand': expand.value,
     'code-box-dark': isDark.value,
+    'code-box-active': hash.value === titleId.value,
   }
 })
 </script>
@@ -91,7 +100,7 @@ const classes = computed(() => {
     --code-icon-color-hover: rgba(255, 255, 255, 0.85);
 }
 
-.code-box:target{
+.code-box-active{
   border: 1px solid var(--vp-c-brand);
 }
 
@@ -129,6 +138,9 @@ const classes = computed(() => {
   transition: background-color .4s;
   -webkit-transition: background-color .4s;
 }
+.code-box-title a:hover{
+    text-decoration: none;
+}
 .code-box-description{
   padding: 18px 24px 12px;
 }
@@ -158,8 +170,8 @@ const classes = computed(() => {
     width: 16px;
     height: 16px;
     color: var(--code-icon-color);
-    transition: all .24s;
-    -webkit-transition: all .24s;
+    transition: all .2s;
+    -webkit-transition: all .2s;
     -webkit-box-align: center;
 }
 .code-box .code-box-code-action:hover{
@@ -199,9 +211,6 @@ const classes = computed(() => {
     .code-box  div[class*='language-']{
         margin: 0;
         border-radius: 0;
-    }
-    .code-box:target{
-        border: 1px solid var(--vp-c-brand);
     }
 }
 </style>
