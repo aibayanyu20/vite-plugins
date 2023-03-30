@@ -1,28 +1,27 @@
 {
-  "name": "vite-plugin-vitepress-demo",
-  "type": "module",
+  "name": "vitepress-demo",
   "version": "1.0.0",
-  "description": "this is vite plugin for vitepress demo",
-  "keywords": [
-    "vite",
-    "vite-plugin"
-  ],
-  "license": "MIT",
-  "author": "aibayanyu20",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "description": "",
+  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "preview": "vitepress preview docs"
+    "dev": "vitepress dev playground",
+    "build": "vitepress build playground",
+    "preview": "vitepress preview playground"
   },
-  "peerDependencies": {
-    "vite": "^2.0.0 || ^3.0.0 || ^4.0.0",
-    "vitepress": "^1.0.0-alpha.63"
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@mistjs/eslint-config-vue": "^0.0.3",
+    "@mistjs/tsconfig-vue": "^0.0.3",
+    "@types/fs-extra": "^11.0.1",
+    "@types/markdown-it": "^12.2.3",
+    "@types/node": "^18.15.11",
+    "eslint": "^8.37.0",
+    "typescript": "^5.0.2",
+    "vite": "^4.2.1",
+    "vitepress": "1.0.0-alpha.63"
   },
   "dependencies": {
     "chokidar": "^3.5.3",
@@ -30,12 +29,6 @@
     "fs-extra": "^11.1.1",
     "htmlparser2": "^8.0.2",
     "magic-string": "^0.30.0",
-    "slash": "^5.0.0"
-  },
-  "devDependencies": {
-    "@types/fs-extra": "^11.0.1",
-    "@types/node": "^18.15.10",
-    "vite": "^4.2.1",
-    "vitepress": "1.0.0-alpha.63"
+    "vue": "^3.2.47"
   }
 }

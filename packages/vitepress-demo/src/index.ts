@@ -1,69 +1,51 @@
-import type { Plugin, ResolvedConfig } from 'vite'
-import type { SiteConfig } from 'vitepress'
-import slash from 'slash'
-import type { UserOptions } from './typing'
-import { Parser } from './parser'
-import { DEMO_DATA_ID, DEMO_DATA_REQUEST_PATH } from './parser/tools/transform'
-const VitepressDemo = (opt?: UserOptions): Plugin => {
-  let vitepress: SiteConfig
-  let config: ResolvedConfig
-  let parser: Parser
-  const options: UserOptions = opt ?? {}
+import type { Plugin } from 'vite'
+import { ALIAS, VITEPRESS_ID, VITEPRESS_ID_PATH } from './constant'
+import type { UserOptions } from './interface'
+import { Watcher } from './parser/watcher'
+import { Tools } from './tools'
+import { LoadMd } from './parser/load-md'
+
+export const vitepressDemo = (opt?: UserOptions): Plugin => {
+  const tools = new Tools(opt ?? {})
+  const watcher = new Watcher(tools)
+  const loadMd = new LoadMd(tools, watcher)
   return {
     name: 'vitepress:demo',
-    config(config) {
-      const vitepress: SiteConfig = (config as any).vitepress
-      const dir = slash(options.globPath ?? vitepress?.srcDir ?? config.root ?? process.cwd())
+    config(_config, env) {
+      tools.checkSSR(env.ssrBuild)
+      tools.checkDev(env.command === 'serve')
       return {
         resolve: {
           alias: [
-            {
-              find: '/@vitepress-demo',
-              replacement: dir,
-            },
+            { find: ALIAS, replacement: tools.baseDir(_config) },
           ],
         },
         ssr: {
-          noExternal: ['vite-plugin-vitepress-demo'],
+          noExternal: ['vitepress-demo'],
         },
       }
     },
-    async configureServer(server) {
-      // console.log('SDas')
-      await parser.setupServer(server)
-    },
     resolveId(id) {
-      if (id === DEMO_DATA_ID)
-        return DEMO_DATA_REQUEST_PATH
+      if (id === VITEPRESS_ID)
+        return VITEPRESS_ID_PATH
     },
-    // handleHotUpdate(ctx) {
-    //   const data = parser.demoParser?.getDemoCache(ctx.file)
-    //   if (data) {
-    //     const id = data.id
-    //     if (id) {
-    //       id.forEach((v) => {
-    //         ctx.modules.push(ctx.server.moduleGraph.getModuleById(v)!)
-    //       })
-    //     }
-    //   }
-    // },
-    async configResolved(_config) {
-      vitepress = (_config as any).vitepress
-      config = _config
-      parser = new Parser(config, options, vitepress)
-      await parser.setupParser()
-      await parser.setupParserDemo()
+    async configResolved(c) {
+      await tools.setupConfig(c)
+      await watcher.setup()
+    },
+    async configureServer(s) {
+      await tools.setupServer(s)
     },
     async transform(code, id) {
-      return parser.demoParser?.transformDemoToMd(code, id)
+      const content = watcher.transform(code, id)
+      if (content)
+        return content
+
+      return loadMd.transform(code, id)
     },
     load(id) {
-      if (id === DEMO_DATA_REQUEST_PATH)
-        return parser.loadDemoData()
+      if (id === VITEPRESS_ID_PATH)
+        return watcher.load()
     },
   }
 }
-
-export { VitepressDemo }
-
-export default VitepressDemo

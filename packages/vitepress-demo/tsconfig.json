@@ -1,3 +1,6 @@
 {
-  "extends": "../../tsconfig.json",
+    "extends":"@mistjs/tsconfig-vue",
+    "compilerOptions": {
+        "types": ["vite/client"]
+    }
 }
