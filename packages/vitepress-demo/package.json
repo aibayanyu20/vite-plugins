@@ -1,17 +1,25 @@
 {
-  "name": "vitepress-demo",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "vite-plugin-vitepress-demo",
   "type": "module",
+  "version": "2.1.0-beta.1",
+  "description": "",
+  "keywords": [],
+  "license": "MIT",
+  "author": "",
+  "main": "index.js",
   "scripts": {
     "dev": "vitepress dev playground",
     "build": "vitepress build playground",
     "preview": "vitepress preview playground"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "dependencies": {
+    "chokidar": "^3.5.3",
+    "dom-serializer": "^2.0.0",
+    "fs-extra": "^11.1.1",
+    "htmlparser2": "^8.0.2",
+    "magic-string": "^0.30.0",
+    "vue": "^3.2.47"
+  },
   "devDependencies": {
     "@mistjs/eslint-config-vue": "^0.0.3",
     "@mistjs/tsconfig-vue": "^0.0.3",
@@ -22,13 +30,5 @@
     "typescript": "^5.0.2",
     "vite": "^4.2.1",
     "vitepress": "1.0.0-alpha.63"
-  },
-  "dependencies": {
-    "chokidar": "^3.5.3",
-    "dom-serializer": "^2.0.0",
-    "fs-extra": "^11.1.1",
-    "htmlparser2": "^8.0.2",
-    "magic-string": "^0.30.0",
-    "vue": "^3.2.47"
   }
 }
