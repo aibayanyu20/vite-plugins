@@ -25,6 +25,7 @@ const expand = shallowRef(false)
 const handleExpand = () => {
   expand.value = !expand.value
 }
+
 const classes = computed(() => {
   return {
     'expand': expand.value,
@@ -198,6 +199,9 @@ const classes = computed(() => {
     .code-box  div[class*='language-']{
         margin: 0;
         border-radius: 0;
+    }
+    .code-box:target{
+        border: 1px solid var(--vp-c-brand);
     }
 }
 </style>
