@@ -20,13 +20,14 @@
     "magic-string": "^0.30.0",
     "vue": "^3.2.47"
   },
+  "peerDependencies": {
+    "vitepress": "^1.0.0-alpha.63"
+  },
   "devDependencies": {
-    "@mistjs/eslint-config-vue": "^0.0.3",
     "@mistjs/tsconfig-vue": "^0.0.3",
     "@types/fs-extra": "^11.0.1",
     "@types/markdown-it": "^12.2.3",
     "@types/node": "^18.15.11",
-    "eslint": "^8.37.0",
     "typescript": "^5.0.2",
     "vite": "^4.2.1",
     "vitepress": "1.0.0-alpha.63"
