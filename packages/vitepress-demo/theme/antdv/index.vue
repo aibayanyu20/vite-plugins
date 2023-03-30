@@ -51,7 +51,6 @@ const isEmpty = computed(() => {
 </script>
 
 <template>
-  {{ isEmpty }}
   <section v-if="!raw" :id="titleId" class="code-box" :class="classes">
     <section v-if="demo" class="code-box-demo" :class="!isEmpty ? 'code-box-demo-empty' : ''">
       <component :is="demo" />
