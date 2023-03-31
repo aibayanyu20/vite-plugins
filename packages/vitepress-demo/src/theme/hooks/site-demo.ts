@@ -1,9 +1,7 @@
-import { computed, defineAsyncComponent, readonly, shallowRef } from 'vue'
-import siteDemos from '@siteDemo'
+import { computed, defineAsyncComponent, onMounted, shallowRef } from 'vue'
 import { useData } from 'vitepress'
 
-// @ts-expect-error this is a dev only feature
-export const siteDemosData = shallowRef(import.meta.env.SSR ? readonly(siteDemos) : siteDemos)
+export const siteDemosData = shallowRef({})
 
 // @ts-expect-error this is a dev only feature
 if (import.meta.hot) {
@@ -26,6 +24,11 @@ const decodeBlock = (block: Record<string, any>) => {
 }
 
 export const useSiteDemos = (props: { src: string }) => {
+  onMounted(async () => {
+    const m = await import('@siteDemo')
+    siteDemosData.value = m.default
+  })
+
   const { lang } = useData()
   const demoData = computed(() => {
     return siteDemosData.value[props.src]?.data
