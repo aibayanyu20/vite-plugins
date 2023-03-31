@@ -1,16 +1,66 @@
 {
   "name": "vite-plugin-vitepress-demo",
   "type": "module",
-  "version": "2.0.0-alpha.9",
-  "description": "",
-  "keywords": [],
+  "version": "2.0.0-beta.16",
+  "description": "A vite plugin for vitepress code block demo.",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./theme": {
+      "import": "./dist/theme/index.mjs",
+      "types": "./dist/theme/index.d.ts"
+    },
+    "./dist/theme": {
+      "import": "./dist/theme/index.mjs"
+    },
+    "./theme/**": {
+      "import": "./dist/theme/**",
+      "types": "./dist/theme/index.d.ts"
+    },
+    "./dist/theme/**": {
+      "import": "./dist/theme/**",
+      "types": "./dist/theme/index.d.ts"
+    },
+    "./dist/theme/**/*.vue": {
+      "import": "./dist/theme/**/*.vue"
+    }
+  },
+  "keywords": [
+    "vitepress",
+    "markdown",
+    "vite",
+    "vite-plugin",
+    "vitepress-code-block-demo",
+    "vitepress-demo"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "README.zh-CN.md",
+    "theme",
+    "banner.png"
+  ],
   "license": "MIT",
-  "author": "",
-  "main": "index.js",
+  "author": "aibayanyu",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aibayanyu20/vite-plugins.git"
+  },
+  "homepage": "https://github.com/aibayanyu20/vite-plugins/#readme",
   "scripts": {
     "dev": "vitepress dev playground",
-    "build": "vitepress build playground",
-    "preview": "vitepress preview playground"
+    "clean": "rimraf dist theme",
+    "un:build": "unbuild",
+    "ts:build": "tsup",
+    "build": "run-s clean ts:build un:build cp:theme",
+    "docs:build": "vitepress build playground",
+    "preview": "vitepress preview playground",
+    "cp:theme": "cpx dist/theme/index.d.ts ./theme"
   },
   "dependencies": {
     "chokidar": "^3.5.3",
