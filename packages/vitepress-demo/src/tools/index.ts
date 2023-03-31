@@ -105,8 +105,8 @@ export class Tools {
     ]
     if (this.options.ignore) {
       if (typeof this.options.ignore === 'string')
-        return [...new Set([this.options.ignore, ...defaultIgnore])]
-      return [...new Set([...this.options.ignore, ...defaultIgnore])]
+        return [...Array.from(new Set([this.options.ignore, ...defaultIgnore]))]
+      return [...Array.from(new Set([...this.options.ignore, ...defaultIgnore]))]
     }
     return defaultIgnore
   }

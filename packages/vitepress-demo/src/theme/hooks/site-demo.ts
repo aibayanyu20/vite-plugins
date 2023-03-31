@@ -2,9 +2,12 @@ import { computed, defineAsyncComponent, readonly, shallowRef } from 'vue'
 import siteDemos from '@siteDemo'
 import { useData } from 'vitepress'
 
+// @ts-expect-error this is a dev only feature
 export const siteDemosData = shallowRef(import.meta.env.SSR ? readonly(siteDemos) : siteDemos)
 
+// @ts-expect-error this is a dev only feature
 if (import.meta.hot) {
+// @ts-expect-error this is a dev only feature
   import.meta.hot.accept('/@siteDemo', (m: any) => {
     siteDemosData.value = m.default
   })
