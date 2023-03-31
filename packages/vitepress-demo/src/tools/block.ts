@@ -6,6 +6,9 @@ import type { Watcher } from '../parser/watcher'
 export interface BlockDataItem {
   title: string
   content: string
+  codesandbox?: string
+  codepen?: string
+  stackblitz?: string
 }
 
 export class Block {
@@ -82,6 +85,15 @@ export class Block {
             title: encodeURIComponent(env?.frontmatter?.title || env?.title || ''),
             content: encodeURIComponent(data || ''),
           }
+          if (env.frontmatter?.codesandbox)
+            item.codesandbox = encodeURIComponent(env.frontmatter.codesandbox)
+
+          if (env.frontmatter?.codepen)
+            item.codepen = encodeURIComponent(env.frontmatter.codepen)
+
+          if (env.frontmatter?.stackblitz)
+            item.stackblitz = encodeURIComponent(env.frontmatter.stackblitz)
+
           if (block.lang)
             this.blockData[block.lang] = item
           else
