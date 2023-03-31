@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-vitepress-demo",
   "type": "module",
-  "version": "2.0.0-beta.17",
+  "version": "2.0.0-beta.18",
   "description": "A vite plugin for vitepress code block demo.",
   "exports": {
     ".": {
