@@ -1,5 +1,6 @@
+import { resolve } from 'path'
 import type { Plugin } from 'vite'
-import { ALIAS, VITEPRESS_ID, VITEPRESS_ID_PATH } from './constant'
+import { ALIAS, PKG_ROOT, VITEPRESS_ID, VITEPRESS_ID_PATH } from './constant'
 import type { UserOptions } from './interface'
 import { Watcher } from './parser/watcher'
 import { Tools } from './tools'
@@ -18,6 +19,11 @@ export const vitepressDemo = (opt?: UserOptions): Plugin => {
         resolve: {
           alias: [
             { find: ALIAS, replacement: tools.baseDir(_config) },
+            { find: VITEPRESS_ID, replacement: VITEPRESS_ID_PATH },
+            {
+              find: /^vite-plugin-vitepress-demo\/theme/,
+              replacement: resolve(PKG_ROOT, 'dist/theme/index.mjs'),
+            },
           ],
         },
         ssr: {
