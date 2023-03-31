@@ -27,7 +27,7 @@ export const vitepressDemo = (opt?: UserOptions): Plugin => {
           ],
         },
         ssr: {
-          noExternal: ['vitepress-demo'],
+          noExternal: ['vite-plugin-vitepress-demo'],
         },
       }
     },
