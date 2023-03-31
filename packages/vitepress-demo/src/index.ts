@@ -49,3 +49,5 @@ export const vitepressDemo = (opt?: UserOptions): Plugin => {
     },
   }
 }
+
+export default vitepressDemo
