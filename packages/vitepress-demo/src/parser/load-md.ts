@@ -21,7 +21,8 @@ export class LoadMd {
   }
 
   private async parserSrc(src: string, id: string, raw: boolean) {
-    const fullPath = normalizePath(resolve(id, relative(dirname(id), src)))
+    const dirPath = normalizePath(dirname(id))
+    const fullPath = normalizePath(resolve(dirPath, src))
     const demoPath = normalizePath(fullPath.replace(normalizePath(`${this.tools.srcDir}/`), ''))
     if (raw) {
       // 这是raw的情况下的处理方式
