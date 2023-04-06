@@ -1,15 +1,17 @@
-import { computed, defineAsyncComponent, onMounted, shallowRef } from 'vue'
+import type { Ref } from 'vue'
+import { computed, defineAsyncComponent, inject } from 'vue'
 import { useData } from 'vitepress'
+import { siteDemoDataContext } from '../utils/enhance-app'
 
-export const siteDemosData = shallowRef({})
+// export const siteDemosData = shallowRef({})
 
-// @ts-expect-error this is a dev only feature
-if (import.meta.hot) {
-// @ts-expect-error this is a dev only feature
-  import.meta.hot.accept('/@siteDemo', (m: any) => {
-    siteDemosData.value = m.default
-  })
-}
+// // @ts-expect-error this is a dev only feature
+// if (import.meta.hot) {
+// // @ts-expect-error this is a dev only feature
+//   import.meta.hot.accept('/@siteDemo', (m: any) => {
+//     siteDemosData.value = m.default
+//   })
+// }
 
 const decodeBlock = (block: Record<string, any>) => {
   const obj: Record<string, any> = {}
@@ -24,10 +26,11 @@ const decodeBlock = (block: Record<string, any>) => {
 }
 
 export const useSiteDemos = (props: { src: string }) => {
-  onMounted(async () => {
-    const m = await import('@siteDemo')
-    siteDemosData.value = m.default
-  })
+  // onMounted(async () => {
+  //   const m = await import('@siteDemo')
+  //   siteDemosData.value = m.default
+  // })
+  const siteDemosData: Ref = inject(siteDemoDataContext)
 
   const { lang } = useData()
   const demoData = computed(() => {
