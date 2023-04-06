@@ -1,8 +1,8 @@
 import AntdTheme from './antdv/index.vue'
 import { useSiteDemos } from './hooks/site-demo'
-import enhanceApp from './utils/enhance-app'
+// import enhanceApp from './utils/enhance-app'
 export {
   AntdTheme,
-  enhanceApp,
+  // enhanceApp,
   useSiteDemos,
 }

@@ -11,7 +11,8 @@ import Codepen from './icons/Codepen.vue'
 import CodeSandbox from './icons/CodeSandbox.vue'
 import Stackblitz from './icons/Stackblitz.vue'
 const props = defineProps<{ src: string ;title?: string ;desc?: string;raw?: boolean }>()
-const { demo, render, content, code } = useSiteDemos(props)
+const siteDemoData = shallowRef({})
+const { demo, render, content, code } = useSiteDemos(props, siteDemoData)
 const { isDark } = useData()
 const titleId = computed(() => {
   const ids = props.src.split('.')[0].split('/')
@@ -19,7 +20,10 @@ const titleId = computed(() => {
 })
 
 const hash = shallowRef()
-onMounted(() => {
+
+onMounted(async () => {
+  const { default: siteDemos } = await import('@siteDemo')
+  siteDemoData.value = siteDemos
   hash.value = location.hash.slice(1)
   window.addEventListener('hashchange', () => {
     hash.value = location.hash.slice(1)

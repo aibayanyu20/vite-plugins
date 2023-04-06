@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { computed, defineAsyncComponent, inject } from 'vue'
+import { computed, defineAsyncComponent, inject, shallowRef } from 'vue'
 import { useData } from 'vitepress'
 import { siteDemoDataContext } from '../utils/enhance-app'
 
@@ -25,12 +25,20 @@ const decodeBlock = (block: Record<string, any>) => {
   return obj
 }
 
-export const useSiteDemos = (props: { src: string }) => {
+export const useSiteDemos = (props: { src: string }, siteDemosData: Ref) => {
   // onMounted(async () => {
   //   const m = await import('@siteDemo')
   //   siteDemosData.value = m.default
   // })
-  const siteDemosData: Ref = inject(siteDemoDataContext)
+  // const siteDemosData = shallowRef()
+
+  // @ts-expect-error this is hot
+  if (import.meta.hot) {
+    // @ts-expect-error this is hot
+    import.meta.hot.accept('/@siteDemo', (m: any) => {
+      siteDemosData.value = m.default
+    })
+  }
 
   const { lang } = useData()
   const demoData = computed(() => {
