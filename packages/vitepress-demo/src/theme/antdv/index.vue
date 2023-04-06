@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, shallowRef } from 'vue'
+import { CSSProperties, computed, onMounted, shallowRef } from 'vue'
 import { useData } from 'vitepress'
 import { useSiteDemos } from '../hooks/site-demo'
 import { useClipboard } from '../hooks/clip-board'
@@ -61,12 +61,12 @@ const isEmpty = computed(() => {
     </section>
     <section v-if="isEmpty" class="code-box-meta markdown">
       <div v-if="content?.title || title" class="code-box-title">
-        <a :href="`#${titleId}`">{{ content.title ?? title }}</a>
+        <a :href="`#${titleId}`">{{ content?.title ?? title }}</a>
       </div>
       <div v-if="content?.content || desc" class="code-box-description">
-        <div v-html="content.content ?? desc" />
+        <div v-html="content?.content ?? desc" />
       </div>
-      <div class="code-box-actions">
+      <div class="code-box-actions" :class="!!(content?.content || desc) ? 'code-box-action-has-border' : ''">
         <div v-if="content?.codesandbox" class="code-box-code-action">
           <CodeSandbox />
         </div>
@@ -179,13 +179,17 @@ const isEmpty = computed(() => {
     justify-content: center;
     -webkit-justify-content: center;
     padding: 12px 0;
-    border-top: 1px dashed var(--vp-c-divider);
     opacity: 0.7;
     transition: opacity .3s;
     -webkit-transition: opacity .3s;
     align-items: center;
     gap: 16px;
     flex-wrap: wrap;
+}
+
+.code-box .code-box-action-has-border{
+    border-top: 1px dashed var(--vp-c-divider);
+
 }
 .code-box .code-box-code-action{
     cursor: pointer;
