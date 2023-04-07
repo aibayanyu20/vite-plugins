@@ -1,18 +1,20 @@
 {
   "name": "vite-plugin-vitepress-demo",
-  "version": "2.0.0-beta.25",
+  "version": "2.0.0-beta.26",
   "description": "A vite plugin for vitepress code block demo.",
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     },
     "./theme": {
       "import": "./dist/theme/index.mjs",
       "types": "./dist/theme/index.d.ts"
     },
     "./dist/theme": {
-      "import": "./dist/theme/index.mjs"
+      "import": "./dist/theme/index.mjs",
+      "types": "./dist/theme/index.d.ts"
     },
     "./theme/**": {
       "import": "./dist/theme/**",
