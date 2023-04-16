@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CSSProperties, computed, onMounted, shallowRef } from 'vue'
+import { computed, onMounted, shallowRef } from 'vue'
 import { useData } from 'vitepress'
 import { useSiteDemos } from '../hooks/site-demo'
 import { useClipboard } from '../hooks/clip-board'
