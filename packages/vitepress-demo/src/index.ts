@@ -11,6 +11,7 @@ export const vitepressDemo = (opt?: UserOptions): Plugin => {
   const loadMd = new LoadMd(tools, watcher)
   return {
     name: 'vitepress:demo',
+    enforce: 'pre',
     config(_config, env) {
       tools.checkSSR(env.ssrBuild)
       tools.checkDev(env.command === 'serve')
