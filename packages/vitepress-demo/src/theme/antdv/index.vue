@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, shallowRef } from 'vue'
 import { useData } from 'vitepress'
+import siteDemos from '@siteDemo'
 import { useSiteDemos } from '../hooks/site-demo'
 import { useClipboard } from '../hooks/clip-board'
 import Expand from './icons/Expand.vue'
@@ -11,7 +12,15 @@ import Codepen from './icons/Codepen.vue'
 import CodeSandbox from './icons/CodeSandbox.vue'
 import Stackblitz from './icons/Stackblitz.vue'
 const props = defineProps<{ src: string ;title?: string ;desc?: string;raw?: boolean }>()
-const siteDemoData = shallowRef({})
+const siteDemoData = shallowRef(siteDemos)
+
+// @ts-expect-error this is hot
+if (import.meta.hot) {
+  // @ts-expect-error this is hot
+  import.meta.hot.accept('/@siteDemo', (m: any) => {
+    siteDemoData.value = m.default
+  })
+}
 const { demo, render, content, code } = useSiteDemos(props, siteDemoData)
 const { isDark } = useData()
 const titleId = computed(() => {
@@ -22,8 +31,6 @@ const titleId = computed(() => {
 const hash = shallowRef()
 
 onMounted(async () => {
-  const { default: siteDemos } = await import('@siteDemo')
-  siteDemoData.value = siteDemos
   hash.value = location.hash.slice(1)
   window.addEventListener('hashchange', () => {
     hash.value = location.hash.slice(1)

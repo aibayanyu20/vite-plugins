@@ -1,6 +1,6 @@
 <docs lang="zh">
 ---
-title: 测试
+title: 测试111
 ---
 
 这是测试内容
@@ -8,7 +8,7 @@ title: 测试
 
 <docs lang="en">
 ---
-title: Test
+title: Test111
 ---
 
 This is test content
