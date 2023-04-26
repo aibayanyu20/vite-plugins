@@ -32,14 +32,6 @@ export const useSiteDemos = (props: { src: string }, siteDemosData: Ref) => {
   // })
   // const siteDemosData = shallowRef()
 
-  // @ts-expect-error this is hot
-  if (import.meta.hot) {
-    // @ts-expect-error this is hot
-    import.meta.hot.accept('/@siteDemo', (m: any) => {
-      siteDemosData.value = m.default
-    })
-  }
-
   const { lang } = useData()
   const demoData = computed(() => {
     return siteDemosData.value[props.src]?.data

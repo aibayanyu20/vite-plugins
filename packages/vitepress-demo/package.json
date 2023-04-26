@@ -1,7 +1,24 @@
 {
   "name": "vite-plugin-vitepress-demo",
-  "version": "2.0.0-beta.26",
+  "version": "2.0.0-beta.29",
   "description": "A vite plugin for vitepress code block demo.",
+  "keywords": [
+    "vitepress",
+    "markdown",
+    "vite",
+    "vite-plugin",
+    "vitepress-code-block-demo",
+    "vitepress-demo"
+  ],
+  "license": "MIT",
+  "author": "aibayanyu",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aibayanyu20/vite-plugins.git"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
@@ -28,14 +45,6 @@
       "import": "./dist/theme/**/*.vue"
     }
   },
-  "keywords": [
-    "vitepress",
-    "markdown",
-    "vite",
-    "vite-plugin",
-    "vitepress-code-block-demo",
-    "vitepress-demo"
-  ],
   "files": [
     "dist",
     "README.md",
@@ -43,15 +52,6 @@
     "theme",
     "banner.png"
   ],
-  "license": "MIT",
-  "author": "aibayanyu",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/aibayanyu20/vite-plugins.git"
-  },
   "homepage": "https://github.com/aibayanyu20/vite-plugins/#readme",
   "scripts": {
     "dev": "vitepress dev playground",
@@ -78,9 +78,9 @@
     "@mistjs/tsconfig-vue": "^0.0.4",
     "@types/fs-extra": "^11.0.1",
     "@types/markdown-it": "^12.2.3",
-    "@types/node": "^18.16.1",
-    "typescript": "^5.0.4",
-    "vite": "^4.3.2",
-    "vitepress": "1.0.0-alpha.63"
+    "@types/node": "^18.15.11",
+    "typescript": "^5.0.2",
+    "vite": "^4.2.1",
+    "vitepress": "1.0.0-alpha.69"
   }
 }
