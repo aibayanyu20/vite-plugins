@@ -1,6 +1,7 @@
 import type { FSWatcher } from 'chokidar'
 import chokidar from 'chokidar'
 import { normalizePath } from 'vite'
+import fg from 'fast-glob'
 import type { Tools } from '../tools'
 import { Block } from '../tools/block'
 import { FileCache } from './file-cache'
@@ -51,6 +52,14 @@ export class Watcher {
       cwd: this.tools.srcDir,
       ignored: this.tools.ignore,
     })
+    const fileList = await fg(this.tools.glob, {
+      cwd: this.tools.srcDir,
+      ignore: this.tools.ignore,
+    })
+    if (fileList.length) {
+      for (const file of fileList)
+        await this.addWatcherFile(file)
+    }
     this.addWatcher()
     this.unlinkWatcher()
     this.changeWatcher()

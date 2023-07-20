@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-vitepress-demo",
-  "version": "2.0.0-beta.30",
+  "version": "2.0.0-beta.31",
   "description": "A vite plugin for vitepress code block demo.",
   "keywords": [
     "vitepress",
@@ -69,6 +69,7 @@
   "dependencies": {
     "chokidar": "^3.5.3",
     "dom-serializer": "^2.0.0",
+    "fast-glob": "^3.3.0",
     "fs-extra": "^11.1.1",
     "htmlparser2": "^8.0.2",
     "magic-string": "^0.30.0",
