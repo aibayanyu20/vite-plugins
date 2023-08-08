@@ -1,4 +1,4 @@
-import { dirname, relative, resolve } from 'path'
+import { dirname, resolve } from 'path'
 import MagicString from 'magic-string'
 import { parseDocument } from 'htmlparser2'
 import { render } from 'dom-serializer'
@@ -71,7 +71,7 @@ export class LoadMd {
   private getDemo(tokens: any[]): DemoItem[] {
     const demos: DemoItem[] = []
     for (const token of tokens) {
-      if (token.type === 'html_block' || token.type === 'html_inline') {
+      if (token.type === 'html_block' || token.type === 'html_inline' || token.type === 'inline') {
         const isDemo = this.checkWrapper(token.content)
         if (isDemo) {
           demos.push({
@@ -90,7 +90,9 @@ export class LoadMd {
       return
 
     const ms = new MagicString(code)
-    const tokens = this.tools.md?.parse(code, {}) ?? []
+    const tokens = this.tools.md?.parse(code, {})
+    // const tokens = []
+    this.tools.md?.render(code, {})
     const demos = this.getDemo(tokens)
     await this.replaceDemo(ms, demos, id)
     return {

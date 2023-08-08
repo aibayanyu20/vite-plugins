@@ -12,7 +12,7 @@ export interface BlockDataItem {
 }
 
 export class Block {
-  private readonly ext
+  private readonly ext: string
   private sfc: SFCParseResult | undefined
   private magicString: MagicString | undefined
   private code: string | undefined

@@ -4,7 +4,7 @@ import { useData } from 'vitepress'
 import siteDemos from '@siteDemo'
 import { useSiteDemos } from '../hooks/site-demo'
 import { useClipboard } from '../hooks/clip-board'
-import Expand from './icons/Expand.vue'
+import ExpandComp from './icons/Expand.vue'
 import UnExpand from './icons/UnExpand.vue'
 import FileCopy from './icons/FileCopy.vue'
 import FileSuccess from './icons/FileSuccess.vue'
@@ -89,7 +89,7 @@ const isEmpty = computed(() => {
         </div>
         <div v-if="code" class="code-box-code-action">
           <UnExpand :class="`code-expand-icon-${expand ? 'show' : 'hide'}`" @click="handleExpand" />
-          <Expand :class="`code-expand-icon-${!expand ? 'show' : 'hide'}`" @click="handleExpand" />
+          <ExpandComp :class="`code-expand-icon-${!expand ? 'show' : 'hide'}`" @click="handleExpand" />
         </div>
       </div>
     </section>

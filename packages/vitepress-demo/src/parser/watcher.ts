@@ -8,7 +8,7 @@ import { FileCache } from './file-cache'
 export class Watcher {
   private w: FSWatcher | undefined
   private shortPathCache = new Map<string, string>()
-  private fileCache
+  private fileCache: FileCache
   constructor(private readonly tools: Tools) {
     this.fileCache = new FileCache(tools)
   }
@@ -33,10 +33,12 @@ export class Watcher {
     this.shortPathCache.set(file, path)
   }
 
-  public transform(code: string, id: string) {
+  public transform(_code: string, id: string) {
     const block = this.getBlock(id)
-    if (block && block.isVueOrJsx)
+    if (block && block.isVueOrJsx) {
+      // console.log(id)
       return block.transform()
+    }
   }
 
   public add(file: string) {
@@ -48,10 +50,13 @@ export class Watcher {
   }
 
   public async setup() {
-    this.w = chokidar.watch(this.tools.glob, {
-      cwd: this.tools.srcDir,
-      ignored: this.tools.ignore,
-    })
+    if (this.tools.mode === 'development') {
+      this.w = chokidar.watch(this.tools.glob, {
+        cwd: this.tools.srcDir,
+        ignored: this.tools.ignore,
+      })
+    }
+
     const fileList = await fg(this.tools.glob, {
       cwd: this.tools.srcDir,
       ignore: this.tools.ignore,
@@ -60,9 +65,11 @@ export class Watcher {
       for (const file of fileList)
         await this.addWatcherFile(file)
     }
-    this.addWatcher()
-    this.unlinkWatcher()
-    this.changeWatcher()
+    if (this.tools.mode === 'development') {
+      this.addWatcher()
+      this.unlinkWatcher()
+      this.changeWatcher()
+    }
   }
 
   public async addWatcherFile(file: string) {
@@ -117,5 +124,9 @@ export class Watcher {
 
   public load() {
     return this.fileCache.toString()
+  }
+
+  public close() {
+    this.w?.close()
   }
 }

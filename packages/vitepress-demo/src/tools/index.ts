@@ -1,3 +1,4 @@
+import MarkdownIt from 'markdown-it'
 import { normalizePath } from 'vite'
 import type { ResolvedConfig, UserConfig, ViteDevServer } from 'vite'
 import fsExtra from 'fs-extra'
@@ -24,7 +25,11 @@ export class Tools {
   }
 
   get logger() {
-    return this.vitepress?.logger
+    return this.config.logger
+  }
+
+  get mode() {
+    return this.config?.mode ?? 'development'
   }
 
   public async setupConfig(config: ResolvedConfig) {

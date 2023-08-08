@@ -9,6 +9,7 @@ export class WatchQueue {
 
   public add(file: string) {
     // 添加文件
+    if (this.tools.mode !== 'development') return
     if (this.queue.has(file)) return
     const watcher = chokidar.watch(file, {
       cwd: this.tools.srcDir,
@@ -25,6 +26,7 @@ export class WatchQueue {
 
   public delete(file: string) {
     // 删除文件
+    if (this.tools.mode !== 'development') return
     const watcher = this.queue.get(file)
     if (watcher) {
       watcher.removeAllListeners()

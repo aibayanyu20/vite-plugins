@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-vitepress-demo",
-  "version": "2.0.0-beta.31",
+  "version": "2.1.0",
   "description": "A vite plugin for vitepress code block demo.",
   "keywords": [
     "vitepress",
@@ -10,6 +10,7 @@
     "vitepress-code-block-demo",
     "vitepress-demo"
   ],
+  "type": "module",
   "license": "MIT",
   "author": "aibayanyu",
   "repository": {
@@ -17,12 +18,11 @@
     "url": "git+https://github.com/aibayanyu20/vite-plugins.git"
   },
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
       "types": "./dist/index.d.ts"
     },
     "./theme": {
@@ -81,7 +81,7 @@
     "@types/markdown-it": "^12.2.3",
     "@types/node": "^18.15.11",
     "typescript": "^5.1.2",
-    "vite": "4.4.0-beta.3",
-    "vitepress": "^1.0.0-beta.5"
+    "vite": "^4.4.7",
+    "vitepress": "^1.0.0-beta.7"
   }
 }
