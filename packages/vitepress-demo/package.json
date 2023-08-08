@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-vitepress-demo",
-  "version": "2.1.0",
+  "version": "2.1.0-beta.1",
   "description": "A vite plugin for vitepress code block demo.",
   "keywords": [
     "vitepress",
