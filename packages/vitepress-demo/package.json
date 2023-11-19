@@ -5,7 +5,6 @@
   "description": "A vite plugin for vitepress code block demo.",
   "author": "aibayanyu",
   "license": "MIT",
-
   "homepage": "https://github.com/aibayanyu20/vite-plugins/#readme",
   "repository": {
     "type": "git",
