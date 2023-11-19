@@ -5,7 +5,7 @@ import { Watcher } from './parser/watcher'
 import { Tools } from './tools'
 import { LoadMd } from './parser/load-md'
 
-export const vitepressDemo = (opt?: UserOptions): Plugin => {
+export function vitepressDemo(opt?: UserOptions): Plugin {
   const tools = new Tools(opt ?? {})
   const watcher = new Watcher(tools)
   const loadMd = new LoadMd(tools, watcher)
@@ -13,7 +13,7 @@ export const vitepressDemo = (opt?: UserOptions): Plugin => {
     name: 'vitepress:demo',
     enforce: 'pre',
     config(_config, env) {
-      tools.checkSSR(env.ssrBuild)
+      tools.checkSSR(env.isSsrBuild)
       tools.checkDev(env.command === 'serve')
       return {
         resolve: {
@@ -28,7 +28,7 @@ export const vitepressDemo = (opt?: UserOptions): Plugin => {
       }
     },
     resolveId(id) {
-      if (id === VITEPRESS_ID)
+      if (id.endsWith(VITEPRESS_ID))
         return VITEPRESS_ID_PATH
     },
     async configResolved(c) {
@@ -46,6 +46,9 @@ export const vitepressDemo = (opt?: UserOptions): Plugin => {
       return loadMd.transform(code, id)
     },
     load(id) {
+      if (id === VITEPRESS_ID)
+        console.log('SAdsadsa')
+
       if (id === VITEPRESS_ID_PATH)
         return watcher.load()
     },

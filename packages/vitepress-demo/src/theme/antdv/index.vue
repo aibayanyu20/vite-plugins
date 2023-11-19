@@ -11,6 +11,7 @@ import FileSuccess from './icons/FileSuccess.vue'
 import Codepen from './icons/Codepen.vue'
 import CodeSandbox from './icons/CodeSandbox.vue'
 import Stackblitz from './icons/Stackblitz.vue'
+
 const props = defineProps<{ src: string ;title?: string ;desc?: string;raw?: boolean }>()
 const siteDemoData = shallowRef(siteDemos)
 
@@ -39,12 +40,12 @@ onMounted(async () => {
 
 const { copied, copy } = useClipboard()
 
-const handleCopy = () => {
+function handleCopy() {
   copy(code)
 }
 
 const expand = shallowRef(false)
-const handleExpand = () => {
+function handleExpand() {
   expand.value = !expand.value
 }
 
@@ -68,7 +69,7 @@ const isEmpty = computed(() => {
     </section>
     <section v-if="isEmpty" class="code-box-meta markdown">
       <div v-if="content?.title || title" class="code-box-title">
-        <a :href="`#${titleId}`">{{ content?.title ?? title }}</a>
+        <a :href="`#${titleId}`" style="text-decoration: none">{{ content?.title ?? title }}</a>
       </div>
       <div v-if="content?.content || desc" class="code-box-description">
         <div v-html="content?.content ?? desc" />

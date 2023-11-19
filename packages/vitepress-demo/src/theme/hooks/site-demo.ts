@@ -1,19 +1,8 @@
 import type { Ref } from 'vue'
-import { computed, defineAsyncComponent, inject, shallowRef } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { useData } from 'vitepress'
-import { siteDemoDataContext } from '../utils/enhance-app'
 
-// export const siteDemosData = shallowRef({})
-
-// // @ts-expect-error this is a dev only feature
-// if (import.meta.hot) {
-// // @ts-expect-error this is a dev only feature
-//   import.meta.hot.accept('/@siteDemo', (m: any) => {
-//     siteDemosData.value = m.default
-//   })
-// }
-
-const decodeBlock = (block: Record<string, any>) => {
+function decodeBlock(block: Record<string, any>) {
   const obj: Record<string, any> = {}
   for (const blockKey in block) {
     const val = block[blockKey]
@@ -25,13 +14,7 @@ const decodeBlock = (block: Record<string, any>) => {
   return obj
 }
 
-export const useSiteDemos = (props: { src: string }, siteDemosData: Ref) => {
-  // onMounted(async () => {
-  //   const m = await import('@siteDemo')
-  //   siteDemosData.value = m.default
-  // })
-  // const siteDemosData = shallowRef()
-
+export function useSiteDemos(props: { src: string }, siteDemosData: Ref) {
   const { lang } = useData()
   const demoData = computed(() => {
     return siteDemosData.value[props.src]?.data
@@ -55,7 +38,8 @@ export const useSiteDemos = (props: { src: string }, siteDemosData: Ref) => {
   })
 
   const content = computed(() => {
-    if (!block.value) return null
+    if (!block.value)
+      return null
     const first = Object.keys(block.value)[0]
     return block.value[lang.value] ?? block.value[first]
   })

@@ -1,7 +1,7 @@
 import type { ComputedRef, Ref } from 'vue'
 import { isRef, ref } from 'vue'
 
-export const useClipboard = (delay = 3000) => {
+export function useClipboard(delay = 3000) {
   const copied = ref<boolean>(false)
   const copy = (text: string | Ref<string> | ComputedRef<string>) => {
     let copyText
@@ -68,7 +68,8 @@ async function copyExecCommand(text: string) {
     window.document.body.removeChild(span)
   }
 
-  if (!success) throw makeError()
+  if (!success)
+    throw makeError()
 }
 
 async function clipboardCopy(text: string) {

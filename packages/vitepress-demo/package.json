@@ -1,7 +1,16 @@
 {
   "name": "vite-plugin-vitepress-demo",
+  "type": "module",
   "version": "2.1.0",
   "description": "A vite plugin for vitepress code block demo.",
+  "author": "aibayanyu",
+  "license": "MIT",
+
+  "homepage": "https://github.com/aibayanyu20/vite-plugins/#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aibayanyu20/vite-plugins.git"
+  },
   "keywords": [
     "vitepress",
     "markdown",
@@ -10,49 +19,41 @@
     "vitepress-code-block-demo",
     "vitepress-demo"
   ],
-  "type": "module",
-  "license": "MIT",
-  "author": "aibayanyu",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/aibayanyu20/vite-plugins.git"
-  },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     },
     "./theme": {
-      "import": "./dist/theme/index.mjs",
-      "types": "./dist/theme/index.d.ts"
+      "types": "./dist/theme/index.d.ts",
+      "import": "./dist/theme/index.mjs"
     },
     "./dist/theme": {
-      "import": "./dist/theme/index.mjs",
-      "types": "./dist/theme/index.d.ts"
+      "types": "./dist/theme/index.d.ts",
+      "import": "./dist/theme/index.mjs"
     },
     "./theme/**": {
-      "import": "./dist/theme/**",
-      "types": "./dist/theme/index.d.ts"
+      "types": "./dist/theme/index.d.ts",
+      "import": "./dist/theme/**"
     },
     "./dist/theme/**": {
-      "import": "./dist/theme/**",
-      "types": "./dist/theme/index.d.ts"
+      "types": "./dist/theme/index.d.ts",
+      "import": "./dist/theme/**"
     },
     "./dist/theme/**/*.vue": {
       "import": "./dist/theme/**/*.vue"
     }
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "dist",
     "README.md",
     "README.zh-CN.md",
-    "theme",
-    "banner.png"
+    "banner.png",
+    "dist",
+    "theme"
   ],
-  "homepage": "https://github.com/aibayanyu20/vite-plugins/#readme",
   "scripts": {
     "dev": "vitepress dev playground",
     "clean": "rimraf dist theme",
@@ -64,7 +65,7 @@
     "cp:theme": "cpx dist/theme/index.d.ts ./theme"
   },
   "peerDependencies": {
-    "vitepress": "^1.0.0-rc.1"
+    "vitepress": "^1.0.0-rc.29"
   },
   "dependencies": {
     "chokidar": "^3.5.3",
@@ -72,16 +73,16 @@
     "fast-glob": "^3.3.0",
     "fs-extra": "^11.1.1",
     "htmlparser2": "^8.0.2",
-    "magic-string": "^0.30.0",
-    "vue": "^3.2.47"
+    "magic-string": "^0.30.5",
+    "vue": "^3.3.8"
   },
   "devDependencies": {
     "@mistjs/tsconfig-vue": "^0.0.4",
-    "@types/fs-extra": "^11.0.1",
+    "@types/fs-extra": "^11.0.4",
     "@types/markdown-it": "^12.2.3",
-    "@types/node": "^18.15.11",
-    "typescript": "^5.1.2",
-    "vite": "^4.4.7",
-    "vitepress": "^1.0.0-beta.7"
+    "@types/node": "^18.18.10",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0",
+    "vitepress": "1.0.0-rc.29"
   }
 }
