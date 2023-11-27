@@ -1,0 +1,56 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`transform > should transform 1`] = `
+{
+  "code": "import { defineComponent } from 'vue'
+import type { Props } from './typing'
+
+export interface Props1 {
+  foo1: string
+  bar1: number
+}
+
+export type Props2 = Props & Props1
+export type Props3 = Pick<Props2, 'foo1' | 'foo'>
+
+export const Single = defineComponent<Props>(() => {
+  return () => {
+    return <div></div>
+  }
+})
+
+Object.defineProperty(Single, \\"props\\", {
+  value: [\\"foo\\",\\"bar\\"],
+});
+export const Single2 = defineComponent((_props: Props2) => {
+  return () => {
+    return <div></div>
+  }
+})
+
+Object.defineProperty(Single2, \\"props\\", {
+  value: [\\"foo\\",\\"bar\\",\\"foo1\\",\\"bar1\\"],
+});
+export const Single3 = defineComponent({
+  setup(_props: Props3) {
+    return () => {
+      return <div></div>
+    }
+  },
+})
+
+Object.defineProperty(Single3, \\"props\\", {
+  value: [\\"foo1\\",\\"foo\\"],
+});",
+  "map": SourceMap {
+    "file": undefined,
+    "mappings": "AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;;;;GACA;AACA;AACA;AACA;AACA;AACA;;;;GACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;",
+    "names": [],
+    "sources": [
+      "",
+    ],
+    "sourcesContent": undefined,
+    "version": 3,
+  },
+}
+`;
