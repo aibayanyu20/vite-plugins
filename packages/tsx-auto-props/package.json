@@ -1,0 +1,11 @@
+{
+  "name": "vite-plugin-tsx-auto-props",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "author": "aibayanyu20 <aibayanyu@qq.com>",
+  "license": "MIT",
+  "keywords": [],
+  "scripts": {
+  }
+}
