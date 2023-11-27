@@ -5,6 +5,11 @@
   "description": "this is a vite plugin for auto props in tsx",
   "author": "aibayanyu20 <aibayanyu@qq.com>",
   "license": "MIT",
+  "homepage": "https://github.com/aibayanyu20/vite-plugins/#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aibayanyu20/vite-plugins.git"
+  },
   "keywords": [
     "vite",
     "vite-plugin"
