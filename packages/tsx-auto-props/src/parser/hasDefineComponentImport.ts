@@ -1,3 +1,4 @@
+import * as t from '@babel/types'
 import { traverse } from './createAst'
 import type { Parsed } from './typing'
 
