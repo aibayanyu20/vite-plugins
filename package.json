@@ -13,7 +13,6 @@
   },
   "devDependencies": {
     "@mistjs/eslint-config": "^1.0.0",
-    "@mistjs/tsconfig-vue": "^0.0.4",
     "@types/node": "^18.18.10",
     "cpx": "^1.5.0",
     "eslint": "^8.54.0",
