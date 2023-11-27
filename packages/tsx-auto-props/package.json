@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-tsx-auto-props",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "this is a vite plugin for auto props in tsx",
   "author": "aibayanyu20 <aibayanyu@qq.com>",
   "license": "MIT",
