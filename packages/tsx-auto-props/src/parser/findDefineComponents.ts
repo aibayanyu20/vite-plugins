@@ -11,7 +11,8 @@ export function findDefineComponents(parsed: Parsed): FindDefineComponentsResult
     VariableDeclarator({ node: { id, init, end } }) {
       if (isCallExpression(init) && isIdentifier(init?.callee) && isIdentifier(id) && init.callee?.name === 'defineComponent') {
         const memberKeys = findPropTypeMemberKeys(parsed, init)
-        result.push([id.name, memberKeys, end!])
+        if (memberKeys)
+          result.push([id.name, memberKeys, end!])
       }
     },
   })

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { resolveTypeElements } from '@vue/compiler-sfc'
 import type { Identifier } from '@babel/types'
-import { createAst, createTypeResolveContext } from '../src'
+import { createAst, createTypeResolveContext } from '../src/parser'
 import singleRaw from './fixtures/single.tsx?raw'
 
 describe('tsx-auto-props', () => {

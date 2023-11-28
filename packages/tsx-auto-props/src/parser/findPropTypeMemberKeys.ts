@@ -1,4 +1,5 @@
 import * as t from '@babel/types'
+import generate from '@babel/generator'
 import type { Parsed } from './typing'
 
 function isAllowedTypeAnnotation(typeAnnotation: any): typeAnnotation is t.TSTypeLiteral | t.TSTypeReference {
@@ -17,17 +18,21 @@ export function findPropTypeMemberKeys(parsed: Parsed, node: t.CallExpression) {
   if (node.typeParameters) {
     const [param] = node.typeParameters.params
     if (t.isTSTypeLiteral(param))
-      return param.members.map(getKeyName)
+      return param.members.map(getKeyName).join('')
+
+    if (t.isTSIntersectionType(param)) {
+      const res = generate(param)
+      return res.code
+    }
 
     if (!t.isTSTypeReference(param) || !('name' in param.typeName))
-      return []
+      return
 
     const { name: typeName } = param.typeName
     return typeName
   }
 
   const [arg] = node.arguments
-
   if (t.isObjectExpression(arg)) {
     const properties = arg.properties.filter(
       p => t.isObjectProperty(p) || t.isObjectMethod(p),
@@ -37,7 +42,7 @@ export function findPropTypeMemberKeys(parsed: Parsed, node: t.CallExpression) {
     )
     // It already has a props property, so we don't need to add it
     if (propsPropetry)
-      return []
+      return
 
     const setupProperty = properties.find(
       p =>
@@ -50,7 +55,7 @@ export function findPropTypeMemberKeys(parsed: Parsed, node: t.CallExpression) {
       !setupProperty
             || !(t.isObjectMethod(setupProperty) || t.isObjectProperty(setupProperty))
     )
-      return []
+      return
 
     const setup = (
       t.isObjectMethod(setupProperty) ? setupProperty : setupProperty.value
@@ -72,13 +77,21 @@ export function findPropTypeMemberKeys(parsed: Parsed, node: t.CallExpression) {
 
   if (t.isArrowFunctionExpression(arg) || t.isFunctionExpression(arg)) {
     const propsParam = arg.params[0]
-    if (
-      propsParam?.typeAnnotation
-            && 'typeAnnotation' in propsParam.typeAnnotation
-            && isAllowedTypeAnnotation(propsParam.typeAnnotation.typeAnnotation)
-    ) {
-      const typeAnnotation = propsParam.typeAnnotation.typeAnnotation
-      return getTypeAnnotationName(typeAnnotation)
+    if (propsParam && propsParam.typeAnnotation) {
+      const typeAnnotation = propsParam.typeAnnotation
+      if ('typeAnnotation' in typeAnnotation) {
+        const typeAnnotation1 = typeAnnotation.typeAnnotation
+        if (isAllowedTypeAnnotation(typeAnnotation1))
+          return getTypeAnnotationName(typeAnnotation1)
+
+        if (t.isTSIntersectionType(typeAnnotation1)) {
+          const res = generate(typeAnnotation)
+          const code = res.code
+          if (code.startsWith(':'))
+            return code.slice(1).trim()
+          return res.code
+        }
+      }
     }
   }
   return undefined
