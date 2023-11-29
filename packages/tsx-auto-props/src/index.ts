@@ -24,7 +24,11 @@ function getDepModules(id: string, mapFile: Context, moduleGraph: ModuleGraph): 
   return [...modules]
 }
 
-export function tsxAutoProps(): PluginOption {
+export interface TsxAutoPropsOptions {
+  setup?: boolean
+}
+
+export function tsxAutoProps(options?: TsxAutoPropsOptions): PluginOption {
   const mapFile = new Context()
   return {
     name: 'tsx-auto-props',
