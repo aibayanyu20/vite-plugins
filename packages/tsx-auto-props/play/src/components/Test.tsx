@@ -23,12 +23,12 @@ const Test2 = defineComponent({
 
 export default defineComponent((props: TableProps) => {
   return () => {
-    console.log(props)
-
     return (
       <div>
         {props.test2}
         1111111
+        {props.test4}
+        2222
         <Test1 {...props}></Test1>
         <Test2 {...props}></Test2>
       </div>
