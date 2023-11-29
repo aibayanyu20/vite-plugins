@@ -6,6 +6,7 @@ import nonTypeRaw from './fixtures/nonType.tsx?raw'
 import complexRaw from './fixtures/complex.tsx?raw'
 import exportRaw from './fixtures/export.tsx?raw'
 import inlineRaw from './fixtures/inline.tsx?raw'
+import genericRaw from './fixtures/generic.tsx?raw'
 
 describe('findDefineComponents', () => {
   it('should work', () => {
@@ -36,5 +37,11 @@ describe('findDefineComponents', () => {
     const ast = createAst(inlineRaw)
     const res = findDefineComponents(ast)
     expect(res.map(v => v[1])).toEqual(['{\n  c: string;\n  a: number;\n}', '{\n  c: string;\n  a: number;\n}', '{\n  c: string;\n  a: number;\n}'])
+  })
+
+  it('generic', () => {
+    const ast = createAst(genericRaw)
+    const res = findDefineComponents(ast)
+    expect(res.length).toEqual(1)
   })
 })

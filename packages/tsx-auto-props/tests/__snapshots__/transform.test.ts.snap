@@ -99,6 +99,37 @@ export default defineComponent<CommonProps>({
 }
 `;
 
+exports[`transform > should generic 1`] = `
+{
+  "code": "import { defineComponent, ref } from 'vue'
+
+export const Generic = defineComponent(<T extends string | number,>(props: {
+  msg: T;
+  list: T[];
+}) => {
+  const count = ref(0);
+  return () => <div>
+          {props.msg}
+          {' '}
+          {count.value}
+        </div>;
+}, {
+  props: [\\"msg\\", \\"list\\"]
+})
+",
+  "map": SourceMap {
+    "file": undefined,
+    "mappings": "AAAA;AACA;AACA,aAAa;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,EAYZ;",
+    "names": [],
+    "sources": [
+      "",
+    ],
+    "sourcesContent": undefined,
+    "version": 3,
+  },
+}
+`;
+
 exports[`transform > should inline 1`] = `
 {
   "code": "import { defineComponent } from 'vue'
