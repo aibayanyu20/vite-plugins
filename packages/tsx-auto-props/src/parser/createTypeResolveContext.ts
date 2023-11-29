@@ -37,8 +37,10 @@ export function createTypeResolveContext(code: string, ast: Statement[], id: str
         fileExists(_file: string): boolean {
           // 检查文件是否存在
           const exist = fs.existsSync(_file)
-          if (exist)
+          if (exist) {
             context?.add(_file, id)
+            context?.addGraph(id, _file)
+          }
 
           return exist
         },
