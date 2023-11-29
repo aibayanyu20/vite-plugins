@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-tsx-auto-props",
   "type": "module",
-  "version": "0.0.3-beta.2",
+  "version": "0.0.3-beta.3",
   "description": "this is a vite plugin for auto props in tsx",
   "author": "aibayanyu20 <aibayanyu@qq.com>",
   "license": "MIT",
@@ -18,18 +18,21 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
     },
     "./package.json": "./package.json",
     "./dist/*": "./dist/*"
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "play": "vite play"
   },
   "peerDependencies": {
     "vite": ">=4"
@@ -39,7 +42,7 @@
     "@babel/parser": "^7.23.4",
     "@babel/traverse": "^7.23.4",
     "@babel/types": "^7.23.4",
-    "@vue/compiler-sfc": "3.4.0-alpha.2",
+    "@vue/compiler-sfc": "3.4.0-alpha.3",
     "magic-string": "^0.30.5"
   },
   "devDependencies": {

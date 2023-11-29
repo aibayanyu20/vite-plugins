@@ -15,6 +15,8 @@
     "@mistjs/eslint-config": "^1.0.0",
     "@mistjs/tsconfig-vue": "^0.0.4",
     "@types/node": "^18.18.13",
+    "@vitejs/plugin-vue": "^4.5.0",
+    "@vitejs/plugin-vue-jsx": "^3.1.0",
     "cpx": "^1.5.0",
     "eslint": "^8.54.0",
     "npm-run-all": "^4.1.5",
@@ -23,8 +25,10 @@
     "typescript": "^5.3.2",
     "unbuild": "^1.2.1",
     "vite": "^5.0.3",
+    "vite-plugin-inspect": "^0.8.0",
     "vitest": "^0.34.6",
-    "vue": "^3.3.9"
+    "vue": "^3.3.9",
+    "vue-tsc": "^1.8.22"
   },
   "pnpm": {
     "peerDependencyRules": {
