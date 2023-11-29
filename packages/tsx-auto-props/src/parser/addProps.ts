@@ -1,11 +1,11 @@
 import * as t from '@babel/types'
-import generate from '@babel/generator'
 import type { CallExpression } from '@babel/types'
 import type { Parsed } from './typing'
 import { traverse } from './createAst'
+import { generateCode } from './utils'
 
 function genCode(node: t.Node | t.File) {
-  const res = generate(node)
+  const res = generateCode(node)
   return res.code
 }
 

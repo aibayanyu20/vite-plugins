@@ -1,6 +1,6 @@
 import * as t from '@babel/types'
-import generate from '@babel/generator'
 import type { Parsed } from './typing'
+import { generateCode } from './utils'
 
 function isAllowedTypeAnnotation(typeAnnotation: any): typeAnnotation is t.TSTypeLiteral | t.TSTypeReference {
   return t.isTSTypeLiteral(typeAnnotation)
@@ -13,7 +13,7 @@ const getKeyName = (node: any) => node.key.name
 const getTypeAnnotationName = (node: any) => node.typeName?.name
 
 function getIntersectionTypeName(node: t.Node) {
-  const res = generate(node)
+  const res = generateCode(node)
   const code = res.code
   if (code.startsWith(':'))
     return code.slice(1).trim()
