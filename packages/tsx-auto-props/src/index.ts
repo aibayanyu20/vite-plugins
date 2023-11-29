@@ -9,6 +9,12 @@ export function tsxAutoProps(): PluginOption {
       if (id.endsWith('.tsx'))
         return transform(code, id)
     },
+    /**
+     * 热更新
+     */
+    handleHotUpdate({ file }) {
+      console.log(file)
+    },
   }
 }
 export default tsxAutoProps

@@ -1,4 +1,3 @@
-import path from 'node:path'
 import { resolveTypeElements } from '@vue/compiler-sfc'
 import MagicString from 'magic-string'
 import type { Identifier } from '@babel/types'
@@ -17,11 +16,11 @@ export function transform(code: string, id: string) {
   const components = findDefineComponents(ast)
   const s = new MagicString(code)
   // 获取文件夹对应的路径
-  const dir = path.dirname(id)
+  // const dir = path.dirname(id)
   if (components.length) {
     for (const component of components) {
-      const componentName = component[0] ?? 'default'
-      const fileName = path.resolve(dir, `${componentName}.vue`)
+      // const componentName = component[0] ?? 'default'
+      const fileName = id
       const propName = component[1]
       const setupCode = `defineProps<${propName}>()`
       const setupAst = createAst(setupCode, false)

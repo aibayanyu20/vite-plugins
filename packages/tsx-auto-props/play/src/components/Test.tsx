@@ -4,7 +4,12 @@ import type { TableProps } from './typing'
 
 const Test1 = defineComponent<TableProps>((props) => {
   return () => {
-    return <div>{props.test2}</div>
+    return (
+      <div>
+        {props.test2}
+        11
+      </div>
+    )
   }
 })
 
