@@ -5,7 +5,7 @@ import { createAst, createTypeResolveContext } from '../src/parser'
 import singleRaw from './fixtures/single.tsx?raw'
 
 describe('tsx-auto-props', () => {
-  it('should be ok', () => {
+  it('single', () => {
     const ast = createAst(singleRaw)
     const code = `defineProps<Props>()`
     const typeResolveContext = createTypeResolveContext(code, ast.program.body, './anonymous.vue')

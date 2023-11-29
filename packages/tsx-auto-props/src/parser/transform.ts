@@ -6,12 +6,8 @@ import { createAst } from './createAst'
 import { findDefineComponents } from './findDefineComponents'
 import { createTypeResolveContext } from './createTypeResolveContext'
 import { haveDefineComponentImport } from './hasDefineComponentImport'
+import { addProps } from './addProps'
 
-function generateDefineProps(name: string, props: string[]) {
-  return `\nObject.defineProperty(${name}, "props", {
-  value: ${JSON.stringify(props)},
-});`
-}
 export function transform(code: string, id: string) {
   const ast = createAst(code)
   // 判断是否有defineComponent
@@ -24,7 +20,8 @@ export function transform(code: string, id: string) {
   const dir = path.dirname(id)
   if (components.length) {
     for (const component of components) {
-      const fileName = path.resolve(dir, `${component[0]}.vue`)
+      const componentName = component[0] ?? 'default'
+      const fileName = path.resolve(dir, `${componentName}.vue`)
       const propName = component[1]
       const setupCode = `defineProps<${propName}>()`
       const setupAst = createAst(setupCode, false)
@@ -40,8 +37,14 @@ export function transform(code: string, id: string) {
       const typeResolveContext = createTypeResolveContext(setupCode, ast.program.body, fileName)
       const raw = resolveTypeElements(typeResolveContext, target)
       const props = Object.keys(raw.props)
-      const genCode = generateDefineProps(component[0], props)
-      s.appendRight(component[2] + 1, genCode)
+      const start = component[2]
+      const end = component[3]
+      // 获取代码片段
+      const codeSlice = code.slice(start, end)
+      const codeSliceAst = createAst(codeSlice)
+      const genCode = addProps(codeSliceAst, props)
+      if (genCode)
+        s.overwrite(start, end, genCode)
     }
   }
 

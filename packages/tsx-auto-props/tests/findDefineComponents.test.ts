@@ -4,6 +4,7 @@ import { findDefineComponents } from '../src/parser/findDefineComponents'
 import singleRaw from './fixtures/single.tsx?raw'
 import nonTypeRaw from './fixtures/nonType.tsx?raw'
 import complexRaw from './fixtures/complex.tsx?raw'
+import exportRaw from './fixtures/export.tsx?raw'
 
 describe('findDefineComponents', () => {
   it('should work', () => {
@@ -21,6 +22,12 @@ describe('findDefineComponents', () => {
   it('complex type', () => {
     const ast = createAst(complexRaw)
     const res = findDefineComponents(ast)
-    expect(res.map(v => v[1])).toEqual(['CommonProps & ComplexProps', 'CommonProps & ComplexProps', 'CommonProps & {\n  c: string;\n}'])
+    expect(res.map(v => v[1])).toEqual(['CommonProps & ComplexProps', 'CommonProps & ComplexProps', 'CommonProps & {\n  c: string;\n}', 'CommonProps & ComplexProps'])
+  })
+
+  it('export default type', () => {
+    const ast = createAst(exportRaw)
+    const res = findDefineComponents(ast)
+    expect(res.map(v => v[1])).toEqual(['CommonProps'])
   })
 })

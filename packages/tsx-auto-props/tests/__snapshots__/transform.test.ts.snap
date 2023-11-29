@@ -1,5 +1,127 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`transform > should complex 1`] = `
+{
+  "code": "import { defineComponent } from 'vue'
+
+export interface CommonProps {
+  b: string
+}
+
+export interface ComplexProps {
+  a: string
+}
+
+export const Complex = defineComponent<CommonProps & ComplexProps>(() => {
+  return () => {
+    return <div></div>;
+  };
+}, {
+  props: [\\"b\\", \\"a\\"]
+})
+
+export const Complex1 = defineComponent((_props: CommonProps & ComplexProps) => {
+  return () => {
+    return <div></div>;
+  };
+}, {
+  props: [\\"b\\", \\"a\\"]
+})
+
+export const Complex2 = defineComponent((_props: CommonProps & {
+  c: string;
+}) => {
+  return () => {
+    return <div></div>;
+  };
+}, {
+  props: [\\"b\\", \\"c\\"]
+})
+
+export const Complex3 = defineComponent({
+  props: [\\"b\\", \\"a\\"],
+  setup(_props: CommonProps & ComplexProps) {
+    return () => {
+      return <div></div>;
+    };
+  }
+})
+
+export const Complex4 = defineComponent({
+  props: ['a', 'b'],
+  setup(_props: CommonProps & ComplexProps) {
+    return () => {
+      return <div></div>
+    }
+  },
+})
+",
+  "map": SourceMap {
+    "file": undefined,
+    "mappings": "AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA,aAAa;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,EAIX;AACF;AACA,aAAa;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,EAIX;AACF;AACA,aAAa;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,EAIX;AACF;AACA,aAAa;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,EAMX;AACF;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;",
+    "names": [],
+    "sources": [
+      "",
+    ],
+    "sourcesContent": undefined,
+    "version": 3,
+  },
+}
+`;
+
+exports[`transform > should export default 1`] = `
+{
+  "code": "import { defineComponent } from 'vue'
+
+export interface CommonProps {
+  b: string
+}
+
+export default defineComponent<CommonProps>({
+  props: [\\"b\\"],
+  setup() {
+    return () => {
+      return <div></div>;
+    };
+  }
+});
+",
+  "map": SourceMap {
+    "file": undefined,
+    "mappings": "AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,GAME;",
+    "names": [],
+    "sources": [
+      "",
+    ],
+    "sourcesContent": undefined,
+    "version": 3,
+  },
+}
+`;
+
+exports[`transform > should nonType 1`] = `
+{
+  "code": "import { defineComponent } from 'vue'
+
+export const NonType = defineComponent(() => {
+  return () => {
+    return <div></div>
+  }
+})
+",
+  "map": SourceMap {
+    "file": undefined,
+    "mappings": "AAAA;AACA;AACA;AACA;AACA;AACA;AACA;",
+    "names": [],
+    "sources": [
+      "",
+    ],
+    "sourcesContent": undefined,
+    "version": 3,
+  },
+}
+`;
+
 exports[`transform > should transform 1`] = `
 {
   "code": "import { defineComponent } from 'vue'
@@ -15,36 +137,32 @@ export type Props3 = Pick<Props2, 'foo1' | 'foo'>
 
 export const Single = defineComponent<Props>(() => {
   return () => {
-    return <div></div>
-  }
+    return <div></div>;
+  };
+}, {
+  props: [\\"foo\\", \\"bar\\"]
 })
 
-Object.defineProperty(Single, \\"props\\", {
-  value: [\\"foo\\",\\"bar\\"],
-});
 export const Single2 = defineComponent((_props: Props2) => {
   return () => {
-    return <div></div>
-  }
+    return <div></div>;
+  };
+}, {
+  props: [\\"foo\\", \\"bar\\", \\"foo1\\", \\"bar1\\"]
 })
 
-Object.defineProperty(Single2, \\"props\\", {
-  value: [\\"foo\\",\\"bar\\",\\"foo1\\",\\"bar1\\"],
-});
 export const Single3 = defineComponent({
+  props: [\\"foo1\\", \\"foo\\"],
   setup(_props: Props3) {
     return () => {
-      return <div></div>
-    }
-  },
+      return <div></div>;
+    };
+  }
 })
-
-Object.defineProperty(Single3, \\"props\\", {
-  value: [\\"foo1\\",\\"foo\\"],
-});",
+",
   "map": SourceMap {
     "file": undefined,
-    "mappings": "AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;;;;GACA;AACA;AACA;AACA;AACA;AACA;;;;GACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;",
+    "mappings": "AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA,aAAa;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,EAIX;AACF;AACA,aAAa;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,EAIX;AACF;AACA,aAAa;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,EAMX;",
     "names": [],
     "sources": [
       "",

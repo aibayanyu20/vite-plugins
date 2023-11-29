@@ -11,6 +11,14 @@ function isAllowedTypeAnnotation(typeAnnotation: any): typeAnnotation is t.TSTyp
 
 const getKeyName = (node: any) => node.key.name
 const getTypeAnnotationName = (node: any) => node.typeName?.name
+
+function getIntersectionTypeName(node: t.Node) {
+  const res = generate(node)
+  const code = res.code
+  if (code.startsWith(':'))
+    return code.slice(1).trim()
+  return res.code
+}
 /**
  * Get member keys from a CallExpression, extracts its typeDefinition
  */
@@ -20,10 +28,8 @@ export function findPropTypeMemberKeys(parsed: Parsed, node: t.CallExpression) {
     if (t.isTSTypeLiteral(param))
       return param.members.map(getKeyName).join('')
 
-    if (t.isTSIntersectionType(param)) {
-      const res = generate(param)
-      return res.code
-    }
+    if (t.isTSIntersectionType(param))
+      return getIntersectionTypeName(param)
 
     if (!t.isTSTypeReference(param) || !('name' in param.typeName))
       return
@@ -68,11 +74,16 @@ export function findPropTypeMemberKeys(parsed: Parsed, node: t.CallExpression) {
             && propsParam.typeAnnotation
             && 'typeAnnotation' in propsParam.typeAnnotation
             && propsParam.typeAnnotation?.typeAnnotation
+    // console.log(typeAnnotation)
+    if (!typeAnnotation)
+      return
+    if (isAllowedTypeAnnotation(typeAnnotation))
+      return getTypeAnnotationName(typeAnnotation)
 
-    if (!typeAnnotation || !isAllowedTypeAnnotation(typeAnnotation))
-      return []
+    if (t.isTSIntersectionType(typeAnnotation))
+      return getIntersectionTypeName(typeAnnotation)
 
-    return getTypeAnnotationName(typeAnnotation)
+    return
   }
 
   if (t.isArrowFunctionExpression(arg) || t.isFunctionExpression(arg)) {
@@ -84,13 +95,8 @@ export function findPropTypeMemberKeys(parsed: Parsed, node: t.CallExpression) {
         if (isAllowedTypeAnnotation(typeAnnotation1))
           return getTypeAnnotationName(typeAnnotation1)
 
-        if (t.isTSIntersectionType(typeAnnotation1)) {
-          const res = generate(typeAnnotation)
-          const code = res.code
-          if (code.startsWith(':'))
-            return code.slice(1).trim()
-          return res.code
-        }
+        if (t.isTSIntersectionType(typeAnnotation1))
+          return getIntersectionTypeName(typeAnnotation)
       }
     }
   }
