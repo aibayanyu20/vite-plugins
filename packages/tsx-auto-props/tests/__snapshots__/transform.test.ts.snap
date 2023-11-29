@@ -99,6 +99,69 @@ export default defineComponent<CommonProps>({
 }
 `;
 
+exports[`transform > should inline 1`] = `
+{
+  "code": "import { defineComponent } from 'vue'
+
+export const Inline = defineComponent((_props: {
+  c: string;
+  a: number;
+}) => {
+  return () => {
+    return <div></div>;
+  };
+}, {
+  props: [\\"c\\", \\"a\\"]
+})
+
+export const Inline1 = defineComponent<{
+  c: string;
+  a: number;
+}>(() => {
+  return () => {
+    return <div></div>;
+  };
+}, {
+  props: [\\"c\\", \\"a\\"]
+})
+export const Inline2 = defineComponent({
+  props: [\\"c\\", \\"a\\"],
+  setup(_props: {
+    c: string;
+    a: number;
+  }) {
+    return () => {
+      return <div></div>;
+    };
+  }
+})
+
+export default defineComponent({
+  props: [\\"c\\", \\"a\\", \\"b\\"],
+  setup(_props: {
+    c: string;
+    a: number;
+    b: string;
+  }) {
+    return () => {
+      return <div></div>;
+    };
+  }
+});
+",
+  "map": SourceMap {
+    "file": undefined,
+    "mappings": "AAAA;AACA;AACA,aAAa;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,EAIX;AACF;AACA,aAAa;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,EAIX;AACF,aAAa;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,EAMX;AACF;AACA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,GAME;",
+    "names": [],
+    "sources": [
+      "",
+    ],
+    "sourcesContent": undefined,
+    "version": 3,
+  },
+}
+`;
+
 exports[`transform > should nonType 1`] = `
 {
   "code": "import { defineComponent } from 'vue'

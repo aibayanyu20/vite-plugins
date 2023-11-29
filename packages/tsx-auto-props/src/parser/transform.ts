@@ -8,7 +8,7 @@ import { haveDefineComponentImport } from './hasDefineComponentImport'
 import { addProps } from './addProps'
 import type { Context } from './context'
 
-export function transform(code: string, id: string, mapFile: Context) {
+export function transform(code: string, id: string, mapFile?: Context) {
   const ast = createAst(code)
   // 判断是否有defineComponent
   if (!haveDefineComponentImport(ast))

@@ -5,6 +5,7 @@ import singleRaw from './fixtures/single.tsx?raw'
 import nonTypeRaw from './fixtures/nonType.tsx?raw'
 import complexRaw from './fixtures/complex.tsx?raw'
 import exportRaw from './fixtures/export.tsx?raw'
+import inlineRaw from './fixtures/inline.tsx?raw'
 
 describe('findDefineComponents', () => {
   it('should work', () => {
@@ -29,5 +30,11 @@ describe('findDefineComponents', () => {
     const ast = createAst(exportRaw)
     const res = findDefineComponents(ast)
     expect(res.map(v => v[1])).toEqual(['CommonProps'])
+  })
+
+  it('inline', () => {
+    const ast = createAst(inlineRaw)
+    const res = findDefineComponents(ast)
+    expect(res.map(v => v[1])).toEqual(['{\n  c: string;\n  a: number;\n}', '{\n  c: string;\n  a: number;\n}', '{\n  c: string;\n  a: number;\n}'])
   })
 })
