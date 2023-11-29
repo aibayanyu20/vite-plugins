@@ -102,8 +102,22 @@ export default defineComponent<CommonProps>({
 exports[`transform > should generic 1`] = `
 {
   "code": "import { defineComponent, ref } from 'vue'
+import type { Props } from './typing'
 
 export const Generic = defineComponent(<T extends string | number,>(props: {
+  msg: T;
+  list: T[];
+}) => {
+  const count = ref(0);
+  return () => <div>
+          {props.msg}
+          {' '}
+          {count.value}
+        </div>;
+}, {
+  props: [\\"msg\\", \\"list\\"]
+})
+export const Generic1 = defineComponent(<T extends Props | number,>(props: {
   msg: T;
   list: T[];
 }) => {
@@ -119,7 +133,7 @@ export const Generic = defineComponent(<T extends string | number,>(props: {
 ",
   "map": SourceMap {
     "file": undefined,
-    "mappings": "AAAA;AACA;AACA,aAAa;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,EAYZ;",
+    "mappings": "AAAA;AACA;AACA;AACA,aAAa;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,EAYZ;AACD,aAAa;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,EAYZ;",
     "names": [],
     "sources": [
       "",
