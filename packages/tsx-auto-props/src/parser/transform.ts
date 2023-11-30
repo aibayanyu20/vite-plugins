@@ -1,4 +1,4 @@
-import { resolveTypeElements } from '@vue/compiler-sfc'
+import { invalidateTypeCache, resolveTypeElements } from '@vue/compiler-sfc'
 import MagicString from 'magic-string'
 import type { Identifier } from '@babel/types'
 import { createAst } from './createAst'
@@ -6,8 +6,9 @@ import { findDefineComponents } from './findDefineComponents'
 import { createTypeResolveContext } from './createTypeResolveContext'
 import { haveDefineComponentImport } from './hasDefineComponentImport'
 import { addProps } from './addProps'
+import type { Context } from './context'
 
-export function transform(code: string, id: string) {
+export function transform(code: string, id: string, mapFile?: Context) {
   const ast = createAst(code)
   // 判断是否有defineComponent
   if (!haveDefineComponentImport(ast))
@@ -33,7 +34,7 @@ export function transform(code: string, id: string) {
         )
           target = s.expression.typeParameters!.params[0]
       }
-      const typeResolveContext = createTypeResolveContext(setupCode, ast.program.body, fileName)
+      const typeResolveContext = createTypeResolveContext(setupCode, ast.program.body, fileName, mapFile)
       const raw = resolveTypeElements(typeResolveContext, target)
       const props = Object.keys(raw.props)
       const start = component[2]
@@ -46,9 +47,12 @@ export function transform(code: string, id: string) {
         s.overwrite(start, end, genCode)
     }
   }
-
   return {
     code: s.toString(),
     map: s.generateMap(),
   }
+}
+
+export function invalidateTypeCacheId(file: string) {
+  invalidateTypeCache(file)
 }

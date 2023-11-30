@@ -25,10 +25,8 @@ function getIntersectionTypeName(node: t.Node) {
 export function findPropTypeMemberKeys(parsed: Parsed, node: t.CallExpression) {
   if (node.typeParameters) {
     const [param] = node.typeParameters.params
-    if (t.isTSTypeLiteral(param))
-      return param.members.map(getKeyName).join('')
 
-    if (t.isTSIntersectionType(param))
+    if (t.isTSIntersectionType(param) || t.isTSTypeLiteral(param))
       return getIntersectionTypeName(param)
 
     if (!t.isTSTypeReference(param) || !('name' in param.typeName))
@@ -77,6 +75,9 @@ export function findPropTypeMemberKeys(parsed: Parsed, node: t.CallExpression) {
     // console.log(typeAnnotation)
     if (!typeAnnotation)
       return
+    if (t.isTSTypeLiteral(typeAnnotation))
+      return getIntersectionTypeName(typeAnnotation)
+
     if (isAllowedTypeAnnotation(typeAnnotation))
       return getTypeAnnotationName(typeAnnotation)
 
@@ -90,8 +91,12 @@ export function findPropTypeMemberKeys(parsed: Parsed, node: t.CallExpression) {
     const propsParam = arg.params[0]
     if (propsParam && propsParam.typeAnnotation) {
       const typeAnnotation = propsParam.typeAnnotation
+
       if ('typeAnnotation' in typeAnnotation) {
         const typeAnnotation1 = typeAnnotation.typeAnnotation
+        if (t.isTSTypeLiteral(typeAnnotation1))
+          return getIntersectionTypeName(typeAnnotation1)
+
         if (isAllowedTypeAnnotation(typeAnnotation1))
           return getTypeAnnotationName(typeAnnotation1)
 

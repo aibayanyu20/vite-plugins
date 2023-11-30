@@ -6,6 +6,8 @@ import singleRaw from './fixtures/single.tsx?raw'
 import complexRaw from './fixtures/complex.tsx?raw'
 import exportRaw from './fixtures/export.tsx?raw'
 import nonTypeRaw from './fixtures/nonType.tsx?raw'
+import inlineRaw from './fixtures/inline.tsx?raw'
+import genericRaw from './fixtures/generic.tsx?raw'
 
 const fixturePath = fileURLToPath(new URL('./fixtures', import.meta.url))
 
@@ -33,6 +35,20 @@ describe('transform', () => {
   it('should nonType', () => {
     const code = nonTypeRaw
     const id = path.resolve(fixturePath, 'nonType.tsx')
+    const transformCode = transform(code, id)
+    expect(transformCode).toMatchSnapshot()
+  })
+
+  it('should inline', () => {
+    const code = inlineRaw
+    const id = path.resolve(fixturePath, 'inline.tsx')
+    const transformCode = transform(code, id)
+    expect(transformCode).toMatchSnapshot()
+  })
+
+  it('should generic', () => {
+    const code = genericRaw
+    const id = path.resolve(fixturePath, 'generic.tsx')
     const transformCode = transform(code, id)
     expect(transformCode).toMatchSnapshot()
   })
