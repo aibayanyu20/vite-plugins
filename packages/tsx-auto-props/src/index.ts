@@ -1,7 +1,11 @@
 import type { ModuleGraph, ModuleNode, PluginOption } from 'vite'
+import { registerTS } from '@vue/compiler-sfc'
+import ts from 'typescript'
 import { transform } from './parser'
 import { Context } from './parser/context'
 import { invalidateTypeCacheId } from './parser/transform'
+
+registerTS(() => ts)
 
 function getDepModules(id: string, mapFile: Context, moduleGraph: ModuleGraph): ModuleNode[] {
   const modules: ModuleNode[] = []

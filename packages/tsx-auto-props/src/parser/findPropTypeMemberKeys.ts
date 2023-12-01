@@ -9,7 +9,7 @@ function isAllowedTypeAnnotation(typeAnnotation: any): typeAnnotation is t.TSTyp
         && 'name' in typeAnnotation.typeName)
 }
 
-const getKeyName = (node: any) => node.key.name
+// const getKeyName = (node: any) => node.key.name
 const getTypeAnnotationName = (node: any) => node.typeName?.name
 
 function getIntersectionTypeName(node: t.Node) {

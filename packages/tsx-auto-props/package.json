@@ -35,7 +35,8 @@
     "play": "vite play"
   },
   "peerDependencies": {
-    "vite": ">=4"
+    "vite": ">=4",
+    "typescript": ">=5"
   },
   "dependencies": {
     "@babel/generator": "^7.23.4",
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "@types/babel__generator": "^7.6.7",
-    "@types/babel__traverse": "^7.20.4"
+    "@types/babel__traverse": "^7.20.4",
+    "ant-design-vue": "^4.0.7"
   }
 }

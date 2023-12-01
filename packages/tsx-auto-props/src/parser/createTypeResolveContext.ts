@@ -36,13 +36,18 @@ export function createTypeResolveContext(code: string, ast: Statement[], id: str
       fs: {
         fileExists(_file: string): boolean {
           // 检查文件是否存在
-          const exist = fs.existsSync(_file)
-          if (exist) {
-            context?.add(_file, id)
-            context?.addGraph(id, _file)
+          try {
+            const stat = fs.statSync(_file)
+            if (stat.isFile()) {
+              context?.add(_file, id)
+              context?.addGraph(id, _file)
+              return true
+            }
+            return false
           }
-
-          return exist
+          catch (e) {
+            return false
+          }
         },
         readFile(_file: string): string | undefined {
           return fs.readFileSync(_file, 'utf-8')
