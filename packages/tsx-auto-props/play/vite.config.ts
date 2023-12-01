@@ -6,5 +6,10 @@ import { tsxAutoProps } from '../src'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [tsxAutoProps(), vue(), vueJsx(), inspect()],
+  plugins: [
+    tsxAutoProps(),
+    vue(),
+    vueJsx(),
+    inspect(),
+  ],
 })
