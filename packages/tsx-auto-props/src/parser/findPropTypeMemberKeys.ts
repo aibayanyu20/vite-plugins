@@ -67,6 +67,9 @@ export function findPropTypeMemberKeys(parsed: Parsed, node: t.CallExpression) {
 
     const [propsParam] = setup.params
 
+    if (!propsParam)
+      return undefined
+
     const typeAnnotation
             = 'typeAnnotation' in propsParam
             && propsParam.typeAnnotation
@@ -92,7 +95,7 @@ export function findPropTypeMemberKeys(parsed: Parsed, node: t.CallExpression) {
     if (propsParam && propsParam.typeAnnotation) {
       const typeAnnotation = propsParam.typeAnnotation
 
-      if ('typeAnnotation' in typeAnnotation) {
+      if (typeAnnotation && 'typeAnnotation' in typeAnnotation) {
         const typeAnnotation1 = typeAnnotation.typeAnnotation
         if (t.isTSTypeLiteral(typeAnnotation1))
           return getIntersectionTypeName(typeAnnotation1)

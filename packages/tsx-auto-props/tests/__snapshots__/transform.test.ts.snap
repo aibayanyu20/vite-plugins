@@ -260,6 +260,44 @@ export const NonType = defineComponent(() => {
 }
 `;
 
+exports[`transform > should render 1`] = `
+{
+  "code": "import { defineComponent } from 'vue'
+
+export default defineComponent({
+  setup() {
+    return {}
+  },
+  render() {
+    return <div></div>
+  },
+})
+
+export const A = defineComponent({
+  props: [\\"a\\"],
+  setup(_props: {
+    a: string;
+  }) {
+    return {};
+  },
+  render() {
+    return <div></div>;
+  }
+})
+",
+  "map": SourceMap {
+    "file": undefined,
+    "mappings": "AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA,aAAa;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,EAOX;",
+    "names": [],
+    "sources": [
+      "",
+    ],
+    "sourcesContent": undefined,
+    "version": 3,
+  },
+}
+`;
+
 exports[`transform > should transform 1`] = `
 {
   "code": "import { defineComponent } from 'vue'

@@ -7,6 +7,7 @@ import complexRaw from './fixtures/complex.tsx?raw'
 import exportRaw from './fixtures/export.tsx?raw'
 import inlineRaw from './fixtures/inline.tsx?raw'
 import genericRaw from './fixtures/generic.tsx?raw'
+import renderRaw from './fixtures/render.tsx?raw'
 
 describe('findDefineComponents', () => {
   it('should work', () => {
@@ -42,6 +43,13 @@ describe('findDefineComponents', () => {
   it('generic', () => {
     const ast = createAst(genericRaw)
     const res = findDefineComponents(ast)
+    expect(res.length).toEqual(1)
+  })
+
+  it('render', () => {
+    const ast = createAst(renderRaw)
+    const res = findDefineComponents(ast)
+    console.log(res)
     expect(res.length).toEqual(1)
   })
 })
