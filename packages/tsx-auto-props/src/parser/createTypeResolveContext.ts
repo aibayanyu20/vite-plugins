@@ -10,8 +10,8 @@ export function createTypeResolveContext(code: string, ast: Statement[], id: str
     filename: id,
   })
   const helperImports: Set<string> = new Set()
-  const error = (msg: string, node: any, scope?: any) => {
-    console.error(msg, node, scope)
+  const error = (msg: string, _node: any, _scope?: any) => {
+    // console.error(msg, node, scope)
     throw new Error(msg)
   }
 

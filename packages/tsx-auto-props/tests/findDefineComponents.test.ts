@@ -8,6 +8,7 @@ import exportRaw from './fixtures/export.tsx?raw'
 import inlineRaw from './fixtures/inline.tsx?raw'
 import genericRaw from './fixtures/generic.tsx?raw'
 import renderRaw from './fixtures/render.tsx?raw'
+import extraRaw from './fixtures/extra.tsx?raw'
 
 describe('findDefineComponents', () => {
   it('should work', () => {
@@ -49,7 +50,12 @@ describe('findDefineComponents', () => {
   it('render', () => {
     const ast = createAst(renderRaw)
     const res = findDefineComponents(ast)
-    console.log(res)
+    expect(res.length).toEqual(1)
+  })
+
+  it('extra', () => {
+    const ast = createAst(extraRaw)
+    const res = findDefineComponents(ast)
     expect(res.length).toEqual(1)
   })
 })

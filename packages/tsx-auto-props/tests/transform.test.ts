@@ -12,6 +12,7 @@ import inlineRaw from './fixtures/inline.tsx?raw'
 import genericRaw from './fixtures/generic.tsx?raw'
 import libRaw from './fixtures/lib.tsx?raw'
 import renderRaw from './fixtures/render.tsx?raw'
+import extraRaw from './fixtures/extra.tsx?raw'
 
 registerTS(() => ts)
 
@@ -71,5 +72,36 @@ describe('transform', () => {
     const id = path.resolve(fixturePath, 'render.tsx')
     const transformCode = transform(code, id)
     expect(transformCode).toMatchSnapshot()
+  })
+
+  it('should extra', () => {
+    const code = extraRaw
+    const id = path.resolve(fixturePath, 'extra.tsx')
+    const transformCode = transform(code, id)
+    expect(transformCode).toMatchInlineSnapshot(`
+      {
+        "code": "import { defineComponent } from 'vue'
+      import type { ExtraProps } from './typing'
+
+      export const Extra = defineComponent<ExtraProps>({
+        setup() {
+          return () => {
+            return <div></div>
+          }
+        },
+      })
+      ",
+        "map": SourceMap {
+          "file": undefined,
+          "mappings": "AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;",
+          "names": [],
+          "sources": [
+            "",
+          ],
+          "sourcesContent": undefined,
+          "version": 3,
+        },
+      }
+    `)
   })
 })

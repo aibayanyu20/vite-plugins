@@ -24,27 +24,33 @@ export function transform(code: string, id: string, mapFile?: Context) {
       const fileName = id
       const propName = component[1]
       const setupCode = `defineProps<${propName}>()`
-      const setupAst = createAst(setupCode, false)
-      let target: any
-      for (const s of setupAst.program.body) {
-        if (
-          s.type === 'ExpressionStatement'
-            && s.expression.type === 'CallExpression'
-            && (s.expression.callee as Identifier).name === 'defineProps'
-        )
-          target = s.expression.typeParameters!.params[0]
+      try {
+        const setupAst = createAst(setupCode, false)
+        let target: any
+        for (const s of setupAst.program.body) {
+          if (
+            s.type === 'ExpressionStatement'
+              && s.expression.type === 'CallExpression'
+              && (s.expression.callee as Identifier).name === 'defineProps'
+          )
+            target = s.expression.typeParameters!.params[0]
+        }
+        const typeResolveContext = createTypeResolveContext(setupCode, ast.program.body, fileName, mapFile)
+        const raw = resolveTypeElements(typeResolveContext, target)
+        const props = Object.keys(raw.props)
+        const start = component[2]
+        const end = component[3]
+        // 获取代码片段
+        const codeSlice = code.slice(start, end)
+        const codeSliceAst = createAst(codeSlice)
+        const genCode = addProps(codeSliceAst, props)
+        if (genCode)
+          s.overwrite(start, end, genCode)
       }
-      const typeResolveContext = createTypeResolveContext(setupCode, ast.program.body, fileName, mapFile)
-      const raw = resolveTypeElements(typeResolveContext, target)
-      const props = Object.keys(raw.props)
-      const start = component[2]
-      const end = component[3]
-      // 获取代码片段
-      const codeSlice = code.slice(start, end)
-      const codeSliceAst = createAst(codeSlice)
-      const genCode = addProps(codeSliceAst, props)
-      if (genCode)
-        s.overwrite(start, end, genCode)
+      catch (e) {
+        // eslint-disable-next-line no-console
+        console.info(`[tsx-auto-props] ${propName} parse error`)
+      }
     }
   }
   return {
