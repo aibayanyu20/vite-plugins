@@ -43,7 +43,7 @@
     "@babel/parser": "^7.23.4",
     "@babel/traverse": "^7.23.4",
     "@babel/types": "^7.23.4",
-    "@vue/compiler-sfc": "3.4.0-alpha.3",
+    "@vue/compiler-sfc": "^3.4.5",
     "magic-string": "^0.30.5"
   },
   "devDependencies": {
