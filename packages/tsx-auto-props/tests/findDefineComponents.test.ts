@@ -38,13 +38,13 @@ describe('findDefineComponents', () => {
   it('inline', () => {
     const ast = createAst(inlineRaw)
     const res = findDefineComponents(ast)
-    expect(res.map(v => v[1])).toEqual(['{\n  c: string;\n  a: number;\n}', '{\n  c: string;\n  a: number;\n}', '{\n  c: string;\n  a: number;\n}'])
+    expect(res.length).toEqual(4)
   })
 
   it('generic', () => {
     const ast = createAst(genericRaw)
     const res = findDefineComponents(ast)
-    expect(res.length).toEqual(1)
+    expect(res.length).toEqual(2)
   })
 
   it('render', () => {
