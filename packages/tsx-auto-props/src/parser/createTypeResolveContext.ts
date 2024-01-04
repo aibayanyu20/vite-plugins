@@ -14,7 +14,6 @@ export function createTypeResolveContext(code: string, ast: Statement[], id: str
     // console.error(msg, node, scope)
     throw new Error(msg)
   }
-
   return {
     source: descriptor.source,
     filename: descriptor.filename,
@@ -54,5 +53,6 @@ export function createTypeResolveContext(code: string, ast: Statement[], id: str
         },
       },
     },
+    isCE: false,
   }
 }
