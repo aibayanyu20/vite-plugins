@@ -1,10 +1,13 @@
 import type { PluginOption } from 'vite'
+import ts from 'typescript'
+import { registerTS } from '@vue/compiler-sfc'
 import { GraphContext } from './utils/graphContext'
 import { invalidateTypeCacheId } from './utils/invalidate'
 import { getDepModules } from './utils/depModules'
 import type { UserOptions } from './interface'
 import { transform } from './transform'
 
+registerTS(() => ts)
 export function tsxResolveTypes(options: UserOptions = {}): PluginOption {
   const graphCtx = new GraphContext()
   return {

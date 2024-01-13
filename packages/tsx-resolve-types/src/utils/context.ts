@@ -24,9 +24,8 @@ export function createContext(code: string, id: string, graphCtx?: GraphContext)
       filename: id,
       source: code,
       ast: ast.program.body,
-      error(node, msg) {
-        console.error(msg, node)
-        throw new Error(node)
+      error(msg) {
+        throw new Error(`[tsx-resolve-types] ${msg}`)
       },
       helper(key) {
         helper.add(key)
