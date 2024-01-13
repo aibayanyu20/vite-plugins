@@ -38,3 +38,5 @@ export function tsxResolveTypes(options: UserOptions = {}): PluginOption {
     },
   }
 }
+
+export default tsxResolveTypes
