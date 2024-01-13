@@ -29,7 +29,7 @@ describe('types', () => {
             required: false
           }
         }, defaultProps),
-        setup(props = defaultProps) {
+        setup(props) {
           return () => {
             return <div>{props.a}</div>;
           };
@@ -42,7 +42,7 @@ describe('types', () => {
             required: false
           }
         }, defaultProps),
-        setup(props = defaultProps) {
+        setup(props) {
           return () => {
             return <div>{props.a}</div>;
           };
@@ -76,7 +76,7 @@ describe('types', () => {
             required: false
           }
         }, defaultProps),
-        setup(props = defaultProps) {
+        setup(props) {
           return () => {
             return <div>code</div>;
           };
@@ -93,9 +93,7 @@ describe('types', () => {
       interface Props {
         name: string;
       }
-      export const Code3 = defineComponent((props: Props = {
-        name: '1'
-      }) => {
+      export const Code3 = defineComponent((props: Props) => {
         return () => <div>Code3</div>;
       }, {
         props: {
@@ -106,9 +104,7 @@ describe('types', () => {
           }
         }
       });
-      export const Code32 = defineComponent<Props>((props = {
-        name: '1'
-      }) => {
+      export const Code32 = defineComponent<Props>(props => {
         return () => <div>Code3</div>;
       }, {
         props: {
@@ -122,7 +118,7 @@ describe('types', () => {
       const props1 = {
         name: '1'
       };
-      export const Code31 = defineComponent((props: Props = props1) => {
+      export const Code31 = defineComponent((props: Props) => {
         return () => <div>Code3</div>;
       }, {
         props: /*#__PURE__*/_mergeDefaults({

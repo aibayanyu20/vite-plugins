@@ -37,6 +37,8 @@ function addTypes(prop: RestElement | Identifier | Pattern | undefined, ctx: Cre
     }
     if (prop.right)
       ctx.ctx.propsRuntimeDefaults = prop.right
+
+    return prop.left
   }
   else if (prop && isIdentifier(prop)) {
     const type = getTypeAnnotation(prop)
@@ -52,7 +54,9 @@ function getObjectSetup(expression: ObjectExpression, ctx: CreateContextType) {
   if (setup?.type === 'ObjectMethod') {
     const params = setup.params
     const prop = params[0]
-    addTypes(prop, ctx)
+    const leftAst = addTypes(prop, ctx)
+    if (leftAst)
+      params[0] = leftAst as any
   }
 }
 
@@ -73,7 +77,9 @@ function getPropsTypeToDefine(exp: CallExpression, ctx: CreateContextType) {
 function getFuncType(exp: ArrowFunctionExpression | FunctionExpression, ctx: CreateContextType) {
   const params = exp.params
   const prop = params[0]
-  addTypes(prop, ctx)
+  const left = addTypes(prop, ctx)
+  if (left)
+    params[0] = left as any
 }
 
 function getPropsStr(ctx: CreateContextType) {

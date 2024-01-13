@@ -27,9 +27,7 @@ describe('exportConst', () => {
             default: '1'
           }
         },
-        setup(props: Props = {
-          name: '1'
-        }) {
+        setup(props: Props) {
           return () => <div>Code1</div>;
         }
       });"
@@ -54,7 +52,7 @@ describe('exportConst', () => {
             required: false
           }
         }, defaultProps),
-        setup(props: Props = defaultProps) {
+        setup(props: Props) {
           return () => {
             return <div>Code2</div>;
           };
@@ -67,7 +65,7 @@ describe('exportConst', () => {
             required: false
           }
         }, defaultProps),
-        setup(props: Props = defaultProps) {
+        setup(props: Props) {
           return () => {
             return <div>Code2</div>;
           };
@@ -90,7 +88,7 @@ describe('exportConst', () => {
             required: false
           }
         }, defaultProps),
-        setup(props: Props = defaultProps) {
+        setup(props: Props) {
           return () => {
             return <div>Code2</div>;
           };
@@ -103,7 +101,7 @@ describe('exportConst', () => {
             required: false
           }
         }, defaultProps),
-        setup(props: Props = defaultProps) {
+        setup(props: Props) {
           return () => {
             return <div>Code2</div>;
           };
@@ -126,7 +124,7 @@ describe('exportConst', () => {
             required: false
           }
         }, defaultProps),
-        setup(props: Props = defaultProps) {
+        setup(props: Props) {
           return () => {
             return <div>Code2</div>;
           };
@@ -139,7 +137,7 @@ describe('exportConst', () => {
             required: false
           }
         }, defaultProps1),
-        setup(props: Props1 = defaultProps1) {
+        setup(props: Props1) {
           return () => {
             return <div>Code2</div>;
           };

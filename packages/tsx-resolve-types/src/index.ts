@@ -2,12 +2,18 @@ import type { PluginOption } from 'vite'
 import { GraphContext } from './utils/graphContext'
 import { invalidateTypeCacheId } from './utils/invalidate'
 import { getDepModules } from './utils/depModules'
+import type { UserOptions } from './interface'
+import { transform } from './transform'
 
-export function tsxResolveTypes(): PluginOption {
+export function tsxResolveTypes(options: UserOptions = {}): PluginOption {
   const graphCtx = new GraphContext()
   return {
+    enforce: 'pre',
     name: 'tsx-resolve-types',
-
+    transform(code, id) {
+      if (id.endsWith('.tsx'))
+        return transform(code, id, graphCtx, options)
+    },
     /**
      * 热更新
      */

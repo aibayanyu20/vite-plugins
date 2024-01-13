@@ -31,9 +31,7 @@ describe('findComponents', () => {
             default: '1'
           }
         },
-        setup(props: Props = {
-          name: '1'
-        }) {
+        setup(props: Props) {
           return () => <div>basic</div>;
         }
       });"
@@ -88,7 +86,7 @@ describe('findComponents', () => {
             required: false
           }
         }, defaultProps),
-        setup(props: Props = defaultProps) {
+        setup(props: Props) {
           return () => <div>basic</div>;
         }
       });"
@@ -114,7 +112,7 @@ describe('findComponents', () => {
             required: true
           }
         }, defaultProps),
-        setup(_props: Props = defaultProps) {
+        setup(_props: Props) {
           return () => <div>Code3</div>;
         }
       });"

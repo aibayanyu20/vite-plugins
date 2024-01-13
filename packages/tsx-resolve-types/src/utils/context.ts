@@ -46,9 +46,12 @@ export function createContext(code: string, id: string, graphCtx?: GraphContext)
             // 检查文件是否存在
             try {
               const stat = fs.statSync(_file)
-              if (stat.isFile() && !(/node_modules/.test(_file))) {
-                graphCtx?.add(_file, id)
-                graphCtx?.addGraph(id, _file)
+              if (stat.isFile()) {
+                if (!(/node_modules/.test(_file))) {
+                  graphCtx?.add(_file, id)
+                  graphCtx?.addGraph(id, _file)
+                }
+
                 return true
               }
               return false

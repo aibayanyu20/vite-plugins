@@ -1,90 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`autoProps > complex 1`] = `
-"import { defineComponent } from 'vue';
-export interface CommonProps {
-  b: string;
-}
-export interface ComplexProps {
-  a: string;
-}
-export const Complex = defineComponent<CommonProps & ComplexProps>(() => {
-  return () => {
-    return <div></div>;
-  };
-}, {
-  props: {
-    b: {
-      type: String,
-      required: true
-    },
-    a: {
-      type: String,
-      required: true
-    }
-  }
-});
-export const Complex1 = defineComponent((_props: CommonProps & ComplexProps) => {
-  return () => {
-    return <div></div>;
-  };
-}, {
-  props: {
-    b: {
-      type: String,
-      required: true
-    },
-    a: {
-      type: String,
-      required: true
-    }
-  }
-});
-export const Complex2 = defineComponent((_props: CommonProps & {
-  c: string;
-}) => {
-  return () => {
-    return <div></div>;
-  };
-}, {
-  props: {
-    b: {
-      type: String,
-      required: true
-    },
-    c: {
-      type: String,
-      required: true
-    }
-  }
-});
-export const Complex3 = defineComponent({
-  props: {
-    b: {
-      type: String,
-      required: true
-    },
-    a: {
-      type: String,
-      required: true
-    }
-  },
-  setup(_props: CommonProps & ComplexProps) {
-    return () => {
-      return <div></div>;
-    };
-  }
-});
-export const Complex4 = defineComponent({
-  props: ['a', 'b'],
-  setup(_props: CommonProps & ComplexProps) {
-    return () => {
-      return <div></div>;
-    };
-  }
-});"
-`;
-
 exports[`autoProps > defaults 1`] = `
 "import { defineComponent } from 'vue';
 export const DefaultTsx = defineComponent<{
@@ -97,9 +12,7 @@ export const DefaultTsx = defineComponent<{
       default: '1'
     }
   },
-  setup(props = {
-    a: '1'
-  }) {
+  setup(props) {
     return () => {
       return <div></div>;
     };

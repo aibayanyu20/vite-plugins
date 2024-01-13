@@ -1,6 +1,8 @@
+import type { SetupContext } from 'vue'
 import { defineComponent } from 'vue'
 
 import type { TableProps, TestProps } from './typing'
+import { tablePropsDef } from './typing'
 
 const Test1 = defineComponent<TestProps>((props) => {
   return () => {
@@ -26,7 +28,11 @@ const Test2 = defineComponent({
   },
 })
 
-export default defineComponent((props: TableProps, { attrs }) => {
+interface Emits {
+  click: [Event]
+}
+
+export default defineComponent((props: TableProps = tablePropsDef, { attrs }: SetupContext<Emits>) => {
   return () => {
     return (
       <div>
@@ -34,7 +40,9 @@ export default defineComponent((props: TableProps, { attrs }) => {
         1111111
         {props.test4}
         attrs
-        {' '}
+        <span style={{ color: 'red' }}>
+          {props.test}
+        </span>
         { attrs.num }
         <Test1 {...props}></Test1>
         <Test2 {...props}></Test2>
