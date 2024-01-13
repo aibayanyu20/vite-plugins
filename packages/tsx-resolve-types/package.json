@@ -1,0 +1,53 @@
+{
+  "name": "vite-plugin-tsx-resolve-types",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "this is a vite plugin for auto props in tsx",
+  "author": "aibayanyu20 <aibayanyu@qq.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/aibayanyu20/vite-plugins/#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aibayanyu20/vite-plugins.git"
+  },
+  "keywords": [
+    "vite",
+    "vite-plugin"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json",
+    "./dist/*": "./dist/*"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "play": "vite play"
+  },
+  "peerDependencies": {
+    "typescript": ">=5",
+    "vite": ">=4"
+  },
+  "dependencies": {
+    "@babel/generator": "^7.23.4",
+    "@babel/parser": "^7.23.4",
+    "@babel/traverse": "^7.23.4",
+    "@babel/types": "^7.23.4",
+    "@vue/compiler-sfc": "^3.4.13"
+  },
+  "devDependencies": {
+    "@types/babel__generator": "^7.6.7",
+    "@types/babel__traverse": "^7.20.4",
+    "ant-design-vue": "^4.0.7"
+  }
+}

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Test from './components/Test'
+import Test from './components/HelloWorld.vue'
 </script>
 
 <template>
   <div>
-    <Test test="测试" test2="测试2" test4="test4" :num="1" />
+    <Test msg="211" />
   </div>
 </template>
