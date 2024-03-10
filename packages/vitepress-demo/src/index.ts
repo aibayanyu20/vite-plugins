@@ -46,9 +46,6 @@ export function vitepressDemo(opt?: UserOptions): Plugin {
       return loadMd.transform(code, id)
     },
     load(id) {
-      if (id === VITEPRESS_ID)
-        console.log('SAdsadsa')
-
       if (id === VITEPRESS_ID_PATH)
         return watcher.load()
     },

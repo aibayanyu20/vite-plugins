@@ -5,6 +5,7 @@ import fg from 'fast-glob'
 import type { Tools } from '../tools'
 import { Block } from '../tools/block'
 import { FileCache } from './file-cache'
+
 export class Watcher {
   private w: FSWatcher | undefined
   private shortPathCache = new Map<string, string>()

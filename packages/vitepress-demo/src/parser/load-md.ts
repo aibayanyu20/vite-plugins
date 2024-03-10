@@ -1,4 +1,4 @@
-import { dirname, resolve } from 'path'
+import { dirname, resolve } from 'node:path'
 import MagicString from 'magic-string'
 import { parseDocument } from 'htmlparser2'
 import { render } from 'dom-serializer'
@@ -6,6 +6,7 @@ import { normalizePath } from 'vite'
 import type { Tools } from '../tools'
 import type { Watcher } from './watcher'
 import { WatchQueue } from './watch-queue'
+
 export interface DemoItem {
   content: string
   map: [number, number]

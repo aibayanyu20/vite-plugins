@@ -1,4 +1,3 @@
-import MarkdownIt from 'markdown-it'
 import { normalizePath } from 'vite'
 import type { ResolvedConfig, UserConfig, ViteDevServer } from 'vite'
 import fsExtra from 'fs-extra'
@@ -51,9 +50,9 @@ export class Tools {
   }
 
   /**
-     * 获取当前的资源路径地址
-     * @param config
-     */
+   * 获取当前的资源路径地址
+   * @param config
+   */
   public baseDir(config?: UserConfig) {
     const path: string = this.options.srcDir ?? config?.root ?? this.config?.root ?? process.cwd()
     return normalizePath(path)
@@ -76,8 +75,8 @@ export class Tools {
   }
 
   /**
-     * 获取当前的资源路径地址
-     */
+   * 获取当前的资源路径地址
+   */
   get srcDir() {
     return this.baseDir()
   }
