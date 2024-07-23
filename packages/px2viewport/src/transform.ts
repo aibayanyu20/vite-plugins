@@ -24,7 +24,7 @@ export function transform(code: string, id: string, baseWidth = 750): undefined 
             replaceCode = `, ${normalizeStyleStr}`
           }
           const newImports = _imports.replace(replaceCode, '')
-          const replaceImport = `import ${newImports} from '${source.specifier}'\nimport { normalizeStyle as _normalizeStyle } from 'vite-plugin-inline-px-to-viewport/vue';\n_normalizeStyle.prototype.baseWidth=${baseWidth};\n`
+          const replaceImport = `import ${newImports} from '${source.specifier}'\nimport { normalizeStyle as _normalizeStyle } from '@mistjs/vite-plugin-px2viewport/vue';\n_normalizeStyle.prototype.baseWidth=${baseWidth};\n`
           m.overwrite(source.start, source.end, replaceImport)
         }
       }

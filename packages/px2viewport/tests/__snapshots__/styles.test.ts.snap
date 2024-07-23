@@ -99,7 +99,7 @@ const _sfc_main = /* @__PURE__ */ _defineComponent({
   }
 });
 import { toDisplayString as _toDisplayString,  createElementVNode as _createElementVNode, createTextVNode as _createTextVNode, resolveComponent as _resolveComponent, withCtx as _withCtx, createVNode as _createVNode, openBlock as _openBlock, createElementBlock as _createElementBlock }  from 'vue'
-import { normalizeStyle as _normalizeStyle } from 'vite-plugin-inline-px-to-viewport/vue';
+import { normalizeStyle as _normalizeStyle } from '@mistjs/vite-plugin-px2viewport/vue';
 _normalizeStyle.prototype.baseWidth=750;
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_van_button = _resolveComponent(\\"van-button\\");
@@ -168,7 +168,7 @@ const _sfc_main = /* @__PURE__ */ _defineComponent({
   }
 });
 import { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createTextVNode as _createTextVNode, resolveComponent as _resolveComponent, withCtx as _withCtx, createVNode as _createVNode, openBlock as _openBlock, createElementBlock as _createElementBlock }  from 'vue'
-import { normalizeStyle as _normalizeStyle } from 'vite-plugin-inline-px-to-viewport/vue';
+import { normalizeStyle as _normalizeStyle } from '@mistjs/vite-plugin-px2viewport/vue';
 _normalizeStyle.prototype.baseWidth=750;
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_van_button = _resolveComponent(\\"van-button\\");
