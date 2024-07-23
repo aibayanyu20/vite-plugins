@@ -6,6 +6,9 @@
   "author": "aibayanyu20 <aibayanyu@qq.com>",
   "license": "MIT",
   "homepage": "https://github.com/aibayanyu20/vite-plugins/#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aibayanyu20/vite-plugins.git"
