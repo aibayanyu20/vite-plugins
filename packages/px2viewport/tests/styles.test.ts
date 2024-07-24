@@ -5,9 +5,9 @@ import { testCode1, testCode2, testCode3 } from './fixtrures/test-code'
 
 describe('styles', () => {
   it('should work', () => {
-    const res = transform(testCode1, './aa.vue')
+    const res = transform(testCode1)
     expect(res).toMatchSnapshot()
-    expect(transform(testCode2, './ab.vue')).toMatchSnapshot()
+    expect(transform(testCode2)).toMatchSnapshot()
   })
   it('should inline css', () => {
     expect(inlineTransform(testCode3)).toMatchSnapshot()
