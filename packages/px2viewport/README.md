@@ -1,6 +1,6 @@
 # px2viewport
 
-This is a Vite-based plugin used to convert inline px units to vw units.
+This is a Vite-based plugin used to convert inline and css file px units to vw units.
 
 ## Installation
 

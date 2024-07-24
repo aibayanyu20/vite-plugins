@@ -11,6 +11,7 @@ export default defineConfig({
     '@babel/parser',
     '@babel/traverse',
     '@babel/types',
+    'postcss-px-to-viewport-8-plugin',
     'magic-string-ast',
     'mlly',
   ],
