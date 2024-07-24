@@ -11,27 +11,27 @@ function pxToVw(input: string, baseWidth: number = 750): string {
     return `${vwValue}vw`
   })
 }
-function resolveStyleObject(node: ObjectExpression) {
+function resolveStyleObject(node: ObjectExpression, baseWidth: number = 750) {
   const props = node.properties
   for (const prop of props) {
     if (prop.type === 'ObjectProperty' && prop.value.type === 'StringLiteral') {
       if (prop.value.value)
-        prop.value.value = pxToVw(prop.value.value)
+        prop.value.value = pxToVw(prop.value.value, baseWidth)
     }
   }
 }
 
-function resolveObjectExpression(node: ObjectExpression) {
+function resolveObjectExpression(node: ObjectExpression, baseWidth: number = 750) {
   const props = node.properties
   for (const prop of props) {
     if (prop.type === 'ObjectProperty' && prop.key.type === 'Identifier' && prop.key.name === 'style') {
       if (prop.value.type === 'ObjectExpression')
-        resolveStyleObject(prop.value)
+        resolveStyleObject(prop.value, baseWidth)
     }
   }
 }
 
-export function inlineTransform(code: string) {
+export function inlineTransform(code: string, baseWidth: number = 750) {
   // 使用babel进行转换
   const ast = parse(code, {
     sourceType: 'module',
@@ -45,7 +45,7 @@ export function inlineTransform(code: string) {
           // 证明是变量提升的数据
           if (node.init && node.init.type === 'ObjectExpression') {
             // 如果是一个对象的情况下如何进行处理
-            resolveObjectExpression(node.init)
+            resolveObjectExpression(node.init, baseWidth)
           }
         }
       }

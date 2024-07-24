@@ -3,7 +3,7 @@ import { MagicString } from 'magic-string-ast'
 import { inlineTransform } from './inlineTransform'
 
 export function transform(code: string, baseWidth = 750): undefined | any {
-  code = inlineTransform(code)
+  code = inlineTransform(code, baseWidth)
   const m = new MagicString(code)
   // 处理全局的参数来实现px2viewport
   const imports = findStaticImports(code)
