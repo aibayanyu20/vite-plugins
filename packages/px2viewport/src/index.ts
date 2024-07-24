@@ -14,6 +14,7 @@ export function px2viewport(options: Px2viewportOptions = {
   const filter = createFilter(options.include)
   return {
     name: 'px2viewport',
+    enforce: 'post',
     transform(code, id) {
       if (filter(id)) {
         const res = transform(code, options.viewportWidth ?? 750)
