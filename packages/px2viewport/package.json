@@ -1,7 +1,7 @@
 {
   "name": "@mistjs/vite-plugin-px2viewport",
   "type": "module",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "this is a vite plugin for inline px to viewport",
   "author": "aibayanyu20 <aibayanyu@qq.com>",
   "license": "MIT",
