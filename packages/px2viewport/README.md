@@ -30,6 +30,7 @@ export default defineConfig({
 
 - `viewportWidth` (number): The width of the viewport. Default: 750.
 - `include` (string | RegExp | (string | RegExp)[]): The file path to be processed. Default: `/\.(vue|jsx|tsx)$/`.
+- `cssOptions` (object): same to [postcss-px-to-viewport-8-plugin](https://github.com/lkxian888/postcss-px-to-viewport-8-plugin#api-%E8%AF%B4%E6%98%8E)
 
 
 ## Example
