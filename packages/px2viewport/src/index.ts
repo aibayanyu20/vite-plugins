@@ -88,7 +88,7 @@ export function px2viewport(options: Px2viewportOptions = {
   viewportWidth: 750,
   include: [/\.vue$/, /\.[jt]sx$/],
 }): PluginOption {
-  const filter = createFilter(options.include)
+  const filter = createFilter(options?.include ?? [/\.vue$/, /\.[jt]sx$/]);
   return {
     name: 'px2viewport',
     enforce: 'post',
