@@ -36,6 +36,7 @@ export function inlineTransform(code: string, baseWidth: number = 750) {
   const ast = parse(code, {
     sourceType: 'module',
   })
+
   traverse(ast, {
     // 获取当前定义的函数
     VariableDeclarator({ node }) {
@@ -46,6 +47,21 @@ export function inlineTransform(code: string, baseWidth: number = 750) {
           if (node.init && node.init.type === 'ObjectExpression') {
             // 如果是一个对象的情况下如何进行处理
             resolveObjectExpression(node.init, baseWidth)
+          }
+        }
+      }
+    },
+    CallExpression({ node }) {
+      if (node.callee.type === 'Identifier' && node.callee.name === '_createElementVNode') {
+        // TODO
+        const props = node?.arguments?.[1]
+        if (props && props.type === 'ObjectExpression') {
+          const properties = props.properties
+          for (const prop of properties) {
+            if (prop.type === 'ObjectProperty' && prop.key.type === 'Identifier' && prop.key.name === 'style') {
+              if (prop.value.type === 'ObjectExpression')
+                resolveStyleObject(prop.value, baseWidth)
+            }
           }
         }
       }
