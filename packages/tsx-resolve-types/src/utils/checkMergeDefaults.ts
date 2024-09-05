@@ -3,7 +3,7 @@ import { traverse } from './traverse'
 import { createAst } from './ast'
 
 export function checkMergeDefaults(ctx: CreateContextType) {
-  if (ctx.importMergeDefaults)
+  if (!ctx.importMergeDefaults)
     return
 
   /**

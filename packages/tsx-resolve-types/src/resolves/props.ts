@@ -25,7 +25,7 @@ import type { CreateContextType } from '../utils/context'
 
 function getTypeAnnotation(node: Identifier) {
   if (node.typeAnnotation && 'typeAnnotation' in node.typeAnnotation)
-    return node.typeAnnotation.typeAnnotation
+    return node.typeAnnotation
 }
 
 function addTypes(prop: RestElement | Identifier | Pattern | undefined, ctx: CreateContextType) {
@@ -86,7 +86,6 @@ function getPropsStr(ctx: CreateContextType) {
   if (ctx.ctx.propsTypeDecl) {
     // 开始执行函数获取里面的数据信息
     const propStr = extractRuntimeProps(ctx.ctx)
-
     ctx.ctx.propsTypeDecl = undefined
     ctx.ctx.propsRuntimeDefaults = undefined
     if (propStr) {
@@ -94,7 +93,7 @@ function getPropsStr(ctx: CreateContextType) {
        * 判断生成的代码中是否存在
        */
       if (!ctx.importMergeDefaults)
-        propStr.includes('/*#__PURE__*/_mergeDefaults') && (ctx.importMergeDefaults = true)
+        (propStr.includes('/*#__PURE__*/_mergeDefaults') || propStr.includes('/*@__PURE__*/_mergeDefaults') || propStr.includes('_mergeDefaults')) && (ctx.importMergeDefaults = true)
       return parseExpression(propStr)
     }
   }
