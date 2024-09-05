@@ -7,7 +7,7 @@ import { getDepModules } from './utils/depModules'
 import type { UserOptions } from './interface'
 import { transform } from './transform'
 
-registerTS(() => ts)
+registerTS(() => ts as any)
 export function tsxResolveTypes(options: UserOptions = {}): PluginOption {
   const graphCtx = new GraphContext()
   return {
