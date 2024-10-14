@@ -36,7 +36,12 @@ export function inlineTransform(code: string, baseWidth: number = 750) {
   const ast = parse(code, {
     sourceType: 'module',
   })
+<<<<<<< HEAD
 
+=======
+  console.log(ast.program.body);
+  
+>>>>>>> 5b98de4 (test: test sfc code)
   traverse(ast, {
     // 获取当前定义的函数
     VariableDeclarator({ node }) {
