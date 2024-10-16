@@ -132,7 +132,7 @@ export function px2viewport(options: Px2viewportOptions = {
         tags: [
           {
             tag: 'script',
-            children: `windown.__px2viewport = ${JSON.stringify(_config)}`,
+            children: `window.__px2viewport = ${JSON.stringify(_config)}`,
           },
         ],
       }
