@@ -41,7 +41,8 @@
   ],
   "scripts": {
     "build": "tsup",
-    "play": "vite play"
+    "play": "vite play",
+    "prepublish": "pnpm build"
   },
   "peerDependencies": {
     "typescript": ">=5",
