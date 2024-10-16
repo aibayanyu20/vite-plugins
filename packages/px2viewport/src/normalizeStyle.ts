@@ -49,9 +49,9 @@ declare global {
   }
 }
 
-function pxToVw(input: string, baseWidth: number = 750): string {
+function pxToVw(input: string): string {
   let config: Px2viewportOptions = {
-    viewportWidth: baseWidth,
+    viewportWidth: 750,
     unitToConvert: 'px',
     unitPrecision: 5,
     viewportUnit: 'vw',
@@ -63,6 +63,7 @@ function pxToVw(input: string, baseWidth: number = 750): string {
       ...window.__px2viewport,
     }
   }
+  const baseWidth = config.viewportWidth as number
   const ReU = new RegExp(`(\\d+)${config.unitToConvert}`, 'g')
   return input.replace(ReU, (_match, pxValue) => {
     const vwValue = Number(((Number.parseInt(pxValue) / baseWidth) * 100).toFixed(config.unitPrecision ?? 5))
@@ -75,9 +76,8 @@ function pxToVw(input: string, baseWidth: number = 750): string {
 
 export function formatStyleValue(value: any) {
   // 检查末位是不是px，如果是px的情况下，就对数据进行处理
-  const baseWidth = normalizeStyle.prototype.baseWidth ?? 750
   if (isString(value))
-    return pxToVw(value, baseWidth)
+    return pxToVw(value)
 
   return value
 }
