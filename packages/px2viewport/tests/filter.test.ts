@@ -1,10 +1,10 @@
-import { createFilter } from "vite"
-import { describe,it,expect } from "vitest"
+import { createFilter } from 'vite'
+import { describe, expect, it } from 'vitest'
 
-describe("test filter",()=>{
-    it("test",()=>{
-        const filter = createFilter([/\.vue$/, /\.[jt]sx$/])
-        const id = `ss/test.jsx`
-        expect(filter(id)).toBe(true)
-    })
+describe('test filter', () => {
+  it('test', () => {
+    const filter = createFilter([/\.vue$/, /\.[jt]sx$/])
+    const id = `ss/test.jsx`
+    expect(filter(id)).toBe(true)
+  })
 })

@@ -1,0 +1,57 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`sfc > should work 1`] = `
+"const __sfc__ = {};
+import { createElementVNode as _createElementVNode, createTextVNode as _createTextVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue";
+function render(_ctx, _cache) {
+  return _openBlock(), _createElementBlock("div", null, _cache[0] || (_cache[0] = [_createTextVNode(" 我的 "), _createElementVNode("div", {
+    class: "bg-red",
+    style: {
+      "width": "13.33333vw",
+      "height": "13.33333vw"
+    }
+  }, " Test ", -1 /* HOISTED */)]));
+}
+
+__sfc__.render = render;
+__sfc__.__file = "src/App.vue";
+export default __sfc__;"
+`;
+
+exports[`sfc > should work 2`] = `
+"import { ref } from 'vue';
+import Comp from './Comp.vue';
+const __sfc__ = {
+  __name: 'App',
+  setup(__props, {
+    expose: __expose
+  }) {
+    __expose();
+    const msg = ref('Hello World!');
+    const __returned__ = {
+      msg,
+      ref,
+      Comp
+    };
+    Object.defineProperty(__returned__, '__isScriptSetup', {
+      enumerable: false,
+      value: true
+    });
+    return __returned__;
+  }
+};
+import { toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, vModelText as _vModelText, withDirectives as _withDirectives, createVNode as _createVNode, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue";
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return _openBlock(), _createElementBlock(_Fragment, null, [_createElementVNode("h1", null, _toDisplayString($setup.msg), 1 /* TEXT */), _withDirectives(_createElementVNode("input", {
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => $setup.msg = $event)
+  }, null, 512 /* NEED_PATCH */), [[_vModelText, $setup.msg]]), _createVNode($setup["Comp"], {
+    style: {
+      "height": "13.33333vw"
+    }
+  })], 64 /* STABLE_FRAGMENT */);
+}
+
+__sfc__.render = render;
+__sfc__.__file = "src/App.vue";
+export default __sfc__;"
+`;

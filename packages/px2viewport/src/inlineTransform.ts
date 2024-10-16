@@ -2,46 +2,54 @@ import { parse } from '@babel/parser'
 import type { ObjectExpression } from '@babel/types'
 import { traverse } from './utils/traverse'
 import { generate } from './utils/genrate'
+import type { Px2viewportOptionsCommon } from './index'
 
-const ReU = /(\d+)px/g
+export function pxToVw(input: string, _config?: Px2viewportOptionsCommon): string {
+  const config = {
+    viewportWidth: _config?.viewportWidth ?? 750,
+    unitToConvert: 'px',
+    unitPrecision: 5,
+    viewportUnit: 'vw',
+    minPixelValue: undefined,
+    ..._config,
+  }
+  const ReU = new RegExp(`(\\d+)${config.unitToConvert}`, 'g')
+  const baseWidth = config.viewportWidth as number
 
-function pxToVw(input: string, baseWidth: number = 750): string {
-  return input.replace(ReU, (_match, pxValue) => {
-    const vwValue = Number(((Number.parseInt(pxValue) / baseWidth) * 100).toFixed(5))
-    return `${vwValue}vw`
+  return input.replace(ReU, (_, pxValue) => {
+    const vwValue = Number(((Number.parseInt(pxValue) / baseWidth) * 100).toFixed(config.unitPrecision ?? 5))
+    if (config.minPixelValue && vwValue < config.minPixelValue)
+      return `${config.minPixelValue}${config.unitToConvert}`
+
+    return `${vwValue}${config.viewportUnit}`
   })
 }
-function resolveStyleObject(node: ObjectExpression, baseWidth: number = 750) {
+
+function resolveStyleObject(node: ObjectExpression, config?: Px2viewportOptionsCommon) {
   const props = node.properties
   for (const prop of props) {
     if (prop.type === 'ObjectProperty' && prop.value.type === 'StringLiteral') {
       if (prop.value.value)
-        prop.value.value = pxToVw(prop.value.value, baseWidth)
+        prop.value.value = pxToVw(prop.value.value, config)
     }
   }
 }
 
-function resolveObjectExpression(node: ObjectExpression, baseWidth: number = 750) {
+function resolveObjectExpression(node: ObjectExpression, config?: Px2viewportOptionsCommon) {
   const props = node.properties
   for (const prop of props) {
     if (prop.type === 'ObjectProperty' && prop.key.type === 'Identifier' && prop.key.name === 'style') {
       if (prop.value.type === 'ObjectExpression')
-        resolveStyleObject(prop.value, baseWidth)
+        resolveStyleObject(prop.value, config)
     }
   }
 }
 
-export function inlineTransform(code: string, baseWidth: number = 750) {
+export function inlineTransform(code: string, config?: Px2viewportOptionsCommon) {
   // 使用babel进行转换
   const ast = parse(code, {
     sourceType: 'module',
   })
-<<<<<<< HEAD
-
-=======
-  console.log(ast.program.body);
-  
->>>>>>> 5b98de4 (test: test sfc code)
   traverse(ast, {
     // 获取当前定义的函数
     VariableDeclarator({ node }) {
@@ -51,13 +59,13 @@ export function inlineTransform(code: string, baseWidth: number = 750) {
           // 证明是变量提升的数据
           if (node.init && node.init.type === 'ObjectExpression') {
             // 如果是一个对象的情况下如何进行处理
-            resolveObjectExpression(node.init, baseWidth)
+            resolveObjectExpression(node.init, config)
           }
         }
       }
     },
     CallExpression({ node }) {
-      if (node.callee.type === 'Identifier' && node.callee.name === '_createElementVNode') {
+      if (node.callee.type === 'Identifier' && (node.callee.name === '_createElementVNode' || node.callee.name === '_createVNode')) {
         // TODO
         const props = node?.arguments?.[1]
         if (props && props.type === 'ObjectExpression') {
@@ -65,7 +73,7 @@ export function inlineTransform(code: string, baseWidth: number = 750) {
           for (const prop of properties) {
             if (prop.type === 'ObjectProperty' && prop.key.type === 'Identifier' && prop.key.name === 'style') {
               if (prop.value.type === 'ObjectExpression')
-                resolveStyleObject(prop.value, baseWidth)
+                resolveStyleObject(prop.value, config)
             }
           }
         }

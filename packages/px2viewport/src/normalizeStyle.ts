@@ -21,12 +21,55 @@ function parseStringStyle(cssText: string): NormalizedStyle {
   return ret
 }
 
-const ReU = /(\d+)px/g
+interface Px2viewportOptions {
+/**
+ * 需要转换的单位，默认为"px"
+ */
+  unitToConvert?: string
+  /**
+   * 单位转换后保留的精度
+   */
+  unitPrecision?: number
+  /**
+   * 希望使用的视口单位
+   */
+  viewportUnit?: string
+  /**
+   * 设置最小的转换数值，如果为1的话，只有大于1的值会被转换
+   */
+  minPixelValue?: number
+  /**
+   * 设计稿的视口宽度
+   */
+  viewportWidth?: number
+}
+declare global {
+  interface Window {
+    __px2viewport: Px2viewportOptions
+  }
+}
 
 function pxToVw(input: string, baseWidth: number = 750): string {
+  let config: Px2viewportOptions = {
+    viewportWidth: baseWidth,
+    unitToConvert: 'px',
+    unitPrecision: 5,
+    viewportUnit: 'vw',
+    minPixelValue: undefined,
+  }
+  if (window && window.__px2viewport) {
+    config = {
+      ...config,
+      ...window.__px2viewport,
+    }
+  }
+  const ReU = new RegExp(`(\\d+)${config.unitToConvert}`, 'g')
   return input.replace(ReU, (_match, pxValue) => {
-    const vwValue = Number(((Number.parseInt(pxValue) / baseWidth) * 100).toFixed(5))
-    return `${vwValue}vw`
+    const vwValue = Number(((Number.parseInt(pxValue) / baseWidth) * 100).toFixed(config.unitPrecision ?? 5))
+    if (config.minPixelValue && vwValue < config.minPixelValue)
+      return `${config.minPixelValue}${config.unitToConvert}`
+
+    return `${vwValue}${config.viewportUnit}`
   })
 }
 

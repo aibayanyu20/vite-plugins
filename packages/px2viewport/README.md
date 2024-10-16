@@ -30,7 +30,15 @@ export default defineConfig({
 
 - `viewportWidth` (number): The width of the viewport. Default: 750.
 - `include` (string | RegExp | (string | RegExp)[]): The file path to be processed. Default: `/\.(vue|jsx|tsx)$/`.
+- `unitToConvert` (string): The unit to convert. Default: `px`.
+- `unitPrecision` (number): The decimal numbers to allow. Default: 5.
+- `viewportUnit` (string): The unit to convert to. Default: `vw`.
+- `minPixelValue` (number): The minimum pixel value to convert.
 - `cssOptions` (object): same to [postcss-px-to-viewport-8-plugin](https://github.com/lkxian888/postcss-px-to-viewport-8-plugin#api-%E8%AF%B4%E6%98%8E)
+
+> [!WARNING]
+> `cssOptions`only support postcss plugin, not support inline style and dynamic style.
+
 
 
 ## Example

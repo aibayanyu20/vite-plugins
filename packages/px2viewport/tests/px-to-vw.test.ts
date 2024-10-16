@@ -1,13 +1,5 @@
 import { describe, expect, it } from 'vitest'
-
-const ReU = /(\d+)px/g
-
-function pxToVw(input: string, baseWidth: number = 750): string {
-  return input.replace(ReU, (_match, pxValue) => {
-    const vwValue = Number(((Number.parseInt(pxValue) / baseWidth) * 100).toFixed(5))
-    return `${vwValue}vw`
-  })
-}
+import { pxToVw } from '../src/inlineTransform'
 
 describe('px-to-vw', () => {
   it('should work', () => {
@@ -23,8 +15,11 @@ describe('px-to-vw', () => {
   })
 
   it('should work with baseWidth', () => {
-    expect(pxToVw('100px', 375)).toBe('26.66667vw')
-    expect(pxToVw('1px', 375)).toBe('0.26667vw')
-    expect(pxToVw('0px', 375)).toBe('0vw')
+    expect(pxToVw('100px', { viewportWidth: 375 })).toBe('26.66667vw')
+    expect(pxToVw('100PX 100px', { viewportWidth: 375, unitToConvert: 'PX' })).toBe('26.66667vw 100px')
+    expect(pxToVw('100px', { viewportWidth: 375, unitToConvert: 'PX' })).toBe('100px')
+    expect(pxToVw('100px', { viewportWidth: 375, unitPrecision: 2 })).toBe('26.67vw')
+    expect(pxToVw('1px', { viewportWidth: 375 })).toBe('0.26667vw')
+    expect(pxToVw('0px', { viewportWidth: 375 })).toBe('0vw')
   })
 })

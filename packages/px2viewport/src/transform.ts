@@ -1,9 +1,10 @@
 import { findStaticImports } from 'mlly'
 import { MagicString } from 'magic-string-ast'
 import { inlineTransform } from './inlineTransform'
+import type { Px2viewportOptionsCommon } from './index'
 
-export function transform(code: string, baseWidth = 750): undefined | any {
-  code = inlineTransform(code, baseWidth)
+export function transform(code: string, config?: Px2viewportOptionsCommon): undefined | any {
+  code = inlineTransform(code, config)
   const m = new MagicString(code)
   // 处理全局的参数来实现px2viewport
   const imports = findStaticImports(code)
@@ -24,7 +25,8 @@ export function transform(code: string, baseWidth = 750): undefined | any {
           replaceCode = `, ${normalizeStyleStr}`
         }
         const newImports = _imports.replace(replaceCode, '')
-        const replaceImport = `import ${newImports} from '${source.specifier}'\nimport { normalizeStyle as _normalizeStyle } from '@mistjs/vite-plugin-px2viewport/vue';\n_normalizeStyle.prototype.baseWidth=${baseWidth};\n`
+        // \n_normalizeStyle.prototype.baseWidth=${baseWidth};
+        const replaceImport = `import ${newImports} from '${source.specifier}'\nimport { normalizeStyle as _normalizeStyle } from '@mistjs/vite-plugin-px2viewport/vue';\n`
         m.overwrite(source.start, source.end, replaceImport)
       }
     }
