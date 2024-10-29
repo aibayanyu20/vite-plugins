@@ -93,9 +93,9 @@ export interface Px2viewportOptions extends Px2viewportOptionsCommon {
 
 export function px2viewport(options: Px2viewportOptions = {
   viewportWidth: 750,
-  include: [/\.vue$/, /\.[jt]sx$/],
+  include: [/\.vue/, /\.[jt]sx$/],
 }): PluginOption {
-  const filter = createFilter(options?.include ?? [/\.vue$/, /\.[jt]sx$/])
+  const filter = createFilter(options?.include ?? [/\.vue/, /\.[jt]sx/])
 
   const commonConfig: Px2viewportOptionsCommon = {
     unitToConvert: options.unitToConvert ?? 'px',
