@@ -1,1 +1,1 @@
-export { normalizeStyle } from './normalizeStyle'
+export { normalizeStyle, mergeProps } from './normalizeStyle'

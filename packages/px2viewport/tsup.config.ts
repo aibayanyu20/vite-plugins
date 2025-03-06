@@ -14,6 +14,7 @@ export default defineConfig({
     'postcss-px-to-viewport-8-plugin',
     'magic-string-ast',
     'mlly',
+    'vue',
   ],
   dts: true,
   format: ['esm', 'cjs'],

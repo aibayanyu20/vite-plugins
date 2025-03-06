@@ -43,7 +43,7 @@ importers:
         version: 4.4.1
       tsup:
         specifier: ^6.7.0
-        version: 6.7.0(postcss@8.4.45)(typescript@5.5.4)
+        version: 6.7.0(postcss@8.4.31)(typescript@5.5.4)
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -55,7 +55,7 @@ importers:
         version: 5.4.3(@types/node@18.19.50)
       vite-plugin-inspect:
         specifier: ^0.8.7
-        version: 0.8.7(rollup@4.21.2)(vite@5.4.3(@types/node@18.19.50))
+        version: 0.8.7(rollup@3.29.4)(vite@5.4.3(@types/node@18.19.50))
       vitest:
         specifier: ^2.0.5
         version: 2.0.5(@types/node@18.19.50)
@@ -73,7 +73,7 @@ importers:
         version: 1.0.10
       bundle-require:
         specifier: ^4.0.1
-        version: 4.0.2(esbuild@0.17.19)
+        version: 4.0.2(esbuild@0.21.5)
       chokidar:
         specifier: ^3.5.3
         version: 3.5.3
@@ -110,7 +110,7 @@ importers:
         version: 5.0.5
       tsup:
         specifier: 6.7.0
-        version: 6.7.0(postcss@8.4.31)(typescript@5.2.2)
+        version: 6.7.0(postcss@8.4.45)(typescript@5.2.2)
       typescript:
         specifier: ^5.1.6
         version: 5.2.2
@@ -135,6 +135,9 @@ importers:
       '@babel/types':
         specifier: ^7.23.4
         version: 7.23.4
+      '@vue/shared':
+        specifier: ^3.5.13
+        version: 3.5.13
       magic-string-ast:
         specifier: ^0.6.2
         version: 0.6.2
@@ -1372,6 +1375,7 @@ packages:
     resolution: {integrity: sha512-ztRJJMiE8nnU1YFcdbd9BcH6bGWG1z+jP+IPW2oDUAPxPjo9dverIOyXz76m6IPA6udEL12reYeLojzW2cYL7w==}
     cpu: [arm]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-arm-gnueabihf@4.5.0':
     resolution: {integrity: sha512-VpSQ+xm93AeV33QbYslgf44wc5eJGYfYitlQzAi3OObu9iwrGXEnmu5S3ilkqE3Pr/FkgOiJKV/2p0ewf4Hrtg==}
@@ -1387,81 +1391,97 @@ packages:
     resolution: {integrity: sha512-flOcGHDZajGKYpLV0JNc0VFH361M7rnV1ee+NTeC/BQQ1/0pllYcFmxpagltANYt8FYf9+kL6RSk80Ziwyhr7w==}
     cpu: [arm]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-arm64-gnu@4.21.2':
     resolution: {integrity: sha512-69CF19Kp3TdMopyteO/LJbWufOzqqXzkrv4L2sP8kfMaAQ6iwky7NoXTp7bD6/irKgknDKM0P9E/1l5XxVQAhw==}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-arm64-gnu@4.5.0':
     resolution: {integrity: sha512-OrEyIfpxSsMal44JpEVx9AEcGpdBQG1ZuWISAanaQTSMeStBW+oHWwOkoqR54bw3x8heP8gBOyoJiGg+fLY8qQ==}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-arm64-gnu@4.6.0':
     resolution: {integrity: sha512-Ed8uJI3kM11de9S0j67wAV07JUNhbAqIrDYhQBrQW42jGopgheyk/cdcshgGO4fW5Wjq97COCY/BHogdGvKVNQ==}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-arm64-musl@4.21.2':
     resolution: {integrity: sha512-48pD/fJkTiHAZTnZwR0VzHrao70/4MlzJrq0ZsILjLW/Ab/1XlVUStYyGt7tdyIiVSlGZbnliqmult/QGA2O2w==}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-arm64-musl@4.5.0':
     resolution: {integrity: sha512-1H7wBbQuE6igQdxMSTjtFfD+DGAudcYWhp106z/9zBA8OQhsJRnemO4XGavdzHpGhRtRxbgmUGdO3YQgrWf2RA==}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-arm64-musl@4.6.0':
     resolution: {integrity: sha512-mZoNQ/qK4D7SSY8v6kEsAAyDgznzLLuSFCA3aBHZTmf3HP/dW4tNLTtWh9+LfyO0Z1aUn+ecpT7IQ3WtIg3ViQ==}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-powerpc64le-gnu@4.21.2':
     resolution: {integrity: sha512-cZdyuInj0ofc7mAQpKcPR2a2iu4YM4FQfuUzCVA2u4HI95lCwzjoPtdWjdpDKyHxI0UO82bLDoOaLfpZ/wviyQ==}
     cpu: [ppc64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-riscv64-gnu@4.21.2':
     resolution: {integrity: sha512-RL56JMT6NwQ0lXIQmMIWr1SW28z4E4pOhRRNqwWZeXpRlykRIlEpSWdsgNWJbYBEWD84eocjSGDu/XxbYeCmwg==}
     cpu: [riscv64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-s390x-gnu@4.21.2':
     resolution: {integrity: sha512-PMxkrWS9z38bCr3rWvDFVGD6sFeZJw4iQlhrup7ReGmfn7Oukrr/zweLhYX6v2/8J6Cep9IEA/SmjXjCmSbrMQ==}
     cpu: [s390x]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-x64-gnu@4.21.2':
     resolution: {integrity: sha512-B90tYAUoLhU22olrafY3JQCFLnT3NglazdwkHyxNDYF/zAxJt5fJUB/yBoWFoIQ7SQj+KLe3iL4BhOMa9fzgpw==}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-x64-gnu@4.5.0':
     resolution: {integrity: sha512-FVyFI13tXw5aE65sZdBpNjPVIi4Q5mARnL/39UIkxvSgRAIqCo5sCpCELk0JtXHGee2owZz5aNLbWNfBHzr71Q==}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-x64-gnu@4.6.0':
     resolution: {integrity: sha512-rouezFHpwCqdEXsqAfNsTgSWO0FoZ5hKv5p+TGO5KFhyN/dvYXNMqMolOb8BkyKcPqjYRBeT+Z6V3aM26rPaYg==}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-x64-musl@4.21.2':
     resolution: {integrity: sha512-7twFizNXudESmC9oneLGIUmoHiiLppz/Xs5uJQ4ShvE6234K0VB1/aJYU3f/4g7PhssLGKBVCC37uRkkOi8wjg==}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-x64-musl@4.5.0':
     resolution: {integrity: sha512-eBPYl2sLpH/o8qbSz6vPwWlDyThnQjJfcDOGFbNjmjb44XKC1F5dQfakOsADRVrXCNzM6ZsSIPDG5dc6HHLNFg==}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-x64-musl@4.6.0':
     resolution: {integrity: sha512-Bbm+fyn3S6u51urfj3YnqBXg5vI2jQPncRRELaucmhBVyZkbWClQ1fEsRmdnCPpQOQfkpg9gZArvtMVkOMsh1w==}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-win32-arm64-msvc@4.21.2':
     resolution: {integrity: sha512-9rRero0E7qTeYf6+rFh3AErTNU1VCQg2mn7CQcI44vNUWM9Ze7MSRS/9RFuSsox+vstRt97+x3sOhEey024FRQ==}
@@ -1847,6 +1867,9 @@ packages:
 
   '@vue/shared@3.5.1':
     resolution: {integrity: sha512-NdcTRoO4KuW2RSFgpE2c+E/R/ZHaRzWPxAGxhmxZaaqLh6nYCXx7lc9a88ioqOCxCaV2SFJmujkxbUScW7dNsQ==}
+
+  '@vue/shared@3.5.13':
+    resolution: {integrity: sha512-/hnE/qP5ZoGpol0a5mDi45bOd7t3tjYJBjsgCsivow7D48cJeV5l05RD82lPqi7gRiphZM37rnhW1l6ZoCNNnQ==}
 
   '@vueuse/core@10.6.1':
     resolution: {integrity: sha512-Pc26IJbqgC9VG1u6VY/xrXXfxD33hnvxBnKrLlA2LJlyHII+BSrRoTPJgGYq7qZOu61itITFUnm6QbacwZ4H8Q==}
@@ -2779,6 +2802,7 @@ packages:
   eslint@8.57.0:
     resolution: {integrity: sha512-dZ6+mexnaTIbSBZWgou51U6OmzIhYM2VcNdtiTtI7qPNZm35Akpr0f6vtw3w1Kmn5PYo+tZVfh13WrhpS6oLqQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   espree@9.6.1:
@@ -2959,7 +2983,7 @@ packages:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
     engines: {node: '>= 4.0'}
     os: [darwin]
-    deprecated: The v1 package contains DANGEROUS / INSECURE binaries. Upgrade to safe fsevents v2
+    deprecated: Upgrade to fsevents v2 to mitigate potential security issues
 
   fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
@@ -6118,14 +6142,6 @@ snapshots:
     optionalDependencies:
       rollup: 3.29.4
 
-  '@rollup/pluginutils@5.1.0(rollup@4.21.2)':
-    dependencies:
-      '@types/estree': 1.0.5
-      estree-walker: 2.0.2
-      picomatch: 2.3.1
-    optionalDependencies:
-      rollup: 4.21.2
-
   '@rollup/rollup-android-arm-eabi@4.21.2':
     optional: true
 
@@ -6767,6 +6783,8 @@ snapshots:
 
   '@vue/shared@3.5.1': {}
 
+  '@vue/shared@3.5.13': {}
+
   '@vueuse/core@10.6.1(vue@3.3.8(typescript@5.2.2))':
     dependencies:
       '@types/web-bluetooth': 0.0.20
@@ -7079,6 +7097,11 @@ snapshots:
   bundle-require@4.0.2(esbuild@0.17.19):
     dependencies:
       esbuild: 0.17.19
+      load-tsconfig: 0.2.5
+
+  bundle-require@4.0.2(esbuild@0.21.5):
+    dependencies:
+      esbuild: 0.21.5
       load-tsconfig: 0.2.5
 
   c12@1.11.2:
@@ -10031,7 +10054,7 @@ snapshots:
 
   tslib@2.7.0: {}
 
-  tsup@6.7.0(postcss@8.4.31)(typescript@5.2.2):
+  tsup@6.7.0(postcss@8.4.31)(typescript@5.5.4):
     dependencies:
       bundle-require: 4.0.2(esbuild@0.17.19)
       cac: 6.7.14
@@ -10049,12 +10072,12 @@ snapshots:
       tree-kill: 1.2.2
     optionalDependencies:
       postcss: 8.4.31
-      typescript: 5.2.2
+      typescript: 5.5.4
     transitivePeerDependencies:
       - supports-color
       - ts-node
 
-  tsup@6.7.0(postcss@8.4.45)(typescript@5.5.4):
+  tsup@6.7.0(postcss@8.4.45)(typescript@5.2.2):
     dependencies:
       bundle-require: 4.0.2(esbuild@0.17.19)
       cac: 6.7.14
@@ -10072,7 +10095,7 @@ snapshots:
       tree-kill: 1.2.2
     optionalDependencies:
       postcss: 8.4.45
-      typescript: 5.5.4
+      typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
       - ts-node
@@ -10250,10 +10273,10 @@ snapshots:
       - supports-color
       - terser
 
-  vite-plugin-inspect@0.8.7(rollup@4.21.2)(vite@5.4.3(@types/node@18.19.50)):
+  vite-plugin-inspect@0.8.7(rollup@3.29.4)(vite@5.4.3(@types/node@18.19.50)):
     dependencies:
       '@antfu/utils': 0.7.10
-      '@rollup/pluginutils': 5.1.0(rollup@4.21.2)
+      '@rollup/pluginutils': 5.1.0(rollup@3.29.4)
       debug: 4.3.6
       error-stack-parser-es: 0.1.5
       fs-extra: 11.2.0

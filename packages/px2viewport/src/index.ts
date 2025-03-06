@@ -93,9 +93,12 @@ export interface Px2viewportOptions extends Px2viewportOptionsCommon {
 
 export function px2viewport(options: Px2viewportOptions = {
   viewportWidth: 750,
-  include: [/\.vue/, /\.[jt]sx$/],
+  include: [/\.vue$/, /\.[jt]sx$/, /\.m[jt]sx$/, /\.m[jt]s$/, /\.[jt]s$/],
 }): PluginOption {
-  const filter = createFilter(options?.include ?? [/\.vue/, /\.[jt]sx/])
+  const filter = createFilter(
+    options?.include ?? [/\.vue$/, /\.[jt]sx$/, /\.m[jt]sx$/, /\.m[jt]s$/, /\.[jt]s$/],
+    [/vite-plugin-px2viewport/, /@mistjs\/vite-plugin-px2viewport/],
+  )
 
   const commonConfig: Px2viewportOptionsCommon = {
     unitToConvert: options.unitToConvert ?? 'px',
@@ -109,15 +112,18 @@ export function px2viewport(options: Px2viewportOptions = {
     enforce: 'post',
     transform(code, id) {
       if (filter(id)) {
-        let num = 750
-        if (typeof options.viewportWidth === 'function')
-          num = options.viewportWidth(id) ?? 750
-        else
-          num = options.viewportWidth ?? 750
-
-        const res = transform(code, { ...commonConfig, viewportWidth: num })
-        if (res)
-          return res
+        // 临时方案，后续需要优化
+        if (id.endsWith('.vue') || code.includes('defineComponent(')) {
+          let num = 750
+          if (typeof options.viewportWidth === 'function')
+            num = options.viewportWidth(id) ?? 750
+          else
+            num = options.viewportWidth ?? 750
+          // check has defineComponent
+          const res = transform(code, { ...commonConfig, viewportWidth: num })
+          if (res)
+            return res
+        }
       }
     },
     transformIndexHtml(html) {
