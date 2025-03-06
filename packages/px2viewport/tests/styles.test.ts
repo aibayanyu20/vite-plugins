@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { transform } from '../src/transform'
 import { inlineTransform } from '../src/inlineTransform'
 import { testCode1, testCode2, testCode3 } from './fixtrures/test-code'
-import { mergePropsCode } from './fixtrures/merge-props-code'
+import { mergePropsCode, mergePropsCode1 } from './fixtrures/merge-props-code'
 
 describe('styles', () => {
   it('should work', () => {
@@ -17,5 +17,8 @@ describe('styles', () => {
   it('should merge props', () => {
     const res = transform(mergePropsCode)
     expect(res).toMatchSnapshot()
+
+    const res1 = transform(mergePropsCode1)
+    expect(res1).toMatchSnapshot()
   })
 })

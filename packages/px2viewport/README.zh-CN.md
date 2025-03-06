@@ -28,6 +28,7 @@ export default defineConfig({
 
 - `viewportWidth` (number): 视口的宽度。默认值: 750.
 - `include` (string | RegExp | (string | RegExp)[]): 要处理的文件路径。默认值: `/\.(vue|jsx|tsx)$/`.
+- `exclude` (string | RegExp | (string | RegExp)[]): 要处理的文件路径。默认值: `/node_modules/`.
 - `unitToConvert` (string): 要转换的单位。默认值: `px`.
 - `unitPrecision` (number): 允许的小数位数。默认值: 5.
 - `viewportUnit` (string): 要转换为的单位。默认值: `vw`.
@@ -37,6 +38,8 @@ export default defineConfig({
 > [!WARNING]
 > `cssOptions` 仅支持 `postcss` 插件，不支持行内样式和动态样式。
 
+> [!WARNING]
+> 如果你想包含 `node_modules` 文件，你应该将 `exclude` 选项设置为 `[]`。
 
 ## 例子
 

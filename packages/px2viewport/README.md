@@ -30,6 +30,7 @@ export default defineConfig({
 
 - `viewportWidth` (number): The width of the viewport. Default: 750.
 - `include` (string | RegExp | (string | RegExp)[]): The file path to be processed. Default: `/\.(vue|jsx|tsx)$/`.
+- `exclude` (string | RegExp | (string | RegExp)[]): The file path to be processed. Default: `/node_modules/`.
 - `unitToConvert` (string): The unit to convert. Default: `px`.
 - `unitPrecision` (number): The decimal numbers to allow. Default: 5.
 - `viewportUnit` (string): The unit to convert to. Default: `vw`.
@@ -39,6 +40,8 @@ export default defineConfig({
 > [!WARNING]
 > `cssOptions`only support postcss plugin, not support inline style and dynamic style.
 
+>[!WARNING]
+> If you want include `node_modules` file, you should set `exclude` option is `[]`.
 
 
 ## Example

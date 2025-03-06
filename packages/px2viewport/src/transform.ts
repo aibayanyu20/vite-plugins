@@ -12,11 +12,12 @@ export function transform(code: string, config?: Px2viewportOptionsCommon): unde
     if (source.specifier !== '@mistjs/vite-plugin-px2viewport/vue') {
       // 判断里面是否包含 normalizeStyle as _normalizeStyle,
       // 如果包含就去掉，然后用自己定义的 normalizeStyle
-      const _imports = source.imports
+      let _imports = source.imports
       const normalizeStyleStr = 'normalizeStyle as _normalizeStyle'
       const normalizeStyleStr2 = 'normalizeStyle'
       const mergePropsStr = 'mergeProps as _mergeProps'
       const mergePropsStr2 = 'mergeProps'
+      const px2viewportImport = []
       if (_imports && _imports.includes(normalizeStyleStr)) {
         let replaceCode = normalizeStyleStr
         if (_imports.includes(`${normalizeStyleStr},`)) {
@@ -27,9 +28,8 @@ export function transform(code: string, config?: Px2viewportOptionsCommon): unde
           // 有逗号的情况
           replaceCode = `, ${normalizeStyleStr}`
         }
-        const newImports = _imports.replace(replaceCode, '')
-        const replaceImport = `import ${newImports} from '${source.specifier}'\nimport { normalizeStyle as _normalizeStyle } from '@mistjs/vite-plugin-px2viewport/vue';\n`
-        m.overwrite(source.start, source.end, replaceImport)
+        _imports = _imports.replace(replaceCode, '')
+        px2viewportImport.push(normalizeStyleStr)
       }
       else if (_imports && _imports.includes(normalizeStyleStr2)) {
         let replaceCode = normalizeStyleStr2
@@ -41,9 +41,8 @@ export function transform(code: string, config?: Px2viewportOptionsCommon): unde
           // 有逗号的情况
           replaceCode = `, ${normalizeStyleStr2}`
         }
-        const newImports = _imports.replace(replaceCode, '')
-        const replaceImport = `import ${newImports} from '${source.specifier}'\nimport { normalizeStyle } from '@mistjs/vite-plugin-px2viewport/vue';\n`
-        m.overwrite(source.start, source.end, replaceImport)
+        _imports = _imports.replace(replaceCode, '')
+        px2viewportImport.push(normalizeStyleStr2)
       }
       if (_imports && _imports.includes(mergePropsStr)) {
         let replaceCode = mergePropsStr
@@ -55,9 +54,8 @@ export function transform(code: string, config?: Px2viewportOptionsCommon): unde
           // 有逗号的情况
           replaceCode = `, ${mergePropsStr}`
         }
-        const newImports = _imports.replace(replaceCode, '')
-        const replaceImport = `import ${newImports} from '${source.specifier}'\nimport { mergeProps as _mergeProps } from '@mistjs/vite-plugin-px2viewport/vue';\n`
-        m.overwrite(source.start, source.end, replaceImport)
+        _imports = _imports.replace(replaceCode, '')
+        px2viewportImport.push(mergePropsStr)
       }
       else if (_imports && _imports.includes(mergePropsStr2)) {
         let replaceCode = mergePropsStr2
@@ -69,8 +67,11 @@ export function transform(code: string, config?: Px2viewportOptionsCommon): unde
           // 有逗号的情况
           replaceCode = `, ${mergePropsStr2}`
         }
-        const newImports = _imports.replace(replaceCode, '')
-        const replaceImport = `import ${newImports} from '${source.specifier}'\nimport { mergeProps } from '@mistjs/vite-plugin-px2viewport/vue';\n`
+        _imports = _imports.replace(replaceCode, '')
+        px2viewportImport.push(mergePropsStr2)
+      }
+      if (px2viewportImport.length) {
+        const replaceImport = `import ${_imports} from '${source.specifier}'\nimport { ${px2viewportImport.join(', ')} } from '@mistjs/vite-plugin-px2viewport/vue';\n`
         m.overwrite(source.start, source.end, replaceImport)
       }
     }

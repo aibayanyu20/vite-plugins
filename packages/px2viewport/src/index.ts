@@ -88,6 +88,7 @@ export interface Px2viewportOptionsCommon {
 
 export interface Px2viewportOptions extends Px2viewportOptionsCommon {
   include?: FilterPattern
+  exclude?: FilterPattern
   cssOptions?: Px2viewportCSSOptions
 }
 
@@ -95,9 +96,11 @@ export function px2viewport(options: Px2viewportOptions = {
   viewportWidth: 750,
   include: [/\.vue$/, /\.[jt]sx$/, /\.m[jt]sx$/, /\.m[jt]s$/, /\.[jt]s$/],
 }): PluginOption {
+  let exclude = options?.exclude ?? [/node_modules/]
+  exclude = Array.isArray(exclude) ? exclude : [exclude]
   const filter = createFilter(
     options?.include ?? [/\.vue$/, /\.[jt]sx$/, /\.m[jt]sx$/, /\.m[jt]s$/, /\.[jt]s$/],
-    [/vite-plugin-px2viewport/, /@mistjs\/vite-plugin-px2viewport/],
+    [...exclude, /vite-plugin-px2viewport/, /@mistjs\/vite-plugin-px2viewport/],
   )
 
   const commonConfig: Px2viewportOptionsCommon = {

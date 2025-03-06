@@ -156,6 +156,24 @@ export default __sfc__;",
 }
 `;
 
+exports[`styles > should merge props 2`] = `
+{
+  "code": "import { Comment, Fragment, NOOP, Teleport, Text, Transition, TransitionGroup, __commonJS, __toESM, camelize, capitalize, cloneVNode, computed, createApp, createBaseVNode, createBlock, createCommentVNode, createElementBlock, createSlots, createTextVNode, createVNode, customRef, defineComponent, effectScope, getCurrentInstance, getCurrentScope, guardReactiveProps, h, hasOwn, hyphenate, inject, isArray, isDate, isFunction, isObject, isPlainObject, isPromise, isRef, isString, isVNode, markRaw,  nextTick, normalizeClass, normalizeProps,  onActivated, onBeforeMount, onBeforeUnmount, onBeforeUpdate, onDeactivated, onMounted, onScopeDispose, onUnmounted, onUpdated, openBlock, provide, reactive, readonly, ref, render, renderList, renderSlot, resolveComponent, resolveDirective, resolveDynamicComponent, shallowReactive, shallowRef, toDisplayString, toHandlerKey, toHandlers, toRaw, toRef, toRefs, unref, useAttrs, useSlots, vModelCheckbox, vModelRadio, vModelText, vShow, warn, watch, watchEffect, withCtx, withDirectives, withKeys, withModifiers }  from '/node_modules/.vite/deps/chunk-ZHP7DJLA.js?v=2689b94e'
+import { normalizeStyle, mergeProps } from '@mistjs/vite-plugin-px2viewport/vue';
+",
+  "map": SourceMap {
+    "file": undefined,
+    "mappings": "AAAA;AAAA;",
+    "names": [],
+    "sources": [
+      "",
+    ],
+    "sourcesContent": undefined,
+    "version": 3,
+  },
+}
+`;
+
 exports[`styles > should work 1`] = `
 {
   "code": "import { defineComponent as _defineComponent } from "vue";
