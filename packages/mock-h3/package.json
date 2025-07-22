@@ -1,0 +1,24 @@
+{
+  "name": "vite-plugin-mock-h3",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "A mock server for Vite using H3",
+  "author": "aibayanyu20",
+  "keywords": [
+    "vite",
+    "mock",
+    "h3"
+  ],
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "vite"
+  },
+  "dependencies": {
+    "bundle-require": "^5.1.0",
+    "chokidar": "^3.6.0",
+    "h3": "2.0.0-beta.1",
+    "rou3": "^0.7.3",
+    "tinyglobby": "^0.2.14"
+  }
+}
