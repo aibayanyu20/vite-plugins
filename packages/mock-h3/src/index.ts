@@ -33,10 +33,12 @@ export function mockPlugin(options: MockPluginOptions = { prefix: '/mock', mockD
   return {
     name: 'vite:mock',
     async configureServer(server) {
-      mockServer(server, ctx)
+      await mockServer(server, ctx)
     },
-    configurePreviewServer(server) {
-      mockServer(server, ctx)
+    async configurePreviewServer(server) {
+      await mockServer(server, ctx)
     },
   }
 }
+
+export default mockPlugin
