@@ -3,6 +3,8 @@
 exports[`emits > func 1`] = `
 "import type { SetupContext } from 'vue';
 import { defineComponent } from 'vue';
+
+//
 export const Func1 = defineComponent((_, ctx: SetupContext<{
   'change': [string];
 }>) => {
@@ -13,7 +15,7 @@ export const Func1 = defineComponent((_, ctx: SetupContext<{
     return <div></div>;
   };
 }, {
-  emits: [\\"change\\"]
+  emits: ["change"]
 });
 interface Emits {
   'change': [string];
@@ -27,10 +29,10 @@ export const Func2 = defineComponent((_, ctx: SetupContext<Emits>) => {
     return <div></div>;
   };
 }, {
-  emits: [\\"change\\", \\"click\\"]
+  emits: ["change", "click"]
 });
 export default defineComponent({
-  emits: [\\"change\\", \\"click\\"],
+  emits: ["change", "click"],
   setup(_, ctx: SetupContext<Emits>) {
     return () => <div>func</div>;
   }
@@ -45,7 +47,16 @@ export const Func3 = defineComponent((_, {
     return <div> Func</div>;
   };
 }, {
-  emits: [\\"click\\"]
+  emits: ["click"]
+});
+export const Func4 = defineComponent<{
+  a: string;
+}, Emits1>(() => {
+  return () => {
+    return null;
+  };
+}, {
+  emits: ["click"]
 });"
 `;
 

@@ -96,7 +96,15 @@ export function resolveEmits(expression: CallExpression, ctx: CreateContextType)
 
   if (isFunctionExpression(argument) || isArrowFunctionExpression(argument)) {
     const params = argument.params
-    if (params.length) {
+    if (expression.typeParameters && expression.typeParameters.params && expression.typeParameters.params[1]) {
+      // 这里的值存在的情况下直接使用这里的值
+      const types = expression.typeParameters.params[1]
+      ctx.ctx.emitsTypeDecl = types
+      const emitAst = getEmitsAst(ctx)
+      if (emitAst)
+        addEmitsToFunc(expression, emitAst)
+    }
+    else if (params.length) {
       const emits = params[1]
       if (emits)
         addEmitsType(emits, ctx)

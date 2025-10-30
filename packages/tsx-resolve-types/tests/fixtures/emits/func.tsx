@@ -39,3 +39,9 @@ export const Func3 = defineComponent((_, { emit }: SetupContext<Emits1>) => {
     return <div> Func</div>
   }
 })
+
+export const Func4 = defineComponent<{ a: string }, Emits1>(() => {
+  return () => {
+    return null
+  }
+})
