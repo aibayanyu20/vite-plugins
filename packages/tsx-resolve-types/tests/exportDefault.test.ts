@@ -37,6 +37,32 @@ describe('findComponents', () => {
       });"
     `)
   })
+  it('export default with undefined', () => {
+    const ctx = createContext(codeRaw, path.resolve(basePath, 'exportDefault/basic.tsx'))
+    ctx.setDefaultUndefined = true
+    const expression = findComponents(ctx.ast)
+    for (const callExpression of expression)
+      resolveProps(callExpression, ctx)
+    const code = generate(ctx.ast).code
+    expect(code).toMatchInlineSnapshot(`
+      "import { defineComponent } from 'vue';
+      export interface Props {
+        name: string;
+      }
+      export default defineComponent({
+        props: {
+          name: {
+            type: String,
+            required: true,
+            default: '1'
+          }
+        },
+        setup(props: Props) {
+          return () => <div>basic</div>;
+        }
+      });"
+    `)
+  })
 
   it('code1', () => {
     const ctx = createContext(code1Raw, path.resolve(basePath, 'exportDefault/code1.tsx'))
@@ -63,8 +89,9 @@ describe('findComponents', () => {
     `)
   })
 
-  it('code2', () => {
+  it('withUndefined', () => {
     const ctx = createContext(`${code2Raw}`, path.resolve(basePath, 'exportDefault/code2.tsx'))
+    ctx.setDefaultUndefined = true
     const expression = findComponents(ctx.ast)
     for (const callExpression of expression)
       resolveProps(callExpression, ctx)
@@ -80,10 +107,11 @@ describe('findComponents', () => {
         name: '2'
       };
       export default defineComponent({
-        props: /*#__PURE__*/_mergeDefaults({
+        props: /*@__PURE__*/_mergeDefaults({
           name: {
             type: String,
-            required: false
+            required: false,
+            default: undefined
           }
         }, defaultProps),
         setup(props: Props) {

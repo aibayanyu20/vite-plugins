@@ -12,6 +12,9 @@ export function transform(code: string, id: string, graphCtx: GraphContext, opti
     return code
 
   const ctx = createContext(code, id, graphCtx)
+  if (options.defaultPropsToUndefined)
+    ctx.setDefaultUndefined = true
+
   const expression = findComponents(ctx.ast)
   for (const callExpression of expression) {
     if (options.props !== false)

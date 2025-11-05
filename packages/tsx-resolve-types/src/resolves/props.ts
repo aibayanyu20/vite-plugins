@@ -1,3 +1,16 @@
+import {
+
+  identifier,
+  isArrowFunctionExpression,
+  isAssignmentPattern,
+  isCallExpression,
+  isFunctionExpression,
+  isIdentifier,
+  isObjectExpression,
+  isObjectProperty,
+  objectExpression,
+  objectProperty,
+} from '@babel/types'
 import type {
   ArrowFunctionExpression,
   CallExpression,
@@ -7,17 +20,6 @@ import type {
   ObjectExpression,
   Pattern,
   RestElement,
-} from '@babel/types'
-import {
-  identifier,
-  isArrowFunctionExpression,
-  isAssignmentPattern,
-  isFunctionExpression,
-  isIdentifier,
-  isObjectExpression,
-  isObjectProperty,
-  objectExpression,
-  objectProperty,
 } from '@babel/types'
 import { extractRuntimeProps } from '@vue/compiler-sfc'
 import { parseExpression } from '@babel/parser'
@@ -82,6 +84,36 @@ function getFuncType(exp: ArrowFunctionExpression | FunctionExpression, ctx: Cre
     params[0] = left as any
 }
 
+function addDefaultToProps(ast: ObjectExpression) {
+  const props = ast.properties
+  props.forEach((prop) => {
+    if (isObjectProperty(prop)) {
+      const value = prop.value
+      if (isObjectExpression(value)) {
+        const hasDefault = value.properties.find(p => isObjectProperty(p) && 'name' in p.key && p.key.name === 'default')
+        if (!hasDefault)
+          value.properties.push(objectProperty(identifier('default'), identifier('undefined')))
+      }
+    }
+  })
+}
+
+function addUndefinedToProps(ast: Expression, ctx: CreateContextType) {
+  // 是否需要给所有的默认值都添加一个 undefined
+  if (ctx.setDefaultUndefined) {
+    if (isCallExpression(ast)) {
+      // 这是一个函数，获取第一个参数
+      const arg1 = ast.arguments[0]
+      if (arg1 && isObjectExpression(arg1))
+        addDefaultToProps(arg1)
+    }
+    else if (isObjectExpression(ast)) {
+      // 这是一个对象
+      addDefaultToProps(ast)
+    }
+  }
+}
+
 function getPropsStr(ctx: CreateContextType) {
   if (ctx.ctx.propsTypeDecl) {
     // 开始执行函数获取里面的数据信息
@@ -94,7 +126,9 @@ function getPropsStr(ctx: CreateContextType) {
        */
       if (!ctx.importMergeDefaults)
         (propStr.includes('/*#__PURE__*/_mergeDefaults') || propStr.includes('/*@__PURE__*/_mergeDefaults') || propStr.includes('_mergeDefaults')) && (ctx.importMergeDefaults = true)
-      return parseExpression(propStr)
+      const ast = parseExpression(propStr)
+      addUndefinedToProps(ast, ctx)
+      return ast
     }
   }
 }

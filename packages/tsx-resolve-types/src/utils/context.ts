@@ -10,6 +10,7 @@ export interface CreateContextType {
   source: string
   filepath: string
   importMergeDefaults?: boolean
+  setDefaultUndefined?: boolean
 }
 
 export function createContext(code: string, id: string, graphCtx?: GraphContext): CreateContextType {

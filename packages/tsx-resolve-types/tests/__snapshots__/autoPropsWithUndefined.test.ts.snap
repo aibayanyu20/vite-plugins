@@ -1,0 +1,644 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`autoPropsWithUndefined > complex 1`] = `
+"import { defineComponent } from 'vue';
+export interface CommonProps {
+  b: string;
+}
+export interface ComplexProps {
+  a: string;
+}
+export const Complex = defineComponent<CommonProps & ComplexProps>(() => {
+  return () => {
+    return <div></div>;
+  };
+}, {
+  props: {
+    b: {
+      type: String,
+      required: true,
+      default: undefined
+    },
+    a: {
+      type: String,
+      required: true,
+      default: undefined
+    }
+  }
+});
+export const Complex1 = defineComponent((_props: CommonProps & ComplexProps) => {
+  return () => {
+    return <div></div>;
+  };
+}, {
+  props: {
+    b: {
+      type: String,
+      required: true,
+      default: undefined
+    },
+    a: {
+      type: String,
+      required: true,
+      default: undefined
+    }
+  }
+});
+export const Complex2 = defineComponent((_props: CommonProps & {
+  c: string;
+}) => {
+  return () => {
+    return <div></div>;
+  };
+}, {
+  props: {
+    b: {
+      type: String,
+      required: true,
+      default: undefined
+    },
+    c: {
+      type: String,
+      required: true,
+      default: undefined
+    }
+  }
+});
+export const Complex3 = defineComponent({
+  props: {
+    b: {
+      type: String,
+      required: true,
+      default: undefined
+    },
+    a: {
+      type: String,
+      required: true,
+      default: undefined
+    }
+  },
+  setup(_props: CommonProps & ComplexProps) {
+    return () => {
+      return <div></div>;
+    };
+  }
+});
+export const Complex4 = defineComponent({
+  props: ['a', 'b'],
+  setup(_props: CommonProps & ComplexProps) {
+    return () => {
+      return <div></div>;
+    };
+  }
+});"
+`;
+
+exports[`autoPropsWithUndefined > defaults 1`] = `
+"import { defineComponent } from 'vue';
+export const DefaultTsx = defineComponent<{
+  a?: string;
+}>({
+  props: {
+    a: {
+      type: String,
+      required: false,
+      default: '1'
+    }
+  },
+  setup(props) {
+    return () => {
+      return <div></div>;
+    };
+  }
+});"
+`;
+
+exports[`autoPropsWithUndefined > export 1`] = `
+"import { defineComponent } from 'vue';
+export interface CommonProps {
+  b: string;
+}
+export default defineComponent<CommonProps>({
+  props: {
+    b: {
+      type: String,
+      required: true,
+      default: undefined
+    }
+  },
+  setup() {
+    return () => {
+      return <div></div>;
+    };
+  }
+});"
+`;
+
+exports[`autoPropsWithUndefined > generic 1`] = `
+"import { defineComponent, ref } from 'vue';
+import type { Props } from './typing';
+export const Generic = defineComponent(<T extends string | number,>(props: {
+  msg: T;
+  list: T[];
+}) => {
+  const count = ref(0);
+  return () => <div>
+          {props.msg}
+          {' '}
+          {count.value}
+        </div>;
+}, {
+  props: {
+    msg: {
+      type: null,
+      required: true,
+      default: undefined
+    },
+    list: {
+      type: Array,
+      required: true,
+      default: undefined
+    }
+  }
+});
+export const Generic1 = defineComponent(<T extends Props | number,>(props: {
+  msg: T;
+  list: T[];
+}) => {
+  const count = ref(0);
+  return () => <div>
+          {props.msg}
+          {' '}
+          {count.value}
+        </div>;
+}, {
+  props: {
+    msg: {
+      type: null,
+      required: true,
+      default: undefined
+    },
+    list: {
+      type: Array,
+      required: true,
+      default: undefined
+    }
+  }
+});"
+`;
+
+exports[`autoPropsWithUndefined > inline 1`] = `
+"import { defineComponent } from 'vue';
+export const Inline = defineComponent((_props: {
+  c: string;
+  a: number;
+}) => {
+  return () => {
+    return <div></div>;
+  };
+}, {
+  props: {
+    c: {
+      type: String,
+      required: true,
+      default: undefined
+    },
+    a: {
+      type: Number,
+      required: true,
+      default: undefined
+    }
+  }
+});
+export const Inline1 = defineComponent<{
+  c: string;
+  a: number;
+}>(() => {
+  return () => {
+    return <div></div>;
+  };
+}, {
+  props: {
+    c: {
+      type: String,
+      required: true,
+      default: undefined
+    },
+    a: {
+      type: Number,
+      required: true,
+      default: undefined
+    }
+  }
+});
+export const Inline2 = defineComponent({
+  props: {
+    c: {
+      type: String,
+      required: true,
+      default: undefined
+    },
+    a: {
+      type: Number,
+      required: true,
+      default: undefined
+    }
+  },
+  setup(_props: {
+    c: string;
+    a: number;
+  }) {
+    return () => {
+      return <div></div>;
+    };
+  }
+});
+export default defineComponent({
+  props: {
+    c: {
+      type: String,
+      required: true,
+      default: undefined
+    },
+    a: {
+      type: Number,
+      required: true,
+      default: undefined
+    },
+    b: {
+      type: String,
+      required: true,
+      default: undefined
+    }
+  },
+  setup(_props: {
+    c: string;
+    a: number;
+    b: string;
+  }) {
+    return () => {
+      return <div></div>;
+    };
+  }
+});"
+`;
+
+exports[`autoPropsWithUndefined > lib 1`] = `
+"import type { TableProps } from 'ant-design-vue';
+import { defineComponent } from 'vue';
+export type MyTableProps = TableProps & {
+  sss?: string;
+};
+export const LibTest = defineComponent<MyTableProps>(() => {
+  return () => {
+    return <div></div>;
+  };
+}, {
+  props: {
+    dropdownPrefixCls: {
+      type: String,
+      required: false,
+      default: undefined
+    },
+    dataSource: {
+      type: Array,
+      required: false,
+      default: undefined
+    },
+    columns: {
+      type: null,
+      required: false,
+      default: undefined
+    },
+    pagination: {
+      type: [Boolean, Object],
+      required: false,
+      default: undefined
+    },
+    loading: {
+      type: [Boolean, Object],
+      required: false,
+      default: undefined
+    },
+    size: {
+      type: null,
+      required: false,
+      default: undefined
+    },
+    bordered: {
+      type: Boolean,
+      required: false,
+      default: undefined
+    },
+    locale: {
+      type: Object,
+      required: false,
+      default: undefined
+    },
+    onChange: {
+      type: Function,
+      required: false,
+      default: undefined
+    },
+    onResizeColumn: {
+      type: Function,
+      required: false,
+      default: undefined
+    },
+    rowSelection: {
+      type: Object,
+      required: false,
+      default: undefined
+    },
+    getPopupContainer: {
+      type: Function,
+      required: false,
+      default: undefined
+    },
+    scroll: {
+      type: Object,
+      required: false,
+      default: undefined
+    },
+    sortDirections: {
+      type: Array,
+      required: false,
+      default: undefined
+    },
+    showSorterTooltip: {
+      type: [Boolean, Object],
+      required: false,
+      default: undefined
+    },
+    prefixCls: {
+      type: String,
+      required: false,
+      default: undefined
+    },
+    rowKey: {
+      type: null,
+      required: false,
+      default: undefined
+    },
+    tableLayout: {
+      type: String,
+      required: false,
+      default: undefined
+    },
+    rowClassName: {
+      type: null,
+      required: false,
+      default: undefined
+    },
+    title: {
+      type: null,
+      required: false,
+      default: undefined
+    },
+    footer: {
+      type: null,
+      required: false,
+      default: undefined
+    },
+    id: {
+      type: String,
+      required: false,
+      default: undefined
+    },
+    showHeader: {
+      type: Boolean,
+      required: false,
+      default: undefined
+    },
+    components: {
+      type: Object,
+      required: false,
+      default: undefined
+    },
+    customRow: {
+      type: null,
+      required: false,
+      default: undefined
+    },
+    customHeaderRow: {
+      type: null,
+      required: false,
+      default: undefined
+    },
+    direction: {
+      type: String,
+      required: false,
+      default: undefined
+    },
+    expandFixed: {
+      type: [String, Boolean],
+      required: false,
+      default: undefined
+    },
+    expandColumnWidth: {
+      type: Number,
+      required: false,
+      default: undefined
+    },
+    expandedRowKeys: {
+      type: Array,
+      required: false,
+      default: undefined
+    },
+    defaultExpandedRowKeys: {
+      type: Array,
+      required: false,
+      default: undefined
+    },
+    expandedRowRender: {
+      type: null,
+      required: false,
+      default: undefined
+    },
+    expandRowByClick: {
+      type: Boolean,
+      required: false,
+      default: undefined
+    },
+    expandIcon: {
+      type: null,
+      required: false,
+      default: undefined
+    },
+    onExpand: {
+      type: Function,
+      required: false,
+      default: undefined
+    },
+    onExpandedRowsChange: {
+      type: Function,
+      required: false,
+      default: undefined
+    },
+    defaultExpandAllRows: {
+      type: Boolean,
+      required: false,
+      default: undefined
+    },
+    indentSize: {
+      type: Number,
+      required: false,
+      default: undefined
+    },
+    expandIconColumnIndex: {
+      type: Number,
+      required: false,
+      default: undefined
+    },
+    showExpandColumn: {
+      type: Boolean,
+      required: false,
+      default: undefined
+    },
+    expandedRowClassName: {
+      type: null,
+      required: false,
+      default: undefined
+    },
+    childrenColumnName: {
+      type: String,
+      required: false,
+      default: undefined
+    },
+    rowExpandable: {
+      type: Function,
+      required: false,
+      default: undefined
+    },
+    sticky: {
+      type: [Boolean, Object],
+      required: false,
+      default: undefined
+    },
+    transformCellText: {
+      type: null,
+      required: false,
+      default: undefined
+    },
+    sss: {
+      type: String,
+      required: false,
+      default: undefined
+    }
+  }
+});"
+`;
+
+exports[`autoPropsWithUndefined > nonType 1`] = `
+"import { defineComponent } from 'vue';
+export const NonType = defineComponent(() => {
+  return () => {
+    return <div></div>;
+  };
+});"
+`;
+
+exports[`autoPropsWithUndefined > render 1`] = `
+"import { defineComponent } from 'vue';
+export default defineComponent({
+  setup() {
+    return {};
+  },
+  render() {
+    return <div></div>;
+  }
+});
+export const A = defineComponent({
+  props: {
+    a: {
+      type: String,
+      required: true,
+      default: undefined
+    }
+  },
+  setup(_props: {
+    a: string;
+  }) {
+    return {};
+  },
+  render() {
+    return <div></div>;
+  }
+});"
+`;
+
+exports[`autoPropsWithUndefined > single 1`] = `
+"import { defineComponent } from 'vue';
+import type { Props } from './typing';
+export interface Props1 {
+  foo1: string;
+  bar1: number;
+}
+export type Props2 = Props & Props1;
+export type Props3 = Pick<Props2, 'foo1' | 'foo'>;
+export const Single = defineComponent<Props>(() => {
+  return () => {
+    return <div></div>;
+  };
+}, {
+  props: {
+    foo: {
+      type: String,
+      required: true,
+      default: undefined
+    },
+    bar: {
+      type: Number,
+      required: true,
+      default: undefined
+    }
+  }
+});
+export const Single2 = defineComponent((_props: Props2) => {
+  return () => {
+    return <div></div>;
+  };
+}, {
+  props: {
+    foo: {
+      type: String,
+      required: true,
+      default: undefined
+    },
+    bar: {
+      type: Number,
+      required: true,
+      default: undefined
+    },
+    foo1: {
+      type: String,
+      required: true,
+      default: undefined
+    },
+    bar1: {
+      type: Number,
+      required: true,
+      default: undefined
+    }
+  }
+});
+export const Single3 = defineComponent({
+  props: {
+    foo1: {
+      type: String,
+      required: true,
+      default: undefined
+    },
+    foo: {
+      type: String,
+      required: true,
+      default: undefined
+    }
+  },
+  setup(_props: Props3) {
+    return () => {
+      return <div></div>;
+    };
+  }
+});"
+`;

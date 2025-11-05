@@ -14,4 +14,9 @@ export interface UserOptions {
    * @default true
    */
   props?: boolean
+
+  /**
+   * @description 是否开启默认props给undefined
+   */
+  defaultPropsToUndefined?: boolean
 }

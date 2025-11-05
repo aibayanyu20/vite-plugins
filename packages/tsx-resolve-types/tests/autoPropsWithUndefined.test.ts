@@ -20,7 +20,7 @@ import singleRaw from './fixtures/autoProps/single.tsx?raw'
 
 registerTS(() => ts)
 
-describe('autoProps', () => {
+describe('autoPropsWithUndefined', () => {
   it('complex', () => {
     const code = compiler(complexRaw, 'complex.tsx')
     expect(code).toMatchSnapshot()
@@ -72,9 +72,9 @@ describe('autoProps', () => {
   })
 })
 
-function compiler(raw: string, id: string, withUndefined = false) {
+function compiler(raw: string, id: string) {
   const ctx = createContext(raw, path.resolve(basePath, `autoProps/${id}`))
-  ctx.setDefaultUndefined = withUndefined
+  ctx.setDefaultUndefined = true
   const expression = findComponents(ctx.ast)
   for (const callExpression of expression)
     resolveProps(callExpression, ctx)
