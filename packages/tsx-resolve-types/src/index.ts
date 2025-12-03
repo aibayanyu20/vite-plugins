@@ -1,6 +1,6 @@
 import type { PluginOption } from 'vite'
 import ts from 'typescript'
-import { registerTS } from '@vue/compiler-sfc'
+import { registerTS } from '@v-c/resolve-types'
 import { GraphContext } from './utils/graphContext'
 import { invalidateTypeCacheId } from './utils/invalidate'
 import { getDepModules } from './utils/depModules'

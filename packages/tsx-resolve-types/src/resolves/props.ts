@@ -21,7 +21,7 @@ import type {
   Pattern,
   RestElement,
 } from '@babel/types'
-import { extractRuntimeProps } from '@vue/compiler-sfc'
+import { extractRuntimeProps } from '@v-c/resolve-types'
 import { parseExpression } from '@babel/parser'
 import type { CreateContextType } from '../utils/context'
 

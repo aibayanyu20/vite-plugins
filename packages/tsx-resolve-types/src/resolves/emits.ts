@@ -14,7 +14,7 @@ import {
   objectProperty,
   stringLiteral,
 } from '@babel/types'
-import { extractRuntimeEmits } from '@vue/compiler-sfc'
+import { extractRuntimeEmits } from '@v-c/resolve-types'
 import type { CreateContextType } from '../utils/context'
 
 function addEmitsType(exp: Identifier | RestElement | Pattern, ctx: CreateContextType) {

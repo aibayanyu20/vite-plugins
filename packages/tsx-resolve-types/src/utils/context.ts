@@ -1,11 +1,11 @@
 import fs from 'node:fs'
-import type { SimpleTypeResolveContext } from '@vue/compiler-sfc'
+import type { ScriptCompileContext } from '@v-c/resolve-types'
 import type { AST } from '../interface'
 import { createAst } from './ast'
 import type { GraphContext } from './graphContext'
 
 export interface CreateContextType {
-  ctx: SimpleTypeResolveContext
+  ctx: ScriptCompileContext
   ast: AST
   source: string
   filepath: string
@@ -25,14 +25,14 @@ export function createContext(code: string, id: string, graphCtx?: GraphContext)
       filename: id,
       source: code,
       ast: ast.program.body,
-      error(msg) {
+      error(msg: any) {
         throw new Error(`[tsx-resolve-types] ${msg}`)
       },
-      helper(key) {
+      helper(key: any) {
         helper.add(key)
         return `_${key}`
       },
-      getString(node) {
+      getString(node: any) {
         return code.slice(node.start!, node.end!)
       },
       propsTypeDecl: undefined,
@@ -65,6 +65,6 @@ export function createContext(code: string, id: string, graphCtx?: GraphContext)
           },
         },
       },
-    },
+    } as unknown as ScriptCompileContext,
   }
 }
