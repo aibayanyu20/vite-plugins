@@ -3,8 +3,6 @@
 exports[`emits > func 1`] = `
 "import type { SetupContext } from 'vue';
 import { defineComponent } from 'vue';
-
-//
 export const Func1 = defineComponent((_, ctx: SetupContext<{
   'change': [string];
 }>) => {
@@ -68,7 +66,7 @@ interface Emits {
   'click': [Event];
 }
 export const Inline1 = defineComponent({
-  emits: [\\"change\\"],
+  emits: ["change"],
   setup(props, {
     emit
   }: SetupContext<{
@@ -85,7 +83,7 @@ export const Inline1 = defineComponent({
   }
 });
 export const Inline2 = defineComponent({
-  emits: [\\"change\\", \\"click\\"],
+  emits: ["change", "click"],
   setup(props, {
     emit
   }: SetupContext<Emits>) {
@@ -100,7 +98,7 @@ export const Inline2 = defineComponent({
   }
 });
 export const Inline3 = defineComponent({
-  emits: [\\"change\\", \\"click\\"],
+  emits: ["change", "click"],
   setup(props, ctx: SetupContext<Emits>) {
     const func = () => {
       ctx.emit('change', 'inline');

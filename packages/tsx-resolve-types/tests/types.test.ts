@@ -23,7 +23,7 @@ describe('types', () => {
         a: 'a'
       };
       export const Code = defineComponent<Props>({
-        props: /*#__PURE__*/_mergeDefaults({
+        props: /*@__PURE__*/_mergeDefaults({
           a: {
             type: String,
             required: false
@@ -36,7 +36,7 @@ describe('types', () => {
         }
       });
       export default defineComponent<Props>({
-        props: /*#__PURE__*/_mergeDefaults({
+        props: /*@__PURE__*/_mergeDefaults({
           a: {
             type: String,
             required: false
@@ -66,7 +66,7 @@ describe('types', () => {
       export const Code = defineComponent<{
         a: string;
       } & Props>({
-        props: /*#__PURE__*/_mergeDefaults({
+        props: /*@__PURE__*/_mergeDefaults({
           a: {
             type: String,
             required: true
@@ -121,7 +121,7 @@ describe('types', () => {
       export const Code31 = defineComponent((props: Props) => {
         return () => <div>Code3</div>;
       }, {
-        props: /*#__PURE__*/_mergeDefaults({
+        props: /*@__PURE__*/_mergeDefaults({
           name: {
             type: String,
             required: true

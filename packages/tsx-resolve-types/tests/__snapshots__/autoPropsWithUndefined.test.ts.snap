@@ -306,7 +306,7 @@ export const LibTest = defineComponent<MyTableProps>(() => {
       default: undefined
     },
     columns: {
-      type: null,
+      type: Array,
       required: false,
       default: undefined
     },
@@ -376,7 +376,7 @@ export const LibTest = defineComponent<MyTableProps>(() => {
       default: undefined
     },
     rowKey: {
-      type: null,
+      type: [String, Function],
       required: false,
       default: undefined
     },
@@ -386,17 +386,17 @@ export const LibTest = defineComponent<MyTableProps>(() => {
       default: undefined
     },
     rowClassName: {
-      type: null,
+      type: [String, Function],
       required: false,
       default: undefined
     },
     title: {
-      type: null,
+      type: Function,
       required: false,
       default: undefined
     },
     footer: {
-      type: null,
+      type: Function,
       required: false,
       default: undefined
     },
@@ -416,12 +416,12 @@ export const LibTest = defineComponent<MyTableProps>(() => {
       default: undefined
     },
     customRow: {
-      type: null,
+      type: Function,
       required: false,
       default: undefined
     },
     customHeaderRow: {
-      type: null,
+      type: Function,
       required: false,
       default: undefined
     },
@@ -451,7 +451,7 @@ export const LibTest = defineComponent<MyTableProps>(() => {
       default: undefined
     },
     expandedRowRender: {
-      type: null,
+      type: Function,
       required: false,
       default: undefined
     },
@@ -461,7 +461,7 @@ export const LibTest = defineComponent<MyTableProps>(() => {
       default: undefined
     },
     expandIcon: {
-      type: null,
+      type: Function,
       required: false,
       default: undefined
     },
@@ -496,7 +496,7 @@ export const LibTest = defineComponent<MyTableProps>(() => {
       default: undefined
     },
     expandedRowClassName: {
-      type: null,
+      type: Function,
       required: false,
       default: undefined
     },
@@ -516,7 +516,7 @@ export const LibTest = defineComponent<MyTableProps>(() => {
       default: undefined
     },
     transformCellText: {
-      type: null,
+      type: Function,
       required: false,
       default: undefined
     },

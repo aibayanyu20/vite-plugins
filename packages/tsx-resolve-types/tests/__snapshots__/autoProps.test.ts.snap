@@ -282,7 +282,7 @@ export const LibTest = defineComponent<MyTableProps>(() => {
       required: false
     },
     columns: {
-      type: null,
+      type: Array,
       required: false
     },
     pagination: {
@@ -338,7 +338,7 @@ export const LibTest = defineComponent<MyTableProps>(() => {
       required: false
     },
     rowKey: {
-      type: null,
+      type: [String, Function],
       required: false
     },
     tableLayout: {
@@ -346,15 +346,15 @@ export const LibTest = defineComponent<MyTableProps>(() => {
       required: false
     },
     rowClassName: {
-      type: null,
+      type: [String, Function],
       required: false
     },
     title: {
-      type: null,
+      type: Function,
       required: false
     },
     footer: {
-      type: null,
+      type: Function,
       required: false
     },
     id: {
@@ -370,11 +370,11 @@ export const LibTest = defineComponent<MyTableProps>(() => {
       required: false
     },
     customRow: {
-      type: null,
+      type: Function,
       required: false
     },
     customHeaderRow: {
-      type: null,
+      type: Function,
       required: false
     },
     direction: {
@@ -398,7 +398,7 @@ export const LibTest = defineComponent<MyTableProps>(() => {
       required: false
     },
     expandedRowRender: {
-      type: null,
+      type: Function,
       required: false
     },
     expandRowByClick: {
@@ -406,7 +406,7 @@ export const LibTest = defineComponent<MyTableProps>(() => {
       required: false
     },
     expandIcon: {
-      type: null,
+      type: Function,
       required: false
     },
     onExpand: {
@@ -434,7 +434,7 @@ export const LibTest = defineComponent<MyTableProps>(() => {
       required: false
     },
     expandedRowClassName: {
-      type: null,
+      type: Function,
       required: false
     },
     childrenColumnName: {
@@ -450,7 +450,7 @@ export const LibTest = defineComponent<MyTableProps>(() => {
       required: false
     },
     transformCellText: {
-      type: null,
+      type: Function,
       required: false
     },
     sss: {

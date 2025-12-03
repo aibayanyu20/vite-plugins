@@ -46,7 +46,7 @@ describe('exportConst', () => {
         a: '1'
       };
       export const Code2 = defineComponent({
-        props: /*#__PURE__*/_mergeDefaults({
+        props: /*@__PURE__*/_mergeDefaults({
           a: {
             type: String,
             required: false
@@ -59,7 +59,7 @@ describe('exportConst', () => {
         }
       });
       export const Code21 = defineComponent({
-        props: /*#__PURE__*/_mergeDefaults({
+        props: /*@__PURE__*/_mergeDefaults({
           a: {
             type: String,
             required: false
@@ -82,7 +82,7 @@ describe('exportConst', () => {
       import type { Props } from './interface';
       import { defaultProps } from './interface';
       export const Code2 = defineComponent({
-        props: /*#__PURE__*/_mergeDefaults({
+        props: /*@__PURE__*/_mergeDefaults({
           a: {
             type: String,
             required: false
@@ -95,7 +95,7 @@ describe('exportConst', () => {
         }
       });
       export const Code21 = defineComponent({
-        props: /*#__PURE__*/_mergeDefaults({
+        props: /*@__PURE__*/_mergeDefaults({
           a: {
             type: String,
             required: false
@@ -118,7 +118,7 @@ describe('exportConst', () => {
       import type { Props, Props1 } from './interface';
       import { defaultProps, defaultProps1 } from './interface';
       export const Code2 = defineComponent({
-        props: /*#__PURE__*/_mergeDefaults({
+        props: /*@__PURE__*/_mergeDefaults({
           a: {
             type: String,
             required: false
@@ -131,7 +131,7 @@ describe('exportConst', () => {
         }
       });
       export default defineComponent({
-        props: /*#__PURE__*/_mergeDefaults({
+        props: /*@__PURE__*/_mergeDefaults({
           b: {
             type: String,
             required: false

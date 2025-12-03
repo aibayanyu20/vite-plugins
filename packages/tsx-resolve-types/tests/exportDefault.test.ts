@@ -134,7 +134,7 @@ describe('findComponents', () => {
       import type { Props } from './interface';
       import { defaultProps } from './interface';
       export default defineComponent({
-        props: /*#__PURE__*/_mergeDefaults({
+        props: /*@__PURE__*/_mergeDefaults({
           a: {
             type: String,
             required: true
