@@ -11,6 +11,7 @@ export default defineConfig({
     '@babel/types',
     '@babel/generator',
     '@vue/compiler-sfc',
+    '@v-c/resolve-types',
     'typescript',
   ],
   dts: true,
