@@ -1,5 +1,4 @@
 import {
-
   identifier,
   isArrowFunctionExpression,
   isAssignmentPattern,
@@ -35,17 +34,17 @@ function addTypes(prop: RestElement | Identifier | Pattern | undefined, ctx: Cre
     if (isIdentifier(prop.left) && !ctx.ctx.propsTypeDecl) {
       const type = getTypeAnnotation(prop.left)
       if (type)
-        ctx.ctx.propsTypeDecl = type
+        ctx.ctx.propsTypeDecl = type as any
     }
     if (prop.right)
-      ctx.ctx.propsRuntimeDefaults = prop.right
+      ctx.ctx.propsRuntimeDefaults = prop.right as any
 
     return prop.left
   }
   else if (prop && isIdentifier(prop)) {
     const type = getTypeAnnotation(prop)
     if (type)
-      ctx.ctx.propsTypeDecl = type
+      ctx.ctx.propsTypeDecl = type as any
   }
 }
 function getObjectSetup(expression: ObjectExpression, ctx: CreateContextType) {
@@ -71,7 +70,7 @@ function getPropsTypeToDefine(exp: CallExpression, ctx: CreateContextType) {
     if (params) {
       const prop = params[0]
       if (prop)
-        ctx.ctx.propsTypeDecl = prop
+        ctx.ctx.propsTypeDecl = prop as any
     }
   }
 }

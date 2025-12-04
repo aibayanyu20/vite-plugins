@@ -28,7 +28,7 @@ function addEmitsType(exp: Identifier | RestElement | Pattern, ctx: CreateContex
           const params = typeParameters.params
           const prop = params[0]
           if (prop)
-            ctx.ctx.emitsTypeDecl = prop
+            ctx.ctx.emitsTypeDecl = prop as any
         }
       }
     }
@@ -99,7 +99,7 @@ export function resolveEmits(expression: CallExpression, ctx: CreateContextType)
     if (expression.typeParameters && expression.typeParameters.params && expression.typeParameters.params[1]) {
       // 这里的值存在的情况下直接使用这里的值
       const types = expression.typeParameters.params[1]
-      ctx.ctx.emitsTypeDecl = types
+      ctx.ctx.emitsTypeDecl = types as any
       const emitAst = getEmitsAst(ctx)
       if (emitAst)
         addEmitsToFunc(expression, emitAst)

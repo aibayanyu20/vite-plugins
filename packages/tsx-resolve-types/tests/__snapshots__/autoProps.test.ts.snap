@@ -141,7 +141,6 @@ export const Generic = defineComponent(<T extends string | number,>(props: {
 }, {
   props: {
     msg: {
-      type: null,
       required: true
     },
     list: {
@@ -163,7 +162,6 @@ export const Generic1 = defineComponent(<T extends Props | number,>(props: {
 }, {
   props: {
     msg: {
-      type: null,
       required: true
     },
     list: {
@@ -294,7 +292,7 @@ export const LibTest = defineComponent<MyTableProps>(() => {
       required: false
     },
     size: {
-      type: null,
+      type: [String, null],
       required: false
     },
     bordered: {
