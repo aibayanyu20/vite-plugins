@@ -67,4 +67,40 @@ export default defineComponent((_props: { foo?: string }) => {
     expect(code).toContain('}, { props:')
     expect(code).toContain('foo: { type: String, required: false')
   })
+
+  it.skip('injects props for Omit<T, K> with interface extends and existing options (Breadcrumb-like)', () => {
+    const code = runTransform(`
+import { defineComponent } from 'vue'
+
+type Key = string | number
+
+interface SeparatorType {
+  key?: Key
+}
+
+interface BreadcrumbItemProps extends SeparatorType {
+  header?: string | number | boolean | null | object
+  showArrow?: boolean
+}
+
+export default defineComponent<Omit<BreadcrumbItemProps, 'key'>>(
+  (props) => {
+    return () => <div>{props.header}</div>
+  },
+  {
+    name: 'ABreadcrumbItem',
+    inheritAttrs: false,
+  },
+)
+`, path.resolve(basePath, 'runtime/breadcrumb-omit-extends.tsx'), {
+      emits: false,
+      defaultPropsToUndefined: true,
+    })
+
+    expect(code).toContain('props:')
+    expect(code).toContain('header:')
+    expect(code).toContain('showArrow:')
+    expect(code).not.toContain('key:')
+    expect(code).not.toContain(',\n, { props')
+  })
 })
