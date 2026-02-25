@@ -5,11 +5,39 @@ import type { Program } from '@oxc-project/types'
 import type { AST } from '../interface'
 
 const oxcProgramMap = new WeakMap<AST, Program>()
-const require = createRequire(import.meta.url)
+function getCurrentModuleRef() {
+  if (typeof __filename === 'string')
+    return __filename
+
+  const ErrorCtor = Error as any
+  const oldPrepareStackTrace = ErrorCtor.prepareStackTrace
+  try {
+    ErrorCtor.prepareStackTrace = (_: unknown, stack: any[]) => stack
+    // eslint-disable-next-line unicorn/error-message
+    const err = new Error()
+    const stack = err.stack as any[] | undefined
+    for (const site of stack || []) {
+      const fileName = site?.getFileName?.()
+      if (!fileName || typeof fileName !== 'string' || fileName.startsWith('node:'))
+        continue
+      return fileName
+    }
+  }
+  finally {
+    ErrorCtor.prepareStackTrace = oldPrepareStackTrace
+  }
+
+  // eslint-disable-next-line node/prefer-global/process
+  return `${process.cwd().replace(/\\/g, '/')}/index.js`
+}
+
+const nodeRequire = typeof module !== 'undefined' && typeof module.require === 'function'
+  ? module.require.bind(module)
+  : createRequire(getCurrentModuleRef())
 let babelParser: typeof import('@babel/parser') | undefined
 
 function getBabelParser() {
-  babelParser ??= require('@babel/parser') as typeof import('@babel/parser')
+  babelParser ??= nodeRequire('@babel/parser') as typeof import('@babel/parser')
   return babelParser
 }
 
