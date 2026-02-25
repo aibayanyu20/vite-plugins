@@ -1,0 +1,49 @@
+{
+  "name": "vite-plugin-vue-resolve-types",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "Resolve script setup defineProps types to runtime props in Vue SFC",
+  "author": "aibayanyu20 <aibayanyu@qq.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/aibayanyu20/vite-plugins/#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aibayanyu20/vite-plugins.git"
+  },
+  "keywords": [
+    "vite",
+    "vite-plugin",
+    "vue"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json",
+    "./dist/*": "./dist/*"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "prepublish": "tsup",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "typescript": ">=5",
+    "vite": ">=4",
+    "vue": ">=3.3"
+  },
+  "dependencies": {
+    "@v-c/resolve-types": "0.0.1",
+    "magic-string": "^0.30.21",
+    "oxc-walker": "^0.7.0"
+  }
+}
