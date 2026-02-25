@@ -20,6 +20,13 @@ function applyComponentPatches(ctx: ReturnType<typeof createContext>, options: U
   }
 }
 
+function hasMagicStringChanged(ctx: ReturnType<typeof createContext>) {
+  const s = ctx.s as any
+  if (typeof s.hasChanged === 'function')
+    return !!s.hasChanged()
+  return s.toString() !== ctx.source
+}
+
 export function transform(code: string, id: string, graphCtx: GraphContext, options: UserOptions = {}) {
   if (options.props === false && options.emits === false)
     return code
@@ -34,6 +41,12 @@ export function transform(code: string, id: string, graphCtx: GraphContext, opti
   let ctx = createTransformContext()
   try {
     applyComponentPatches(ctx, options, true)
+    if (!hasMagicStringChanged(ctx)) {
+      // OXC path can fail "silently" when upstream type resolver returns no props/emits
+      // for unsupported OXC node shapes. Fall back to the Babel AST path in that case.
+      ctx = createTransformContext()
+      applyComponentPatches(ctx, options, false)
+    }
   }
   catch {
     // @v-c/resolve-types is still not fully OXC-node compatible for all cases.

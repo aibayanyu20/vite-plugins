@@ -176,8 +176,8 @@ importers:
         specifier: ^0.115.0
         version: 0.115.0
       '@v-c/resolve-types':
-        specifier: 0.0.1-beta.11
-        version: 0.0.1-beta.11(typescript@5.5.4)
+        specifier: 0.0.1-beta.12
+        version: 0.0.1-beta.12(typescript@5.5.4)
       magic-string:
         specifier: ^0.30.21
         version: 0.30.21
@@ -1830,8 +1830,8 @@ packages:
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
-  '@v-c/resolve-types@0.0.1-beta.11':
-    resolution: {integrity: sha512-hDBXYSrmTxRyG68edcQ06XIZEQwpod5MdGznvxoup8fHbQZvBppLMgxAR3Zuq4NXthb0ke72XBWGYbIsW/5R2Q==}
+  '@v-c/resolve-types@0.0.1-beta.12':
+    resolution: {integrity: sha512-ctw02Busii+CXliAEcJZR4JUCVXnKjWnttWIw2YZvA49Wa/CvP7IDvGdZAxxTQN8pm5n1+xMsvFD6Ju91laChA==}
 
   '@vitejs/plugin-vue-jsx@3.1.0':
     resolution: {integrity: sha512-w9M6F3LSEU5kszVb9An2/MmXNxocAnUb3WhRr8bHlimhDrXNt6n6D2nJQR3UXpGlZHh/EsgouOHCsM8V3Ln+WA==}
@@ -6727,7 +6727,7 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
-  '@v-c/resolve-types@0.0.1-beta.11(typescript@5.5.4)':
+  '@v-c/resolve-types@0.0.1-beta.12(typescript@5.5.4)':
     dependencies:
       '@oxc-project/types': 0.115.0
       '@vue/compiler-core': 3.5.25

@@ -68,7 +68,7 @@ export default defineComponent((_props: { foo?: string }) => {
     expect(code).toContain('foo: { type: String, required: false')
   })
 
-  it.skip('injects props for Omit<T, K> with interface extends and existing options (Breadcrumb-like)', () => {
+  it('injects props for Omit<T, K> with interface extends and existing options (Breadcrumb-like)', () => {
     const code = runTransform(`
 import { defineComponent } from 'vue'
 
