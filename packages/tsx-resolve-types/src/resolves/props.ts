@@ -21,7 +21,7 @@ import type {
   RestElement,
 } from '@babel/types'
 import { extractRuntimeProps } from '@v-c/resolve-types'
-import { parseExpression } from '@babel/parser'
+import { createExpressionAst } from '../utils/ast'
 import type { CreateContextType } from '../utils/context'
 
 function getTypeAnnotation(node: Identifier) {
@@ -125,7 +125,7 @@ function getPropsStr(ctx: CreateContextType) {
        */
       if (!ctx.importMergeDefaults)
         (propStr.includes('/*#__PURE__*/_mergeDefaults') || propStr.includes('/*@__PURE__*/_mergeDefaults') || propStr.includes('_mergeDefaults')) && (ctx.importMergeDefaults = true)
-      const ast = parseExpression(propStr)
+      const ast = createExpressionAst(propStr)
       addUndefinedToProps(ast, ctx)
       return ast
     }
