@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-tsx-resolve-types",
   "type": "module",
-  "version": "1.0.1-beta.6",
+  "version": "1.0.1-beta.7",
   "description": "this is a vite plugin for auto props in tsx",
   "author": "aibayanyu20 <aibayanyu@qq.com>",
   "license": "MIT",
@@ -45,7 +45,7 @@
     "@babel/parser": "^7.23.4",
     "@babel/types": "^7.23.4",
     "@oxc-project/types": "^0.115.0",
-    "@v-c/resolve-types": "0.0.1-beta.10",
+    "@v-c/resolve-types": "0.0.1-beta.11",
     "magic-string": "^0.30.21",
     "oxc-parser": "^0.115.0",
     "oxc-walker": "^0.7.0"

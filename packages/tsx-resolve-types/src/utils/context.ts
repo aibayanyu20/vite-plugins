@@ -98,6 +98,16 @@ export function queueComponentOptionField(ctx: CreateContextType, call: CallExpr
   state.syntheticOptionsFields.push(fieldCode)
 }
 
+function hasCallTrailingComma(ctx: CreateContextType, call: CallExpression) {
+  const args = (call.arguments || []) as any[]
+  const lastArg = args[args.length - 1]
+  if (!lastArg || typeof lastArg.end !== 'number' || typeof call.end !== 'number')
+    return false
+
+  const tail = ctx.source.slice(lastArg.end, call.end - 1)
+  return /,\s*(?:\/\*[\s\S]*?\*\/\s*|\/\/[^\n]*\s*)*$/.test(tail)
+}
+
 export function flushComponentPatch(ctx: CreateContextType, call: CallExpression) {
   const state = ctx.componentPatches.get(getRangeKey(call.start, call.end))
   if (!state || state.flushed)
@@ -115,8 +125,15 @@ export function flushComponentPatch(ctx: CreateContextType, call: CallExpression
     ctx.s.appendLeft(insert.insertAt, text)
   }
 
-  if (state.syntheticOptionsFields.length > 0 && typeof call.end === 'number')
-    ctx.s.appendLeft(call.end - 1, `, { ${state.syntheticOptionsFields.join(', ')} }`)
+  if (state.syntheticOptionsFields.length > 0 && typeof call.end === 'number') {
+    const hasArgs = Array.isArray((call as any).arguments) && (call as any).arguments.length > 0
+    const prefix = !hasArgs
+      ? ''
+      : hasCallTrailingComma(ctx, call)
+        ? ' '
+        : ', '
+    ctx.s.appendLeft(call.end - 1, `${prefix}{ ${state.syntheticOptionsFields.join(', ')} }`)
+  }
 
   const overwrites = state.overwrites
     .slice()

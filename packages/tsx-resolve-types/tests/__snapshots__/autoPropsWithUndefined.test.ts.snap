@@ -110,7 +110,7 @@ export const Generic = defineComponent(
         </div>
       )
     },
-, { props: {
+ { props: {
     msg: { required: true },
     list: { type: Array, required: true }
   } })
@@ -126,7 +126,7 @@ export const Generic1 = defineComponent(
         </div>
       )
     },
-, { props: {
+ { props: {
     msg: { required: true },
     list: { type: Array, required: true }
   } })

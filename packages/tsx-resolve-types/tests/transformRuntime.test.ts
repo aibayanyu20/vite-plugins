@@ -49,4 +49,22 @@ export default defineComponent((_props: {
     expect(code).not.toMatch(/optNum:\s*\{[^}]*default:\s*undefined/)
     expect(code).not.toMatch(/optBool:\s*\{[^}]*default:\s*undefined/)
   })
+
+  it('does not inject an extra comma when defineComponent has a trailing comma', () => {
+    const code = runTransform(`
+import { defineComponent } from 'vue'
+
+export default defineComponent((_props: { foo?: string }) => {
+  return () => <div></div>
+},)
+`, path.resolve(basePath, 'runtime/trailing-comma.tsx'), {
+      emits: false,
+      defaultPropsToUndefined: true,
+    })
+
+    expect(code).not.toContain(',, { props')
+    expect(code).not.toContain(',\n, { props')
+    expect(code).toContain('}, { props:')
+    expect(code).toContain('foo: { type: String, required: false')
+  })
 })
