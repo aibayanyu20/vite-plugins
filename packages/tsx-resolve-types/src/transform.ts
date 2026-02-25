@@ -1,6 +1,5 @@
-import MagicString from 'magic-string'
-import type { CallExpression, ImportDeclaration } from '@babel/types'
-import { createContext } from './utils/context'
+import type { ImportDeclaration } from '@babel/types'
+import { createContext, flushComponentPatch } from './utils/context'
 import { findComponents } from './parser'
 import { resolveProps } from './resolves/props'
 import { resolveEmits } from './resolves/emits'
@@ -8,10 +7,6 @@ import { checkMergeDefaults } from './utils/checkMergeDefaults'
 import type { GraphContext } from './utils/graphContext'
 import type { UserOptions } from './interface'
 import { generate } from './utils/genrate'
-
-function isWritableCallExpression(node: CallExpression) {
-  return typeof node.start === 'number' && typeof node.end === 'number' && node.start <= node.end
-}
 
 function getPrependedImports(ctx: ReturnType<typeof createContext>, bodyLengthBeforeCheck: number) {
   const bodyLengthAfterCheck = ctx.ast.program.body.length
@@ -38,24 +33,17 @@ export function transform(code: string, id: string, graphCtx: GraphContext, opti
       resolveProps(callExpression, ctx)
     if (options.emits !== false)
       resolveEmits(callExpression, ctx)
+    flushComponentPatch(ctx, callExpression)
   }
   const bodyLengthBeforeCheck = ctx.ast.program.body.length
   checkMergeDefaults(ctx)
 
-  const s = new MagicString(code)
+  const s = ctx.s
   const prependedImports = getPrependedImports(ctx, bodyLengthBeforeCheck)
   if (prependedImports.length > 0) {
     const importCode = prependedImports.map(node => generate(node).code).join('\n')
     if (importCode)
       s.prepend(`${importCode}\n`)
-  }
-
-  const writableCalls = expression
-    .filter(isWritableCallExpression)
-    .sort((a, b) => b.start! - a.start!)
-
-  for (const callExpression of writableCalls) {
-    s.overwrite(callExpression.start!, callExpression.end!, generate(callExpression).code)
   }
 
   return {

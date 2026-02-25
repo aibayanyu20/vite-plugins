@@ -15,7 +15,10 @@ import {
   stringLiteral,
 } from '@babel/types'
 import { extractRuntimeEmits } from '@v-c/resolve-types'
-import type { CreateContextType } from '../utils/context'
+import {
+  queueComponentOptionField,
+  type CreateContextType,
+} from '../utils/context'
 
 function addEmitsType(exp: Identifier | RestElement | Pattern, ctx: CreateContextType) {
   if (isObjectPattern(exp) || isIdentifier(exp)) {
@@ -71,17 +74,21 @@ function getSetupContext(expression: ObjectExpression, ctx: CreateContextType) {
   }
 }
 
-function getEmitsAst(ctx: CreateContextType) {
+function getEmitsRuntime(ctx: CreateContextType) {
   if (ctx.ctx.emitsTypeDecl) {
-    // 开始执行
     const emits = extractRuntimeEmits(ctx.ctx)
     ctx.ctx.emitsTypeDecl = undefined
     if (emits && emits.size) {
-      const keys = Array.from(emits).map((v) => {
+      const values = Array.from(emits)
+      const code = `[${values.map(v => JSON.stringify(v)).join(', ')}]`
+      const keys = values.map((v) => {
         return stringLiteral(v)
       })
 
-      return arrayExpression(keys)
+      return {
+        code,
+        ast: arrayExpression(keys),
+      }
     }
   }
 }
@@ -100,17 +107,39 @@ export function resolveEmits(expression: CallExpression, ctx: CreateContextType)
       // 这里的值存在的情况下直接使用这里的值
       const types = expression.typeParameters.params[1]
       ctx.ctx.emitsTypeDecl = types as any
-      const emitAst = getEmitsAst(ctx)
-      if (emitAst)
+      const emitRuntime = getEmitsRuntime(ctx)
+      if (emitRuntime) {
+        const optionsArg = expression.arguments[1]
+        if (optionsArg && isObjectExpression(optionsArg)) {
+          const hasEmits = optionsArg.properties.find(p => isObjectProperty(p) && 'name' in p.key && p.key.name === 'emits')
+          if (!hasEmits)
+            queueComponentOptionField(ctx, expression, 'emits', emitRuntime.code, optionsArg)
+        }
+        else if (!optionsArg) {
+          queueComponentOptionField(ctx, expression, 'emits', emitRuntime.code)
+        }
+        const emitAst = emitRuntime.ast
         addEmitsToFunc(expression, emitAst)
+      }
     }
     else if (params.length) {
       const emits = params[1]
       if (emits)
         addEmitsType(emits, ctx)
-      const emitAst = getEmitsAst(ctx)
-      if (emitAst)
+      const emitRuntime = getEmitsRuntime(ctx)
+      if (emitRuntime) {
+        const optionsArg = expression.arguments[1]
+        if (optionsArg && isObjectExpression(optionsArg)) {
+          const hasEmits = optionsArg.properties.find(p => isObjectProperty(p) && 'name' in p.key && p.key.name === 'emits')
+          if (!hasEmits)
+            queueComponentOptionField(ctx, expression, 'emits', emitRuntime.code, optionsArg)
+        }
+        else if (!optionsArg) {
+          queueComponentOptionField(ctx, expression, 'emits', emitRuntime.code)
+        }
+        const emitAst = emitRuntime.ast
         addEmitsToFunc(expression, emitAst)
+      }
     }
   }
   else if (isObjectExpression(argument)) {
@@ -118,9 +147,11 @@ export function resolveEmits(expression: CallExpression, ctx: CreateContextType)
     const emitsProp = argument.properties.find(p => isObjectProperty(p) && 'name' in p.key && p.key.name === 'emits')
     if (!emitsProp) {
       getSetupContext(argument, ctx)
-      const emitAst = getEmitsAst(ctx)
-      if (emitAst) {
+      const emitRuntime = getEmitsRuntime(ctx)
+      if (emitRuntime) {
         // 存在ast
+        queueComponentOptionField(ctx, expression, 'emits', emitRuntime.code, argument)
+        const emitAst = emitRuntime.ast
         argument.properties.unshift(objectProperty(identifier('emits'), emitAst))
       }
     }

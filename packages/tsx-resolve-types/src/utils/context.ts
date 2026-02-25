@@ -1,16 +1,123 @@
 import fs from 'node:fs'
+import MagicString from 'magic-string'
+import type { CallExpression, ObjectExpression } from '@babel/types'
 import type { ScriptCompileContext } from '@v-c/resolve-types'
 import type { AST } from '../interface'
 import { createAst } from './ast'
 import type { GraphContext } from './graphContext'
 
+interface PendingOverwrite {
+  start: number
+  end: number
+  text: string
+}
+
+interface PendingObjectInsert {
+  insertAt: number
+  hasExistingProperties: boolean
+  fields: string[]
+}
+
+interface ComponentPatchState {
+  overwrites: PendingOverwrite[]
+  objectInserts: Map<string, PendingObjectInsert>
+  syntheticOptionsFields: string[]
+  flushed: boolean
+}
+
 export interface CreateContextType {
   ctx: ScriptCompileContext
   ast: AST
   source: string
+  s: MagicString
   filepath: string
   importMergeDefaults?: boolean
   setDefaultUndefined?: boolean
+  componentPatches: Map<string, ComponentPatchState>
+}
+
+function getRangeKey(start?: number | null, end?: number | null) {
+  return `${start}:${end}`
+}
+
+function getCallPatchState(ctx: CreateContextType, call: CallExpression) {
+  const key = getRangeKey(call.start, call.end)
+  let state = ctx.componentPatches.get(key)
+  if (!state) {
+    state = {
+      overwrites: [],
+      objectInserts: new Map(),
+      syntheticOptionsFields: [],
+      flushed: false,
+    }
+    ctx.componentPatches.set(key, state)
+  }
+  return state
+}
+
+function getObjectInsertState(state: ComponentPatchState, objectNode: ObjectExpression) {
+  const key = getRangeKey(objectNode.start, objectNode.end)
+  let objectState = state.objectInserts.get(key)
+  if (!objectState) {
+    objectState = {
+      insertAt: (objectNode.start ?? 0) + 1,
+      hasExistingProperties: objectNode.properties.length > 0,
+      fields: [],
+    }
+    state.objectInserts.set(key, objectState)
+  }
+  return objectState
+}
+
+export function queueComponentOverwrite(ctx: CreateContextType, call: CallExpression, start: number | null | undefined, end: number | null | undefined, text: string) {
+  if (typeof start !== 'number' || typeof end !== 'number' || start > end)
+    return
+
+  const state = getCallPatchState(ctx, call)
+  state.overwrites.push({ start, end, text })
+}
+
+export function queueComponentOptionField(ctx: CreateContextType, call: CallExpression, key: 'props' | 'emits', valueCode: string, objectNode?: ObjectExpression) {
+  const state = getCallPatchState(ctx, call)
+  state.flushed = false
+  const fieldCode = `${key}: ${valueCode}`
+
+  if (objectNode) {
+    const objectState = getObjectInsertState(state, objectNode)
+    objectState.fields.push(fieldCode)
+    return
+  }
+
+  state.syntheticOptionsFields.push(fieldCode)
+}
+
+export function flushComponentPatch(ctx: CreateContextType, call: CallExpression) {
+  const state = ctx.componentPatches.get(getRangeKey(call.start, call.end))
+  if (!state || state.flushed)
+    return
+
+  const objectInserts = Array.from(state.objectInserts.values())
+    .filter(v => v.fields.length > 0)
+    .sort((a, b) => b.insertAt - a.insertAt)
+
+  for (const insert of objectInserts) {
+    const content = insert.fields.join(', ')
+    const text = insert.hasExistingProperties
+      ? `${content}, `
+      : content
+    ctx.s.appendLeft(insert.insertAt, text)
+  }
+
+  if (state.syntheticOptionsFields.length > 0 && typeof call.end === 'number')
+    ctx.s.appendLeft(call.end - 1, `, { ${state.syntheticOptionsFields.join(', ')} }`)
+
+  const overwrites = state.overwrites
+    .slice()
+    .sort((a, b) => b.start - a.start)
+  for (const overwrite of overwrites)
+    ctx.s.overwrite(overwrite.start, overwrite.end, overwrite.text)
+
+  state.flushed = true
 }
 
 export function createContext(code: string, id: string, graphCtx?: GraphContext): CreateContextType {
@@ -20,7 +127,9 @@ export function createContext(code: string, id: string, graphCtx?: GraphContext)
     ast,
     filepath: id,
     source: code,
+    s: new MagicString(code),
     importMergeDefaults: false,
+    componentPatches: new Map(),
     ctx: {
       filename: id,
       source: code,
