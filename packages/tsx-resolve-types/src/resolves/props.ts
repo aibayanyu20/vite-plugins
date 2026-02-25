@@ -31,6 +31,8 @@ import {
   queueComponentOverwrite,
 } from '../utils/context'
 
+type DefaultUndefinedOption = NonNullable<CreateContextType['setDefaultUndefined']>
+
 function getPropKeyName(node: any) {
   const key = node?.key
   if (!key)
@@ -135,18 +137,80 @@ function getFuncType(exp: ArrowFunctionExpression | FunctionExpression, ctx: Cre
     params[0] = left as any
 }
 
-function addDefaultToProps(ast: ObjectExpression) {
+function addDefaultToProps(ast: ObjectExpression, option: DefaultUndefinedOption) {
   const props = ast.properties
   props.forEach((prop) => {
     if (isObjectProperty(prop)) {
       const value = prop.value
       if (isObjectExpression(value)) {
-        const hasDefault = value.properties.find(p => isObjectProperty(p) && 'name' in p.key && p.key.name === 'default')
-        if (!hasDefault)
+        if (shouldAddUndefinedDefaultToPropObject(value, option))
           value.properties.push(objectProperty(identifier('default'), identifier('undefined')))
       }
     }
   })
+}
+
+function isPropObjectMember(node: any) {
+  return !!node && (node.type === 'Property' || isObjectProperty(node))
+}
+
+function getObjectMemberByName(objectNode: any, name: string) {
+  if (!objectNode?.properties)
+    return undefined
+  return objectNode.properties.find((p: any) => isPropObjectMember(p) && getPropKeyName(p) === name)
+}
+
+function isTrueLiteral(node: any) {
+  return node?.type === 'BooleanLiteral' && node.value === true
+    || node?.type === 'Literal' && node.value === true
+}
+
+function collectTypeNames(typeNode: any, names = new Set<string>()) {
+  if (!typeNode)
+    return names
+
+  if (typeNode.type === 'Identifier' && typeof typeNode.name === 'string') {
+    names.add(typeNode.name)
+    return names
+  }
+
+  if (typeNode.type === 'ArrayExpression' && Array.isArray(typeNode.elements)) {
+    for (const el of typeNode.elements)
+      collectTypeNames(el, names)
+    return names
+  }
+
+  if (typeNode.type === 'TSAsExpression' || typeNode.type === 'AsExpression')
+    return collectTypeNames(typeNode.expression, names)
+
+  return names
+}
+
+function matchesDefaultUndefinedTypeFilter(propObject: any, option: DefaultUndefinedOption) {
+  if (option === true)
+    return true
+
+  if (!Array.isArray(option) || option.length === 0)
+    return false
+
+  const typeField = getObjectMemberByName(propObject, 'type')
+  const typeNames = collectTypeNames(typeField?.value)
+  if (typeNames.size === 0)
+    return false
+
+  return option.some(t => typeNames.has(t))
+}
+
+function shouldAddUndefinedDefaultToPropObject(propObject: any, option: DefaultUndefinedOption) {
+  const hasDefault = !!getObjectMemberByName(propObject, 'default')
+  if (hasDefault)
+    return false
+
+  const requiredField = getObjectMemberByName(propObject, 'required')
+  if (requiredField && isTrueLiteral(requiredField.value))
+    return false
+
+  return matchesDefaultUndefinedTypeFilter(propObject, option)
 }
 
 function addUndefinedToProps(ast: Expression, ctx: CreateContextType) {
@@ -156,16 +220,16 @@ function addUndefinedToProps(ast: Expression, ctx: CreateContextType) {
       // 这是一个函数，获取第一个参数
       const arg1 = ast.arguments[0]
       if (arg1 && isObjectExpression(arg1))
-        addDefaultToProps(arg1)
+        addDefaultToProps(arg1, ctx.setDefaultUndefined)
     }
     else if (isObjectExpression(ast)) {
       // 这是一个对象
-      addDefaultToProps(ast)
+      addDefaultToProps(ast, ctx.setDefaultUndefined)
     }
   }
 }
 
-function addUndefinedToPropsCode(code: string) {
+function addUndefinedToPropsCode(code: string, option: DefaultUndefinedOption) {
   const prefix = 'const __tsxResolveTypesExpr__ = '
   const wrapped = `${prefix}${code}`
   let statement: any
@@ -212,14 +276,7 @@ function addUndefinedToPropsCode(code: string) {
     if (!value || value.type !== 'ObjectExpression' || typeof value.end !== 'number')
       continue
 
-    const hasDefault = value.properties.find((p: any) => {
-      if (!(p.type === 'Property' || isObjectProperty(p)))
-        return false
-      const key = p.key as any
-      return (key?.type === 'Identifier' && key.name === 'default')
-        || (key?.type === 'Literal' && key.value === 'default')
-    })
-    if (hasDefault)
+    if (!shouldAddUndefinedDefaultToPropObject(value, option))
       continue
 
     const insertText = value.properties.length ? ', default: undefined' : 'default: undefined'
@@ -245,7 +302,7 @@ function getPropsRuntime(ctx: CreateContextType) {
       if (!ctx.importMergeDefaults)
         (propStr.includes('/*#__PURE__*/_mergeDefaults') || propStr.includes('/*@__PURE__*/_mergeDefaults') || propStr.includes('_mergeDefaults')) && (ctx.importMergeDefaults = true)
       if (ctx.setDefaultUndefined)
-        propStr = addUndefinedToPropsCode(propStr)
+        propStr = addUndefinedToPropsCode(propStr, ctx.setDefaultUndefined)
       if (!ctx.astWriteback)
         return { code: propStr }
 

@@ -26,4 +26,27 @@ describe('transform runtime path', () => {
     const code = runTransform(emitsRaw, path.resolve(basePath, 'emits/inline.tsx'))
     expect(code).toContain('emits:')
   })
+
+  it('adds undefined defaults selectively and skips required props', () => {
+    const code = runTransform(`
+import { defineComponent } from 'vue'
+
+export default defineComponent((_props: {
+  req: string
+  optStr?: string
+  optNum?: number
+  optBool?: boolean
+}) => {
+  return () => <div></div>
+})
+`, path.resolve(basePath, 'runtime/selective-default-undefined.tsx'), {
+      emits: false,
+      defaultPropsToUndefined: ['String'],
+    })
+
+    expect(code).toMatch(/optStr:\s*\{[^}]*type:\s*String[^}]*default:\s*undefined/)
+    expect(code).not.toMatch(/req:\s*\{[^}]*default:\s*undefined/)
+    expect(code).not.toMatch(/optNum:\s*\{[^}]*default:\s*undefined/)
+    expect(code).not.toMatch(/optBool:\s*\{[^}]*default:\s*undefined/)
+  })
 })

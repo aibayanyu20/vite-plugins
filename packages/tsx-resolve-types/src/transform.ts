@@ -27,7 +27,7 @@ export function transform(code: string, id: string, graphCtx: GraphContext, opti
   const createTransformContext = () => {
     const ctx = createContext(code, id, graphCtx, { astWriteback: false })
     if (options.defaultPropsToUndefined)
-      ctx.setDefaultUndefined = true
+      ctx.setDefaultUndefined = options.defaultPropsToUndefined
     return ctx
   }
 

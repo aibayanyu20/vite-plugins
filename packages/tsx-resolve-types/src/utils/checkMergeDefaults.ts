@@ -15,7 +15,7 @@ export function checkMergeDefaults(ctx: CreateContextType) {
     traverse(ensureBabelAst(ctx), {
       ImportDeclaration(path) {
         if (path.node.source.value === 'vue') {
-          const node = path.node.specifiers.find((v) => {
+          const node = path.node.specifiers.find((v: any) => {
             return v.local.name === '_mergeDefaults'
           })
           if (node)

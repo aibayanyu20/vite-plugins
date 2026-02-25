@@ -3,7 +3,7 @@ import MagicString from 'magic-string'
 import type { CallExpression, ObjectExpression } from '@babel/types'
 import type { Program as OxcProgram } from '@oxc-project/types'
 import type { ScriptCompileContext } from '@v-c/resolve-types'
-import type { AST } from '../interface'
+import type { AST, UserOptions } from '../interface'
 import { createAst, createOxcProgram, getOxcProgram } from './ast'
 import type { GraphContext } from './graphContext'
 
@@ -35,7 +35,7 @@ export interface CreateContextType {
   astWriteback: boolean
   filepath: string
   importMergeDefaults?: boolean
-  setDefaultUndefined?: boolean
+  setDefaultUndefined?: UserOptions['defaultPropsToUndefined']
   componentPatches: Map<string, ComponentPatchState>
 }
 

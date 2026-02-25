@@ -16,8 +16,8 @@ export const Complex = defineComponent<CommonProps & ComplexProps>(() => {
     return <div></div>
   }
 }, { props: {
-    b: { type: String, required: true , default: undefined},
-    a: { type: String, required: true , default: undefined}
+    b: { type: String, required: true },
+    a: { type: String, required: true }
   } })
 
 export const Complex1 = defineComponent((_props: CommonProps & ComplexProps) => {
@@ -25,8 +25,8 @@ export const Complex1 = defineComponent((_props: CommonProps & ComplexProps) => 
     return <div></div>
   }
 }, { props: {
-    b: { type: String, required: true , default: undefined},
-    a: { type: String, required: true , default: undefined}
+    b: { type: String, required: true },
+    a: { type: String, required: true }
   } })
 
 export const Complex2 = defineComponent((_props: CommonProps & { c: string }) => {
@@ -34,13 +34,13 @@ export const Complex2 = defineComponent((_props: CommonProps & { c: string }) =>
     return <div></div>
   }
 }, { props: {
-    b: { type: String, required: true , default: undefined},
-    c: { type: String, required: true , default: undefined}
+    b: { type: String, required: true },
+    c: { type: String, required: true }
   } })
 
 export const Complex3 = defineComponent({props: {
-    b: { type: String, required: true , default: undefined},
-    a: { type: String, required: true , default: undefined}
+    b: { type: String, required: true },
+    a: { type: String, required: true }
   }, 
   setup(_props: CommonProps & ComplexProps) {
     return () => {
@@ -83,7 +83,7 @@ export interface CommonProps {
 }
 
 export default defineComponent<CommonProps>({props: {
-    b: { type: String, required: true , default: undefined}
+    b: { type: String, required: true }
   }, 
   setup() {
     return () => {
@@ -111,8 +111,8 @@ export const Generic = defineComponent(
       )
     },
 , { props: {
-    msg: { required: true , default: undefined},
-    list: { type: Array, required: true , default: undefined}
+    msg: { required: true },
+    list: { type: Array, required: true }
   } })
 export const Generic1 = defineComponent(
     <T extends Props | number>(props: { msg: T; list: T[] }) => {
@@ -127,8 +127,8 @@ export const Generic1 = defineComponent(
       )
     },
 , { props: {
-    msg: { required: true , default: undefined},
-    list: { type: Array, required: true , default: undefined}
+    msg: { required: true },
+    list: { type: Array, required: true }
   } })
 "
 `;
@@ -141,8 +141,8 @@ export const Inline = defineComponent((_props: { c: string;a: number }) => {
     return <div></div>
   }
 }, { props: {
-    c: { type: String, required: true , default: undefined},
-    a: { type: Number, required: true , default: undefined}
+    c: { type: String, required: true },
+    a: { type: Number, required: true }
   } })
 
 export const Inline1 = defineComponent<{ c: string;a: number }>(() => {
@@ -150,12 +150,12 @@ export const Inline1 = defineComponent<{ c: string;a: number }>(() => {
     return <div></div>
   }
 }, { props: {
-    c: { type: String, required: true , default: undefined},
-    a: { type: Number, required: true , default: undefined}
+    c: { type: String, required: true },
+    a: { type: Number, required: true }
   } })
 export const Inline2 = defineComponent({props: {
-    c: { type: String, required: true , default: undefined},
-    a: { type: Number, required: true , default: undefined}
+    c: { type: String, required: true },
+    a: { type: Number, required: true }
   }, 
   setup(_props: { c: string;a: number }) {
     return () => {
@@ -165,9 +165,9 @@ export const Inline2 = defineComponent({props: {
 })
 
 export default defineComponent({props: {
-    c: { type: String, required: true , default: undefined},
-    a: { type: Number, required: true , default: undefined},
-    b: { type: String, required: true , default: undefined}
+    c: { type: String, required: true },
+    a: { type: Number, required: true },
+    b: { type: String, required: true }
   }, 
   setup(_props: { c: string;a: number ;b: string }) {
     return () => {
@@ -265,7 +265,7 @@ export default defineComponent({
 })
 
 export const A = defineComponent({props: {
-    a: { type: String, required: true , default: undefined}
+    a: { type: String, required: true }
   }, 
   setup(_props: { a: string }) {
     return {}
@@ -294,8 +294,8 @@ export const Single = defineComponent<Props>(() => {
     return <div></div>
   }
 }, { props: {
-    foo: { type: String, required: true , default: undefined},
-    bar: { type: Number, required: true , default: undefined}
+    foo: { type: String, required: true },
+    bar: { type: Number, required: true }
   } })
 
 export const Single2 = defineComponent((_props: Props2) => {
@@ -303,15 +303,15 @@ export const Single2 = defineComponent((_props: Props2) => {
     return <div></div>
   }
 }, { props: {
-    foo: { type: String, required: true , default: undefined},
-    bar: { type: Number, required: true , default: undefined},
-    foo1: { type: String, required: true , default: undefined},
-    bar1: { type: Number, required: true , default: undefined}
+    foo: { type: String, required: true },
+    bar: { type: Number, required: true },
+    foo1: { type: String, required: true },
+    bar1: { type: Number, required: true }
   } })
 
 export const Single3 = defineComponent({props: {
-    foo1: { type: String, required: true , default: undefined},
-    foo: { type: String, required: true , default: undefined}
+    foo1: { type: String, required: true },
+    foo: { type: String, required: true }
   }, 
   setup(_props: Props3) {
     return () => {
