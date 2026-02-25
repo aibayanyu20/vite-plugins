@@ -1,0 +1,29 @@
+import path from 'node:path'
+import { describe, expect, it } from 'vitest'
+import ts from 'typescript'
+import { registerTS } from '@v-c/resolve-types'
+import { transform } from '../src/transform'
+import { GraphContext } from '../src/utils/graphContext'
+import { basePath } from './fixtures/constant'
+import propsRaw from './fixtures/types/code3.tsx?raw'
+import emitsRaw from './fixtures/emits/inline.tsx?raw'
+
+registerTS(() => ts)
+
+function runTransform(code: string, id: string, options?: Parameters<typeof transform>[3]) {
+  const res = transform(code, id, new GraphContext(), options)
+  return typeof res === 'string' ? res : res.code
+}
+
+describe('transform runtime path', () => {
+  it('injects props using magic-string runtime path', () => {
+    const code = runTransform(propsRaw, path.resolve(basePath, 'types/code3.tsx'))
+    expect(code).toContain('props: /*@__PURE__*/_mergeDefaults(')
+    expect(code).toContain("import { mergeDefaults as _mergeDefaults } from 'vue';")
+  })
+
+  it('injects emits using magic-string runtime path', () => {
+    const code = runTransform(emitsRaw, path.resolve(basePath, 'emits/inline.tsx'))
+    expect(code).toContain('emits:')
+  })
+})

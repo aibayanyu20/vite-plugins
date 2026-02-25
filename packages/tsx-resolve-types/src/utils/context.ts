@@ -1,9 +1,10 @@
 import fs from 'node:fs'
 import MagicString from 'magic-string'
 import type { CallExpression, ObjectExpression } from '@babel/types'
+import type { Program as OxcProgram } from '@oxc-project/types'
 import type { ScriptCompileContext } from '@v-c/resolve-types'
 import type { AST } from '../interface'
-import { createAst } from './ast'
+import { createAst, getOxcProgram } from './ast'
 import type { GraphContext } from './graphContext'
 
 interface PendingOverwrite {
@@ -28,8 +29,10 @@ interface ComponentPatchState {
 export interface CreateContextType {
   ctx: ScriptCompileContext
   ast: AST
+  oxcProgram?: OxcProgram
   source: string
   s: MagicString
+  astWriteback: boolean
   filepath: string
   importMergeDefaults?: boolean
   setDefaultUndefined?: boolean
@@ -122,12 +125,15 @@ export function flushComponentPatch(ctx: CreateContextType, call: CallExpression
 
 export function createContext(code: string, id: string, graphCtx?: GraphContext): CreateContextType {
   const ast = createAst(code)
+  const oxcProgram = getOxcProgram(ast)
   const helper = new Set<string>()
   return {
     ast,
+    oxcProgram,
     filepath: id,
     source: code,
     s: new MagicString(code),
+    astWriteback: true,
     importMergeDefaults: false,
     componentPatches: new Map(),
     ctx: {

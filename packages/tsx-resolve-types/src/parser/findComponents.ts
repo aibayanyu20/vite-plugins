@@ -1,4 +1,5 @@
 import { walk } from 'oxc-walker'
+import type { Program } from '@oxc-project/types'
 import type { CallExpression } from '@babel/types'
 import type { AST } from '../interface'
 import { getOxcProgram } from '../utils/ast'
@@ -50,4 +51,17 @@ export function findComponents(ast: AST) {
   return ranges
     .map(range => nodeByRange.get(`${range.start}:${range.end}`))
     .filter((node): node is CallExpression => !!node)
+}
+
+export function findComponentsOxc(program: Program) {
+  const components: any[] = []
+  walk(program, {
+    enter(node) {
+      if (node.type !== 'CallExpression')
+        return
+      if (node.callee.type === 'Identifier' && node.callee.name === 'defineComponent')
+        components.push(node)
+    },
+  })
+  return components
 }

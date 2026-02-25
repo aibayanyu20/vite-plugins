@@ -1,50 +1,49 @@
-import type { ImportDeclaration } from '@babel/types'
 import { createContext, flushComponentPatch } from './utils/context'
-import { findComponents } from './parser'
+import { findComponents, findComponentsOxc } from './parser'
 import { resolveProps } from './resolves/props'
 import { resolveEmits } from './resolves/emits'
 import { checkMergeDefaults } from './utils/checkMergeDefaults'
 import type { GraphContext } from './utils/graphContext'
 import type { UserOptions } from './interface'
-import { generate } from './utils/genrate'
 
-function getPrependedImports(ctx: ReturnType<typeof createContext>, bodyLengthBeforeCheck: number) {
-  const bodyLengthAfterCheck = ctx.ast.program.body.length
-  const addedCount = bodyLengthAfterCheck - bodyLengthBeforeCheck
-  if (addedCount <= 0)
-    return []
+function applyComponentPatches(ctx: ReturnType<typeof createContext>, options: UserOptions, useOxcNodes: boolean) {
+  const expression = useOxcNodes && ctx.oxcProgram
+    ? findComponentsOxc(ctx.oxcProgram)
+    : findComponents(ctx.ast)
 
-  return ctx.ast.program.body
-    .slice(0, addedCount)
-    .filter((node): node is ImportDeclaration => node.type === 'ImportDeclaration')
+  for (const callExpression of expression) {
+    if (options.props !== false)
+      resolveProps(callExpression as any, ctx)
+    if (options.emits !== false)
+      resolveEmits(callExpression as any, ctx)
+    flushComponentPatch(ctx, callExpression as any)
+  }
 }
 
 export function transform(code: string, id: string, graphCtx: GraphContext, options: UserOptions = {}) {
   if (options.props === false && options.emits === false)
     return code
 
-  const ctx = createContext(code, id, graphCtx)
-  if (options.defaultPropsToUndefined)
-    ctx.setDefaultUndefined = true
-
-  const expression = findComponents(ctx.ast)
-  for (const callExpression of expression) {
-    if (options.props !== false)
-      resolveProps(callExpression, ctx)
-    if (options.emits !== false)
-      resolveEmits(callExpression, ctx)
-    flushComponentPatch(ctx, callExpression)
+  const createTransformContext = () => {
+    const ctx = createContext(code, id, graphCtx)
+    ctx.astWriteback = false
+    if (options.defaultPropsToUndefined)
+      ctx.setDefaultUndefined = true
+    return ctx
   }
-  const bodyLengthBeforeCheck = ctx.ast.program.body.length
+
+  let ctx = createTransformContext()
+  try {
+    applyComponentPatches(ctx, options, true)
+  }
+  catch {
+    // @v-c/resolve-types is still not fully OXC-node compatible for all cases.
+    ctx = createTransformContext()
+    applyComponentPatches(ctx, options, false)
+  }
   checkMergeDefaults(ctx)
 
   const s = ctx.s
-  const prependedImports = getPrependedImports(ctx, bodyLengthBeforeCheck)
-  if (prependedImports.length > 0) {
-    const importCode = prependedImports.map(node => generate(node).code).join('\n')
-    if (importCode)
-      s.prepend(`${importCode}\n`)
-  }
 
   return {
     code: s.toString(),

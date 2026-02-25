@@ -2,6 +2,8 @@ import type { CreateContextType } from './context'
 import { traverse } from './traverse'
 import { createAst } from './ast'
 
+const MERGE_DEFAULTS_IMPORT = `import { mergeDefaults as _mergeDefaults } from 'vue';`
+
 export function checkMergeDefaults(ctx: CreateContextType) {
   if (!ctx.importMergeDefaults)
     return
@@ -22,9 +24,12 @@ export function checkMergeDefaults(ctx: CreateContextType) {
     },
   })
   if (!hasImportVue) {
-    const myAst = createAst(`import { mergeDefaults as  _mergeDefaults } from 'vue'`, false)
-    ctx.ast.program.body.unshift(
-      ...myAst.program.body,
-    )
+    if (ctx.astWriteback) {
+      const myAst = createAst(`import { mergeDefaults as  _mergeDefaults } from 'vue'`, false)
+      ctx.ast.program.body.unshift(
+        ...myAst.program.body,
+      )
+    }
+    ctx.s.prepend(`${MERGE_DEFAULTS_IMPORT}\n`)
   }
 }

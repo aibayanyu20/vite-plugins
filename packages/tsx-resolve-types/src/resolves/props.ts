@@ -1,4 +1,5 @@
 import MagicString from 'magic-string'
+import { parseSync } from 'oxc-parser'
 import {
   identifier,
   isArrowFunctionExpression,
@@ -10,7 +11,6 @@ import {
   isObjectProperty,
   objectExpression,
   objectProperty,
-  type VariableDeclaration,
 } from '@babel/types'
 import type {
   ArrowFunctionExpression,
@@ -21,14 +21,47 @@ import type {
   ObjectExpression,
   Pattern,
   RestElement,
+  VariableDeclaration,
 } from '@babel/types'
 import { extractRuntimeProps } from '@v-c/resolve-types'
-import { createAst, createExpressionAst } from '../utils/ast'
+import { createExpressionAst } from '../utils/ast'
 import {
+  type CreateContextType,
   queueComponentOptionField,
   queueComponentOverwrite,
-  type CreateContextType,
 } from '../utils/context'
+
+function getPropKeyName(node: any) {
+  const key = node?.key
+  if (!key)
+    return undefined
+  if (key.type === 'Identifier')
+    return key.name
+  if (key.type === 'StringLiteral' || key.type === 'Literal')
+    return key.value
+}
+
+function isObjectPropertyLike(node: any) {
+  return !!node && (node.type === 'ObjectProperty' || node.type === 'Property')
+}
+
+function isObjectMethodLike(node: any) {
+  if (!node)
+    return false
+  if (node.type === 'ObjectMethod')
+    return true
+  return node.type === 'Property'
+    && (node.method === true || node.value?.type === 'FunctionExpression' || node.value?.type === 'ArrowFunctionExpression')
+}
+
+function getMethodLikeParams(node: any) {
+  if (!node)
+    return undefined
+  if (node.type === 'ObjectMethod')
+    return node.params
+  if (node.type === 'Property' && node.value && ('params' in node.value))
+    return node.value.params
+}
 
 function getTypeAnnotation(node: Identifier) {
   if (node.typeAnnotation && 'typeAnnotation' in node.typeAnnotation)
@@ -59,10 +92,12 @@ function addTypes(prop: RestElement | Identifier | Pattern | undefined, ctx: Cre
 function getObjectSetup(expression: ObjectExpression, ctx: CreateContextType, call: CallExpression) {
   const properties = expression.properties
   const setup = properties.find((property) => {
-    return property.type === 'ObjectMethod' && 'name' in property.key && property.key.name === 'setup'
+    return isObjectMethodLike(property) && getPropKeyName(property) === 'setup'
   })
-  if (setup?.type === 'ObjectMethod') {
-    const params = setup.params
+  if (setup && isObjectMethodLike(setup)) {
+    const params = getMethodLikeParams(setup)
+    if (!params)
+      return
     const prop = params[0]
     const leftAst = addTypes(prop, ctx, call)
     if (leftAst)
@@ -81,6 +116,14 @@ function getPropsTypeToDefine(exp: CallExpression, ctx: CreateContextType) {
       if (prop)
         ctx.ctx.propsTypeDecl = prop as any
     }
+    return
+  }
+
+  const typeArgs = (exp as any).typeArguments?.params
+  if (typeArgs) {
+    const prop = typeArgs[0]
+    if (prop)
+      ctx.ctx.propsTypeDecl = prop as any
   }
 }
 
@@ -125,8 +168,19 @@ function addUndefinedToProps(ast: Expression, ctx: CreateContextType) {
 function addUndefinedToPropsCode(code: string) {
   const prefix = 'const __tsxResolveTypesExpr__ = '
   const wrapped = `${prefix}${code}`
-  const ast = createAst(wrapped, false)
-  const statement = ast.program.body[0]
+  let statement: any
+  try {
+    const result = parseSync('props-runtime.ts', wrapped, {
+      lang: 'ts',
+      sourceType: 'module',
+      astType: 'ts',
+    })
+    statement = result.program.body[0]
+  }
+  catch {
+    return code
+  }
+
   if (!statement || statement.type !== 'VariableDeclaration')
     return code
 
@@ -135,13 +189,13 @@ function addUndefinedToPropsCode(code: string) {
   if (!init)
     return code
 
-  let propsObject: ObjectExpression | undefined
+  let propsObject: any
   if (isCallExpression(init)) {
     const arg1 = init.arguments[0]
     if (arg1 && isObjectExpression(arg1))
       propsObject = arg1
   }
-  else if (isObjectExpression(init)) {
+  else if (init.type === 'ObjectExpression') {
     propsObject = init
   }
 
@@ -149,16 +203,22 @@ function addUndefinedToPropsCode(code: string) {
     return code
 
   const s = new MagicString(wrapped)
-  const inserts: Array<{ pos: number, text: string }> = []
+  const inserts: Array<{ pos: number; text: string }> = []
   for (const prop of propsObject.properties) {
-    if (!isObjectProperty(prop))
+    if (!(prop.type === 'Property' || isObjectProperty(prop)))
       continue
 
     const value = prop.value
-    if (!isObjectExpression(value) || typeof value.end !== 'number')
+    if (!value || value.type !== 'ObjectExpression' || typeof value.end !== 'number')
       continue
 
-    const hasDefault = value.properties.find(p => isObjectProperty(p) && 'name' in p.key && p.key.name === 'default')
+    const hasDefault = value.properties.find((p: any) => {
+      if (!(p.type === 'Property' || isObjectProperty(p)))
+        return false
+      const key = p.key as any
+      return (key?.type === 'Identifier' && key.name === 'default')
+        || (key?.type === 'Literal' && key.value === 'default')
+    })
     if (hasDefault)
       continue
 
@@ -186,6 +246,9 @@ function getPropsRuntime(ctx: CreateContextType) {
         (propStr.includes('/*#__PURE__*/_mergeDefaults') || propStr.includes('/*@__PURE__*/_mergeDefaults') || propStr.includes('_mergeDefaults')) && (ctx.importMergeDefaults = true)
       if (ctx.setDefaultUndefined)
         propStr = addUndefinedToPropsCode(propStr)
+      if (!ctx.astWriteback)
+        return { code: propStr }
+
       const ast = createExpressionAst(propStr)
       addUndefinedToProps(ast, ctx)
       return { ast, code: propStr }
@@ -197,7 +260,7 @@ function addPropsToFunc(exp: CallExpression, ast: Expression) {
   const arg1 = exp.arguments[1]
   if (arg1) {
     if (isObjectExpression(arg1)) {
-      const propsProperty = arg1.properties.find(p => isObjectProperty(p) && 'name' in p.key && p.key.name === 'props')
+      const propsProperty = arg1.properties.find(p => isObjectPropertyLike(p) && getPropKeyName(p) === 'props')
       if (!propsProperty)
         arg1.properties.unshift(objectProperty(identifier('props'), ast))
     }
@@ -220,27 +283,27 @@ export function resolveProps(expression: CallExpression, ctx: CreateContextType)
     if (propRuntime) {
       const optionsArg = expression.arguments[1]
       if (optionsArg && isObjectExpression(optionsArg)) {
-        const hasProps = optionsArg.properties.find(p => isObjectProperty(p) && 'name' in p.key && p.key.name === 'props')
+        const hasProps = optionsArg.properties.find(p => isObjectPropertyLike(p) && getPropKeyName(p) === 'props')
         if (!hasProps)
           queueComponentOptionField(ctx, expression, 'props', propRuntime.code, optionsArg)
       }
       else if (!optionsArg) {
         queueComponentOptionField(ctx, expression, 'props', propRuntime.code)
       }
-      const propAst = propRuntime.ast
-      addPropsToFunc(expression, propAst)
+      if ('ast' in propRuntime && propRuntime.ast)
+        addPropsToFunc(expression, propRuntime.ast)
     }
   }
   else if (props.type === 'ObjectExpression') {
     // 当前是一个对象，就需要判断是否存在一个属性是props
-    const propsProperty = props.properties.find(p => isObjectProperty(p) && 'name' in p.key && p.key.name === 'props')
+    const propsProperty = props.properties.find(p => isObjectPropertyLike(p) && getPropKeyName(p) === 'props')
     if (!propsProperty) {
       getObjectSetup(props, ctx, expression)
       const propRuntime = getPropsRuntime(ctx)
       if (propRuntime) {
         queueComponentOptionField(ctx, expression, 'props', propRuntime.code, props)
-        const propAst = propRuntime.ast
-        props.properties.unshift(objectProperty(identifier('props'), propAst))
+        if ('ast' in propRuntime && propRuntime.ast)
+          props.properties.unshift(objectProperty(identifier('props'), propRuntime.ast))
       }
     }
   }

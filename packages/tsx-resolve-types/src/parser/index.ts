@@ -1,1 +1,1 @@
-export { findComponents } from './findComponents'
+export { findComponents, findComponentsOxc } from './findComponents'

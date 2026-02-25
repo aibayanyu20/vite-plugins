@@ -42,7 +42,6 @@
     "vite": ">=4"
   },
   "dependencies": {
-    "@babel/generator": "^7.23.4",
     "@babel/parser": "^7.23.4",
     "@babel/types": "^7.23.4",
     "@oxc-project/types": "^0.115.0",
@@ -52,6 +51,7 @@
     "oxc-walker": "^0.7.0"
   },
   "devDependencies": {
+    "@babel/generator": "^7.25.6",
     "@types/babel__generator": "^7.6.7",
     "ant-design-vue": "^4.0.7"
   }
