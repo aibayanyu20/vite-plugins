@@ -25,3 +25,4 @@ dist-ssr
 *.sw?
 .vitepress/dist
 .vitepress/cache
+scripts/compare-antdv-define-component.mjs
