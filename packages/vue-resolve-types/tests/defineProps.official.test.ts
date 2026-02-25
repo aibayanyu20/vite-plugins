@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import { transformVueSfc } from '../src'
+import type { UserOptions } from '../src'
 import { expectCompiledPropsParity, fixtureDir } from './testUtils'
 
-function run(code: string, filename: string) {
+function run(code: string, filename: string, options?: UserOptions) {
   const id = `${fixtureDir}${filename}`
-  const result = transformVueSfc(code, id)
+  const result = transformVueSfc(code, id, options)
   expect(result).toBeTruthy()
   return { id, result: result! }
 }
@@ -157,6 +158,49 @@ defineProps<{ foo: Foo }>()
       expect(result.code).toContain(expected)
       expectCompiledPropsParity(result.code, code, id)
     })
+  })
+
+  it('production mode parity for type-based props and withDefaults', () => {
+    const code = `<script setup lang="ts">
+const props = withDefaults(defineProps<{
+  foo: () => void
+  bar: boolean
+  baz: boolean | (() => void)
+  qux: string | number
+}>(), {
+  baz: true,
+  qux: 'hi'
+})
+</script>`
+    const { id, result } = run(code, 'PropsProdMode.vue', { isProd: true })
+    expect(result.code).toContain(`defineProps({`)
+    expect(result.code).toContain(`baz`)
+    expect(result.code).toContain(`default: true`)
+    expect(result.code).toContain(`default: 'hi'`)
+    expectCompiledPropsParity(result.code, code, id, { isProd: true })
+  })
+
+  it('custom element + production mode parity', () => {
+    const cases = [
+      [`<script setup lang="ts">
+const props = defineProps<{ foo: number }>()
+</script>`, 'app.ce.vue'],
+      [`<script setup lang="ts">
+interface Props { foo?: number }
+const props = withDefaults(defineProps<Props>(), { foo: 5.5 })
+</script>`, 'app-default.ce.vue'],
+    ] as const
+
+    for (const [code, filename] of cases) {
+      const { id, result } = run(code, filename, {
+        isProd: true,
+        customElement: file => file.endsWith('.ce.vue'),
+      })
+      expectCompiledPropsParity(result.code, code, id, {
+        isProd: true,
+        customElement: file => file.endsWith('.ce.vue'),
+      })
+    }
   })
 
   it('escapes special symbol prop names', () => {

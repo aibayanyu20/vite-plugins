@@ -121,20 +121,24 @@ function registerLocalDeclarations(ctx: any, body: any[]) {
   }
 }
 
-function createTypeResolveCtx(descriptor: any, filename: string) {
+function createTypeResolveCtx(descriptor: any, filename: string, options: UserOptions = {}) {
+  const fileSystem = options.fs ?? {
+    fileExists(file: string) {
+      return fs.existsSync(file)
+    },
+    readFile(file: string) {
+      return fs.readFileSync(file, 'utf-8')
+    },
+    realpath(file: string) {
+      return fs.realpathSync(file)
+    },
+  }
+
   const ctx = new ScriptCompileContext(descriptor, {
     id: filename,
-    fs: {
-      fileExists(file: string) {
-        return fs.existsSync(file)
-      },
-      readFile(file: string) {
-        return fs.readFileSync(file, 'utf-8')
-      },
-      realpath(file: string) {
-        return fs.realpathSync(file)
-      },
-    },
+    isProd: options.isProd,
+    customElement: options.customElement,
+    fs: fileSystem,
   }) as any
 
   const body = [
@@ -281,7 +285,7 @@ export function transformVueSfc(code: string, id: string, options: UserOptions =
   if (!['ts', 'tsx'].includes(lang))
     return null
 
-  const ctx = createTypeResolveCtx(descriptor, filename)
+  const ctx = createTypeResolveCtx(descriptor, filename, options)
   if (!ctx.scriptSetupAst)
     return null
   validateMacroCallUsage(ctx.scriptSetupAst)

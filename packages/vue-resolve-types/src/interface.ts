@@ -10,4 +10,20 @@ export interface UserOptions {
    * @default true
    */
   emits?: boolean
+  /**
+   * align runtime props inference with vue compiler-sfc production mode
+   */
+  isProd?: boolean
+  /**
+   * align custom element runtime props generation behavior
+   */
+  customElement?: boolean | ((filename: string) => boolean)
+  /**
+   * override fs for imported type resolution
+   */
+  fs?: {
+    fileExists: (file: string) => boolean
+    readFile: (file: string) => string | undefined
+    realpath?: (file: string) => string
+  }
 }
