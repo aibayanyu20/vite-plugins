@@ -31,6 +31,34 @@ export default defineConfig({
 })
 ```
 
+## Plugin Order (Important)
+
+`vueResolveTypes()` must run **before** `@vitejs/plugin-vue`.
+
+Reason:
+
+- this plugin rewrites `<script setup>` macro calls (`defineProps` / `defineEmits`) at the SFC source level
+- `@vitejs/plugin-vue` runs Vue SFC compilation (`compileScript`) afterwards
+- if `vueResolveTypes()` runs after `vue()`, the macro type information is already consumed and this plugin can no longer transform it
+
+Recommended:
+
+```ts
+plugins: [
+  vueResolveTypes(),
+  vue(),
+]
+```
+
+Do not use:
+
+```ts
+plugins: [
+  vue(),
+  vueResolveTypes(),
+]
+```
+
 ## Example
 
 ### `defineProps<Type>()`
