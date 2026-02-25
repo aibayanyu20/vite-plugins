@@ -4,7 +4,7 @@ import type { CallExpression, ObjectExpression } from '@babel/types'
 import type { Program as OxcProgram } from '@oxc-project/types'
 import type { ScriptCompileContext } from '@v-c/resolve-types'
 import type { AST } from '../interface'
-import { createAst, getOxcProgram } from './ast'
+import { createAst, createOxcProgram, getOxcProgram } from './ast'
 import type { GraphContext } from './graphContext'
 
 interface PendingOverwrite {
@@ -28,7 +28,7 @@ interface ComponentPatchState {
 
 export interface CreateContextType {
   ctx: ScriptCompileContext
-  ast: AST
+  ast?: AST
   oxcProgram?: OxcProgram
   source: string
   s: MagicString
@@ -37,6 +37,10 @@ export interface CreateContextType {
   importMergeDefaults?: boolean
   setDefaultUndefined?: boolean
   componentPatches: Map<string, ComponentPatchState>
+}
+
+interface CreateContextOptions {
+  astWriteback?: boolean
 }
 
 function getRangeKey(start?: number | null, end?: number | null) {
@@ -123,9 +127,32 @@ export function flushComponentPatch(ctx: CreateContextType, call: CallExpression
   state.flushed = true
 }
 
-export function createContext(code: string, id: string, graphCtx?: GraphContext): CreateContextType {
-  const ast = createAst(code)
-  const oxcProgram = getOxcProgram(ast)
+export function ensureBabelAst(ctx: CreateContextType) {
+  if (ctx.ast)
+    return ctx.ast
+
+  const ast = createAst(ctx.source)
+  ctx.ast = ast
+  ctx.oxcProgram ||= getOxcProgram(ast)
+  ;(ctx.ctx as any).ast = ast.program.body
+  return ast
+}
+
+export function createContext(code: string, id: string, graphCtx?: GraphContext, options: CreateContextOptions = {}): CreateContextType {
+  const astWriteback = options.astWriteback ?? true
+  const ast = astWriteback ? createAst(code) : undefined
+  let oxcProgram: OxcProgram | undefined
+  if (ast) {
+    oxcProgram = getOxcProgram(ast)
+  }
+  else {
+    try {
+      oxcProgram = createOxcProgram(code)
+    }
+    catch {
+      // Let transform() fall back to the Babel component scan path.
+    }
+  }
   const helper = new Set<string>()
   return {
     ast,
@@ -133,13 +160,13 @@ export function createContext(code: string, id: string, graphCtx?: GraphContext)
     filepath: id,
     source: code,
     s: new MagicString(code),
-    astWriteback: true,
+    astWriteback,
     importMergeDefaults: false,
     componentPatches: new Map(),
     ctx: {
       filename: id,
       source: code,
-      ast: ast.program.body,
+      ast: ast?.program.body ?? [],
       error(msg: any) {
         throw new Error(`[tsx-resolve-types] ${msg}`)
       },

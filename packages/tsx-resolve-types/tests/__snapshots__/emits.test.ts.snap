@@ -1,113 +1,108 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`emits > func 1`] = `
-"import type { SetupContext } from 'vue';
-import { defineComponent } from 'vue';
+"import type { SetupContext } from 'vue'
+import { defineComponent } from 'vue'
+
 export const Func1 = defineComponent((_, ctx: SetupContext<{
-  'change': [string];
+  'change': [string]
 }>) => {
   const func = () => {
-    ctx.emit('change', 'func');
-  };
+    ctx.emit('change', 'func')
+  }
   return () => {
-    return <div></div>;
-  };
-}, {
-  emits: ["change"]
-});
+    return <div></div>
+  }
+}, { emits: ["change"] })
+
 interface Emits {
-  'change': [string];
-  'click': [Event];
+  'change': [string]
+  'click': [Event]
 }
 export const Func2 = defineComponent((_, ctx: SetupContext<Emits>) => {
   const func = () => {
-    ctx.emit('change', 'func');
-  };
-  return () => {
-    return <div></div>;
-  };
-}, {
-  emits: ["change", "click"]
-});
-export default defineComponent({
-  emits: ["change", "click"],
-  setup(_, ctx: SetupContext<Emits>) {
-    return () => <div>func</div>;
+    ctx.emit('change', 'func')
   }
-});
+  return () => {
+    return <div></div>
+  }
+}, { emits: ["change", "click"] })
+
+export default defineComponent({emits: ["change", "click"], 
+  setup(_, ctx: SetupContext<Emits>) {
+    return () => <div>func</div>
+  },
+})
+
 interface Emits1 {
-  'click': [Event];
+  'click': [Event]
 }
-export const Func3 = defineComponent((_, {
-  emit
-}: SetupContext<Emits1>) => {
+export const Func3 = defineComponent((_, { emit }: SetupContext<Emits1>) => {
   return () => {
-    return <div> Func</div>;
-  };
-}, {
-  emits: ["click"]
-});
-export const Func4 = defineComponent<{
-  a: string;
-}, Emits1>(() => {
+    return <div> Func</div>
+  }
+}, { emits: ["click"] })
+
+export const Func4 = defineComponent<{ a: string }, Emits1>(() => {
   return () => {
-    return null;
-  };
-}, {
-  emits: ["click"]
-});"
+    return null
+  }
+}, { emits: ["click"] })
+"
 `;
 
 exports[`emits > inline 1`] = `
-"import type { SetupContext } from 'vue';
-import { defineComponent } from 'vue';
+"import type { SetupContext } from 'vue'
+import { defineComponent } from 'vue'
+
 interface Emits {
-  'change': [string];
-  'click': [Event];
+  'change': [string]
+  'click': [Event]
 }
-export const Inline1 = defineComponent({
-  emits: ["change"],
-  setup(props, {
-    emit
-  }: SetupContext<{
-    'change': [string];
+export const Inline1 = defineComponent({emits: ["change"], 
+  setup(props, { emit }: SetupContext<{
+    'change': [string]
   }>) {
     const func = () => {
-      emit('change', 'inline');
-    };
+      emit('change', 'inline')
+    }
     return () => {
-      return <div>
+      return (
+        <div>
           Inline1
-        </div>;
-    };
-  }
-});
-export const Inline2 = defineComponent({
-  emits: ["change", "click"],
-  setup(props, {
-    emit
-  }: SetupContext<Emits>) {
+        </div>
+      )
+    }
+  },
+})
+
+export const Inline2 = defineComponent({emits: ["change", "click"], 
+  setup(props, { emit }: SetupContext<Emits>) {
     const func = () => {
-      emit('change', 'inline');
-    };
+      emit('change', 'inline')
+    }
     return () => {
-      return <div>
+      return (
+        <div>
           Inline2
-        </div>;
-    };
-  }
-});
-export const Inline3 = defineComponent({
-  emits: ["change", "click"],
+        </div>
+      )
+    }
+  },
+})
+export const Inline3 = defineComponent({emits: ["change", "click"], 
   setup(props, ctx: SetupContext<Emits>) {
     const func = () => {
-      ctx.emit('change', 'inline');
-    };
+      ctx.emit('change', 'inline')
+    }
     return () => {
-      return <div>
+      return (
+        <div>
           Inline2
-        </div>;
-    };
-  }
-});"
+        </div>
+      )
+    }
+  },
+})
+"
 `;

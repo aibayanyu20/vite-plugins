@@ -1,4 +1,4 @@
-import { createContext, flushComponentPatch } from './utils/context'
+import { createContext, ensureBabelAst, flushComponentPatch } from './utils/context'
 import { findComponents, findComponentsOxc } from './parser'
 import { resolveProps } from './resolves/props'
 import { resolveEmits } from './resolves/emits'
@@ -9,7 +9,7 @@ import type { UserOptions } from './interface'
 function applyComponentPatches(ctx: ReturnType<typeof createContext>, options: UserOptions, useOxcNodes: boolean) {
   const expression = useOxcNodes && ctx.oxcProgram
     ? findComponentsOxc(ctx.oxcProgram)
-    : findComponents(ctx.ast)
+    : findComponents(ensureBabelAst(ctx))
 
   for (const callExpression of expression) {
     if (options.props !== false)
@@ -25,8 +25,7 @@ export function transform(code: string, id: string, graphCtx: GraphContext, opti
     return code
 
   const createTransformContext = () => {
-    const ctx = createContext(code, id, graphCtx)
-    ctx.astWriteback = false
+    const ctx = createContext(code, id, graphCtx, { astWriteback: false })
     if (options.defaultPropsToUndefined)
       ctx.setDefaultUndefined = true
     return ctx

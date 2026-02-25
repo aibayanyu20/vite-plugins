@@ -8,7 +8,7 @@ interface PathLike {
 type VisitorHandler = (path: PathLike) => void
 type Visitor = Record<string, VisitorHandler | undefined>
 
-function isNode(value: unknown): value is { type: string } {
+function isNode(value: unknown): value is { type: string; [key: string]: any } {
   return !!value && typeof value === 'object' && typeof (value as any).type === 'string'
 }
 

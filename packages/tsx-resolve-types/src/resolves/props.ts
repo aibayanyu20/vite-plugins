@@ -71,7 +71,7 @@ function getTypeAnnotation(node: Identifier) {
 function addTypes(prop: RestElement | Identifier | Pattern | undefined, ctx: CreateContextType, call?: CallExpression) {
   if (prop && isAssignmentPattern(prop)) {
     if (call && prop.left && typeof prop.start === 'number' && typeof prop.end === 'number')
-      queueComponentOverwrite(ctx, call, prop.start, prop.end, ctx.ctx.getString(prop.left))
+      queueComponentOverwrite(ctx, call, prop.start, prop.end, ctx.ctx.getString(prop.left as any))
 
     if (isIdentifier(prop.left) && !ctx.ctx.propsTypeDecl) {
       const type = getTypeAnnotation(prop.left)

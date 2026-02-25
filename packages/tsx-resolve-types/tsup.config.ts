@@ -7,9 +7,7 @@ export default defineConfig({
   external: [
     'vite',
     '@babel/parser',
-    '@babel/traverse',
     '@babel/types',
-    '@babel/generator',
     '@vue/compiler-sfc',
     '@v-c/resolve-types',
     'typescript',

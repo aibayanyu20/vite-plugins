@@ -1,13 +1,7 @@
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
-import generate from '@babel/generator'
-import ts from 'typescript'
-import { registerTS } from '@v-c/resolve-types'
-import { createContext } from '../src/utils/context'
-import { findComponents } from '../src/parser'
-import { resolveProps } from '../src/resolves/props'
-import { checkMergeDefaults } from '../src/utils/checkMergeDefaults'
 import { basePath } from './fixtures/constant'
+import { runTransformFixture } from './transformHelper'
 import complexRaw from './fixtures/autoProps/complex.tsx?raw'
 import defaultsRaw from './fixtures/autoProps/defaults.tsx?raw'
 import exportRaw from './fixtures/autoProps/export.tsx?raw'
@@ -17,8 +11,6 @@ import libRaw from './fixtures/autoProps/lib.tsx?raw'
 import nonTyperRaw from './fixtures/autoProps/nonType.tsx?raw'
 import renderRaw from './fixtures/autoProps/render.tsx?raw'
 import singleRaw from './fixtures/autoProps/single.tsx?raw'
-
-registerTS(() => ts)
 
 describe('autoProps', () => {
   it('complex', () => {
@@ -73,12 +65,8 @@ describe('autoProps', () => {
 })
 
 function compiler(raw: string, id: string, withUndefined = false) {
-  const ctx = createContext(raw, path.resolve(basePath, `autoProps/${id}`))
-  ctx.setDefaultUndefined = withUndefined
-  const expression = findComponents(ctx.ast)
-  for (const callExpression of expression)
-    resolveProps(callExpression, ctx)
-  checkMergeDefaults(ctx)
-
-  return generate(ctx.ast).code
+  return runTransformFixture(raw, path.resolve(basePath, `autoProps/${id}`), {
+    emits: false,
+    defaultPropsToUndefined: withUndefined,
+  })
 }

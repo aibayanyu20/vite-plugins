@@ -51,8 +51,6 @@
     "oxc-walker": "^0.7.0"
   },
   "devDependencies": {
-    "@babel/generator": "^7.25.6",
-    "@types/babel__generator": "^7.6.7",
     "ant-design-vue": "^4.0.7"
   }
 }

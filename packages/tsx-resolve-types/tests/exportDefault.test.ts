@@ -1,149 +1,121 @@
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
-import generate from '@babel/generator'
-import { findComponents } from '../src/parser'
-import { createContext } from '../src/utils/context'
-import { resolveProps } from '../src/resolves/props'
-import { checkMergeDefaults } from '../src/utils/checkMergeDefaults'
 import codeRaw from './fixtures/exportDefault/code.tsx?raw'
 import code1Raw from './fixtures/exportDefault/code1.tsx?raw'
 import code2Raw from './fixtures/exportDefault/code2.tsx?raw'
 import code3Raw from './fixtures/exportDefault/code3.tsx?raw'
 import { basePath } from './fixtures/constant'
+import { runTransformFixture } from './transformHelper'
 
 describe('findComponents', () => {
   it('export default', () => {
-    const ctx = createContext(codeRaw, path.resolve(basePath, 'exportDefault/basic.tsx'))
-    const expression = findComponents(ctx.ast)
-    for (const callExpression of expression)
-      resolveProps(callExpression, ctx)
-    const code = generate(ctx.ast).code
+    const code = runTransformFixture(codeRaw, path.resolve(basePath, 'exportDefault/basic.tsx'), {
+      emits: false,
+    })
     expect(code).toMatchInlineSnapshot(`
-      "import { defineComponent } from 'vue';
+      "import { defineComponent } from 'vue'
+
       export interface Props {
-        name: string;
+        name: string
       }
-      export default defineComponent({
-        props: {
-          name: {
-            type: String,
-            required: true,
-            default: '1'
-          }
-        },
+      export default defineComponent({props: {
+          name: { type: String, required: true, default: '1' }
+        }, 
         setup(props: Props) {
-          return () => <div>basic</div>;
-        }
-      });"
+          return () => <div>basic</div>
+        },
+      })
+      "
     `)
   })
   it('export default with undefined', () => {
-    const ctx = createContext(codeRaw, path.resolve(basePath, 'exportDefault/basic.tsx'))
-    ctx.setDefaultUndefined = true
-    const expression = findComponents(ctx.ast)
-    for (const callExpression of expression)
-      resolveProps(callExpression, ctx)
-    const code = generate(ctx.ast).code
+    const code = runTransformFixture(codeRaw, path.resolve(basePath, 'exportDefault/basic.tsx'), {
+      emits: false,
+      defaultPropsToUndefined: true,
+    })
     expect(code).toMatchInlineSnapshot(`
-      "import { defineComponent } from 'vue';
+      "import { defineComponent } from 'vue'
+
       export interface Props {
-        name: string;
+        name: string
       }
-      export default defineComponent({
-        props: {
-          name: {
-            type: String,
-            required: true,
-            default: '1'
-          }
-        },
+      export default defineComponent({props: {
+          name: { type: String, required: true, default: '1' }
+        }, 
         setup(props: Props) {
-          return () => <div>basic</div>;
-        }
-      });"
+          return () => <div>basic</div>
+        },
+      })
+      "
     `)
   })
 
   it('code1', () => {
-    const ctx = createContext(code1Raw, path.resolve(basePath, 'exportDefault/code1.tsx'))
-    const expression = findComponents(ctx.ast)
-    for (const callExpression of expression)
-      resolveProps(callExpression, ctx)
-    const code = generate(ctx.ast).code
+    const code = runTransformFixture(code1Raw, path.resolve(basePath, 'exportDefault/code1.tsx'), {
+      emits: false,
+    })
     expect(code).toMatchInlineSnapshot(`
-      "import { defineComponent } from 'vue';
+      "import { defineComponent } from 'vue'
+
       export interface Props {
-        name?: string;
+        name?: string
       }
-      export default defineComponent({
-        props: {
-          name: {
-            type: String,
-            required: false
-          }
-        },
+      export default defineComponent({props: {
+          name: { type: String, required: false }
+        }, 
         setup(props: Props) {
-          return () => <div>basic</div>;
-        }
-      });"
+          return () => <div>basic</div>
+        },
+      })
+      "
     `)
   })
 
   it('withUndefined', () => {
-    const ctx = createContext(`${code2Raw}`, path.resolve(basePath, 'exportDefault/code2.tsx'))
-    ctx.setDefaultUndefined = true
-    const expression = findComponents(ctx.ast)
-    for (const callExpression of expression)
-      resolveProps(callExpression, ctx)
-    checkMergeDefaults(ctx)
-    const code = generate(ctx.ast).code
+    const code = runTransformFixture(`${code2Raw}`, path.resolve(basePath, 'exportDefault/code2.tsx'), {
+      emits: false,
+      defaultPropsToUndefined: true,
+    })
     expect(code).toMatchInlineSnapshot(`
       "import { mergeDefaults as _mergeDefaults } from 'vue';
-      import { defineComponent } from 'vue';
+      import { defineComponent } from 'vue'
+
       export interface Props {
-        name?: string;
+        name?: string
       }
+
       const defaultProps: Props = {
-        name: '2'
-      };
-      export default defineComponent({
-        props: /*@__PURE__*/_mergeDefaults({
-          name: {
-            type: String,
-            required: false,
-            default: undefined
-          }
-        }, defaultProps),
+        name: '2',
+      }
+      export default defineComponent({props: /*@__PURE__*/_mergeDefaults({
+          name: { type: String, required: false , default: undefined}
+        }, defaultProps), 
         setup(props: Props) {
-          return () => <div>basic</div>;
-        }
-      });"
+          return () => <div>basic</div>
+        },
+      })
+      "
     `)
   })
 
   it('code3', () => {
-    const ctx = createContext(`${code3Raw}`, path.resolve(basePath, 'exportDefault/code3.tsx'))
-    const expression = findComponents(ctx.ast)
-    for (const callExpression of expression)
-      resolveProps(callExpression, ctx)
-    checkMergeDefaults(ctx)
-    const code = generate(ctx.ast).code
+    const code = runTransformFixture(`${code3Raw}`, path.resolve(basePath, 'exportDefault/code3.tsx'), {
+      emits: false,
+    })
     expect(code).toMatchInlineSnapshot(`
       "import { mergeDefaults as _mergeDefaults } from 'vue';
-      import { defineComponent } from 'vue';
-      import type { Props } from './interface';
-      import { defaultProps } from './interface';
-      export default defineComponent({
-        props: /*@__PURE__*/_mergeDefaults({
-          a: {
-            type: String,
-            required: true
-          }
-        }, defaultProps),
+      import { defineComponent } from 'vue'
+      import type { Props } from './interface'
+      import { defaultProps } from './interface'
+
+      export default defineComponent({props: /*@__PURE__*/_mergeDefaults({
+          a: { type: String, required: true }
+        }, defaultProps), 
         setup(_props: Props) {
-          return () => <div>Code3</div>;
-        }
-      });"
+          return () => <div>Code3</div>
+        },
+      })
+      "
     `)
   })
 })

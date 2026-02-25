@@ -18,5 +18,5 @@ export interface UserOptions {
   /**
    * @description 是否开启默认props给undefined
    */
-  defaultPropsToUndefined?: boolean
+  defaultPropsToUndefined?: boolean | ('Boolean' | 'Array' | 'String' | 'Number' | 'Object' | 'Symbol' | 'BigInt')[]
 }

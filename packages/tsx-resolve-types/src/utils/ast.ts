@@ -1,12 +1,28 @@
-import { parse } from '@babel/parser'
+import { createRequire } from 'node:module'
 import type { Expression } from '@babel/types'
 import { parseSync } from 'oxc-parser'
 import type { Program } from '@oxc-project/types'
 import type { AST } from '../interface'
 
 const oxcProgramMap = new WeakMap<AST, Program>()
+const require = createRequire(import.meta.url)
+let babelParser: typeof import('@babel/parser') | undefined
+
+function getBabelParser() {
+  babelParser ??= require('@babel/parser') as typeof import('@babel/parser')
+  return babelParser
+}
+
+export function createOxcProgram(code: string, jsx = true): Program {
+  return parseSync(jsx ? 'input.tsx' : 'input.ts', code, {
+    lang: jsx ? 'tsx' : 'ts',
+    sourceType: 'module',
+    astType: 'ts',
+  }).program
+}
 
 export function createAst(code: string, jsx = true): AST {
+  const { parse } = getBabelParser()
   const ast = !jsx
     ? parse(code, {
       sourceType: 'module',
@@ -18,12 +34,7 @@ export function createAst(code: string, jsx = true): AST {
     })
 
   try {
-    const result = parseSync(jsx ? 'input.tsx' : 'input.ts', code, {
-      lang: jsx ? 'tsx' : 'ts',
-      sourceType: 'module',
-      astType: 'ts',
-    })
-    oxcProgramMap.set(ast, result.program)
+    oxcProgramMap.set(ast, createOxcProgram(code, jsx))
   }
   catch {
     // Keep Babel parsing as source of truth for compatibility.
