@@ -132,6 +132,7 @@ vueResolveTypes({
   emits: true,
   isProd: false,
   include: (id) => id.endsWith('.vue'),
+  ignoreTypes: [/EmitsProps$/],
 })
 ```
 
@@ -172,6 +173,17 @@ Pass-through to align runtime props output with Vue custom element mode behavior
 - Type: `{ fileExists; readFile; realpath? }`
 
 Override file system access used when resolving imported types.
+
+### `ignoreTypes`
+
+- Type: `(string | RegExp)[] | ((name: string, ctx: { filename: string }) => boolean)`
+
+Type names that must not become runtime props. A match contributes no members
+in an `extends`/intersection position and infers to `null` as a prop type,
+like `/* @vue-ignore */`, but it also works for types consumed from a published
+`.d.ts` where that comment is gone. Matched against the local reference name,
+so anchor your patterns: `[/EmitsProps$/]`. The identity wrapper `VueIgnore<T>`
+(exported by `@v-c/util/dist/type`) is always recognised regardless of this option.
 
 ## Scope / Non-goals (current)
 

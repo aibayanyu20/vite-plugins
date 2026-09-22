@@ -139,6 +139,7 @@ function createTypeResolveCtx(descriptor: any, filename: string, options: UserOp
     isProd: options.isProd,
     customElement: options.customElement,
     fs: fileSystem,
+    ignoreTypes: options.ignoreTypes,
   }) as any
 
   const body = [

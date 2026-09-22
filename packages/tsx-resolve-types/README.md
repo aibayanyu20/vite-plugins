@@ -28,6 +28,46 @@ export default defineConfig({
 })
 ```
 
+## Options
+
+```ts
+tsxResolveTypes({
+  // infer `props` from types (default: true)
+  props: true,
+  // infer `emits` from types (default: true)
+  emits: true,
+  // add `default: undefined` to optional props (or only for the listed constructors)
+  defaultPropsToUndefined: true,
+  // type names that must not become runtime props
+  ignoreTypes: [/EmitsProps$/],
+})
+```
+
+### `ignoreTypes`
+
+Some types must be visible to TypeScript but must not turn into runtime
+props: emit-style props interfaces, huge DOM attribute types, and so on.
+In source files you can mark them with `/* @vue-ignore */`, but that comment
+does not survive `.d.ts` emit, so it is lost for every type consumed from a
+published package.
+
+`ignoreTypes` matches the local reference name (the last segment of a
+qualified name) with exact strings, regular expressions, or a predicate
+`(name, { filename }) => boolean`. A matching type contributes no members in
+an `extends`/intersection position and infers to `null` when used as a prop
+type. Anchor your patterns, `[/EmitsProps$/]` rather than `[/Emits/]`.
+
+Independently of this option, the identity wrapper `VueIgnore<T>` exported by
+`@v-c/util/dist/type` is always recognised, and it survives declaration emit:
+
+```ts
+import type { VueIgnore } from '@v-c/util/dist/type'
+
+interface Props extends Base, VueIgnore<Emits> {
+  heavy?: VueIgnore<HTMLAttributes>
+}
+```
+
 ## Example
 
 ### Props

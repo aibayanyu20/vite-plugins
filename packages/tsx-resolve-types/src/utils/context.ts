@@ -41,6 +41,7 @@ export interface CreateContextType {
 
 interface CreateContextOptions {
   astWriteback?: boolean
+  ignoreTypes?: UserOptions['ignoreTypes']
 }
 
 function getRangeKey(start?: number | null, end?: number | null) {
@@ -183,7 +184,12 @@ export function createContext(code: string, id: string, graphCtx?: GraphContext,
     ctx: {
       filename: id,
       source: code,
-      ast: ast?.program.body ?? [],
+      // The type resolver records this file's imports and local type
+      // declarations from `ast`. The OXC-first pass used to hand it an empty
+      // body, so every imported type referenced from an inline type literal
+      // silently resolved to `null` (and never fell back to the Babel pass,
+      // because the props object was still emitted).
+      ast: ast?.program.body ?? oxcProgram?.body ?? [],
       error(msg: any) {
         throw new Error(`[tsx-resolve-types] ${msg}`)
       },
@@ -200,6 +206,7 @@ export function createContext(code: string, id: string, graphCtx?: GraphContext,
       emitsTypeDecl: undefined,
       isCE: false,
       options: {
+        ignoreTypes: options.ignoreTypes,
         fs: {
           fileExists(_file: string): boolean {
             // 检查文件是否存在

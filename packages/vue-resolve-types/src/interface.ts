@@ -1,3 +1,5 @@
+import type { IgnoreTypesOption } from '@v-c/resolve-types'
+
 export interface UserOptions {
   include?: (id: string) => boolean
   /**
@@ -26,4 +28,10 @@ export interface UserOptions {
     readFile: (file: string) => string | undefined
     realpath?: (file: string) => string
   }
+  /**
+   * type names that must not be resolved into runtime props; works on types
+   * from a published `.d.ts` where `/* @vue-ignore *\/` is gone
+   * @example [/EmitsProps$/]
+   */
+  ignoreTypes?: IgnoreTypesOption
 }

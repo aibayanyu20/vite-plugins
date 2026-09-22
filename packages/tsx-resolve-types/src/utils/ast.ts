@@ -1,6 +1,6 @@
 import { createRequire } from 'node:module'
 import type { Expression } from '@babel/types'
-import { parseSync } from 'oxc-parser'
+import { parseOxcProgram } from '@v-c/resolve-types'
 import type { Program } from '@oxc-project/types'
 import type { AST } from '../interface'
 
@@ -41,12 +41,15 @@ function getBabelParser() {
   return babelParser
 }
 
+/**
+ * Parse with the same OXC normalisation @v-c/resolve-types applies to the
+ * files it loads itself (Literal -> StringLiteral, Property -> ObjectProperty,
+ * typeArguments -> typeParameters, ...). The resolver only understands those
+ * Babel-like shapes, so feeding it a raw oxc-parser program makes string
+ * literal unions and similar types in the current file degrade to `null`.
+ */
 export function createOxcProgram(code: string, jsx = true): Program {
-  return parseSync(jsx ? 'input.tsx' : 'input.ts', code, {
-    lang: jsx ? 'tsx' : 'ts',
-    sourceType: 'module',
-    astType: 'ts',
-  }).program
+  return parseOxcProgram(jsx ? 'input.tsx' : 'input.ts', code, jsx ? 'tsx' : 'ts') as unknown as Program
 }
 
 export function createAst(code: string, jsx = true): AST {

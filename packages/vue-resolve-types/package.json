@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-vue-resolve-types",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Resolve script setup defineProps types to runtime props in Vue SFC",
   "author": "aibayanyu20 <aibayanyu@qq.com>",
   "license": "MIT",
@@ -42,7 +42,7 @@
     "vue": ">=3.3"
   },
   "dependencies": {
-    "@v-c/resolve-types": "0.0.1",
+    "@v-c/resolve-types": "0.0.2",
     "magic-string": "^0.30.21",
     "oxc-walker": "^0.7.0"
   }
